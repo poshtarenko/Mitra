@@ -54,8 +54,7 @@ public interface Dao<K extends Number, E extends Identifiable> {
      *
      * @param connection Connection to db
      * @param id         id in db
-     * @param entity     object to save
      * @throws DaoException if something bad
      */
-    void delete(Connection connection, K id, E entity) throws DaoException;
+    void delete(Connection connection, K id) throws DaoException;
 }
