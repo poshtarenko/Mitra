@@ -15,6 +15,14 @@ import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
 
+    private static final UserDaoImpl INSTANCE = new UserDaoImpl();
+
+    private UserDaoImpl(){}
+
+    public static UserDaoImpl getInstance() {
+        return INSTANCE;
+    }
+
     private static final QueryExecutor<Integer, User> queryExecutor = new QueryExecutor<>(UserRowMapper.getInstance());
 
     public static final String FIND_ALL_SQL = String.format(
@@ -23,6 +31,9 @@ public class UserDaoImpl implements UserDao {
             Table.USER, Table.ROLE, Column.USER.role_id, Column.ROLE.id);
 
     public static final String FIND_SQL = FIND_ALL_SQL + String.format(" WHERE %s = ?", Column.USER.id);
+
+    public static final String FIND_BY_EMAIL_AND_PASSWORD = FIND_ALL_SQL + String.format(" WHERE %s = ? AND %s = ?",
+            Column.USER.email, Column.USER.password);
 
     public static final String SAVE_SQL = String.format(
             "INSERT INTO %s (%s, %s, %s) VALUES (?, ?, (SELECT %s FROM %s WHERE %s = ?))",
@@ -41,6 +52,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> find(Connection connection, Integer id) throws DaoException {
         return queryExecutor.find(connection, FIND_SQL, id);
+    }
+
+    @Override
+    public Optional<User> find(Connection connection, String email, String password) throws DaoException {
+        return queryExecutor.find(connection, FIND_BY_EMAIL_AND_PASSWORD, email, password);
     }
 
     @Override

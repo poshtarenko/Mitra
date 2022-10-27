@@ -11,6 +11,8 @@ public class UserRowMapper implements RowMapper<User> {
 
     private static final UserRowMapper INSTANCE = new UserRowMapper();
 
+    private UserRowMapper(){}
+
     public static UserRowMapper getInstance() {
         return INSTANCE;
     }
