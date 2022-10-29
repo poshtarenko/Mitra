@@ -9,6 +9,30 @@
   <url>http://maven.apache.org</url>
 
   <dependencies>
+      <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+      <dependency>
+          <groupId>jakarta.servlet</groupId>
+          <artifactId>jakarta.servlet-api</artifactId>
+          <version>5.0.0</version>
+          <scope>provided</scope>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/jakarta.servlet.jsp.jstl/jakarta.servlet.jsp.jstl-api -->
+      <dependency>
+          <groupId>jakarta.servlet.jsp.jstl</groupId>
+          <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+          <version>2.0.0</version>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.glassfish/jakarta.el -->
+      <dependency>
+          <groupId>org.glassfish</groupId>
+          <artifactId>jakarta.el</artifactId>
+          <version>3.0.4</version>
+          <scope>test</scope>
+      </dependency>
+
+
       <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
       <dependency>
           <groupId>org.projectlombok</groupId>
