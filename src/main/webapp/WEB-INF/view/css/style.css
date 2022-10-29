@@ -30,7 +30,7 @@
     justify-content: center;
     align-items: center;
 
-    background: rgba(0, 0, 0, 0.7)url('./Images/abackground2.png');
+    background: rgba(0, 0, 0, 0.7)url('../Images/abackground2.png');
 
 
     background-blend-mode:darken;
@@ -60,7 +60,7 @@
     height: 100%;
     /* background-color: #a1c4fd; */
 
-    background: url('./Images/instruments.jpg');
+    background: url('../Images/instruments.jpg');
     box-shadow: inset 0 0 0 1000px rgb(131, 173, 239,0.9);
     
     background-size: cover;
