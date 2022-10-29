@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="D:\ОНПУ_РАБОТЫ\3 КУРС\Гнучки методології\Project\style.css">
+    <link rel="stylesheet" href="Mitra\src\main\webapp\WEB-INF\view\css\style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Mitra</title>
 </head>
@@ -35,7 +35,7 @@
                     Далі
                 </button>
 
-                <div class="to-login">Вже є аккаунт? <a href="Pages/authorization/authorization.html" class="authorization jump">Авторізуйтесь</a></div>
+                <div class="to-login">Вже є аккаунт? <a href="Mitra\src\main\webapp\WEB-INF\view\jsp\authorization.html" class="authorization jump">Авторізуйтесь</a></div>
 
 
             </div>
@@ -54,6 +54,6 @@
 
     </div>
 </div>
-    <script src="script.js"></script>
+    <script src="Mitra\src\main\webapp\WEB-INF\view\js\script.js"></script>
 </body>
 </html>
