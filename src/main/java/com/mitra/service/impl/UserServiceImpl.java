@@ -4,12 +4,10 @@ import com.mitra.db.connection.ConnectionManager;
 import com.mitra.db.dao.UserDao;
 import com.mitra.db.dao.impl.UserDaoImpl;
 import com.mitra.dto.UserDto;
-import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.dto.mapper.UserDtoMapper;
 import com.mitra.entity.Role;
 import com.mitra.entity.User;
 import com.mitra.service.UserService;
-import lombok.SneakyThrows;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,7 +20,7 @@ public class UserServiceImpl implements UserService {
     private static final UserDao userDao = UserDaoImpl.getInstance();
     private static final UserDtoMapper userDtoMapper = UserDtoMapper.getInstance();
 
-    private UserServiceImpl(){}
+    public UserServiceImpl(){}
 
     public static UserServiceImpl getInstance() {
         return INSTANCE;

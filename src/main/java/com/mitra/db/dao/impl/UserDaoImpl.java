@@ -1,7 +1,7 @@
 package com.mitra.db.dao.impl;
 
 import com.mitra.db.Column;
-import com.mitra.db.QueryExecutor;
+import com.mitra.db.dao.QueryExecutor;
 import com.mitra.db.Table;
 import com.mitra.db.dao.UserDao;
 import com.mitra.db.filter.Filter;
@@ -56,7 +56,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> find(Connection connection, String email, String password) throws DaoException {
-        return queryExecutor.find(connection, FIND_BY_EMAIL_AND_PASSWORD, email, password);
+        return queryExecutor.find(connection, FIND_BY_EMAIL_AND_PASSWORD,
+                email, password);
     }
 
     @Override
@@ -66,12 +67,14 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Integer save(Connection connection, User entity) throws DaoException {
-        return queryExecutor.save(connection, SAVE_SQL, entity.getEmail(), entity.getPassword(), entity.getRole().name());
+        return queryExecutor.save(connection, SAVE_SQL,
+                entity.getEmail(), entity.getPassword(), entity.getRole().name());
     }
 
     @Override
     public void update(Connection connection, Integer id, User entity) throws DaoException {
-        queryExecutor.update(connection, UPDATE_SQL, entity.getEmail(), entity.getPassword(), entity.getRole().name(), id);
+        queryExecutor.update(connection, UPDATE_SQL,
+                entity.getEmail(), entity.getPassword(), entity.getRole().name(), id);
     }
 
     @Override

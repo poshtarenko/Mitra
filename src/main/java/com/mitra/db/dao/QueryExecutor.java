@@ -1,4 +1,4 @@
-package com.mitra.db;
+package com.mitra.db.dao;
 
 import com.mitra.db.connection.ConnectionManager;
 import com.mitra.db.dao.UserDao;
