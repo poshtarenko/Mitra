@@ -1,5 +1,6 @@
 package com.mitra.controller.request_processor.impl;
 
+import com.mitra.controller.UrlPath;
 import com.mitra.service.UserService;
 import com.mitra.service.impl.UserServiceImpl;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,6 @@ public class AuthorizationProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        forward(request, response, "auth");
+        forward(request, response, UrlPath.AUTHORIZATION.getJspFileName());
     }
 }

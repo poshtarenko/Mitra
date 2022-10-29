@@ -13,7 +13,7 @@ public class DispatcherFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         String path = req.getRequestURI().substring(req.getContextPath().length());
 
-        if (path.startsWith("/WEB-INF/"))
+        if (path.startsWith("/WEB-INF/") || path.startsWith("/resources/"))
             chain.doFilter(request, response);
         else
             request.getRequestDispatcher("/app" + path)

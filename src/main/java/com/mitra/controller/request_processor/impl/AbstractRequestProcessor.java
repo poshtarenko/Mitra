@@ -10,7 +10,7 @@ import java.io.IOException;
 
 abstract class AbstractRequestProcessor implements RequestProcessor {
 
-    public static final String JSP_PATH = "/WEB-INF/jsp/";
+    public static final String JSP_PATH = "/WEB-INF/view/jsp/";
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -9,7 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/app/*")
+// All requests on default servlets marked with prefix "/app"
+// Another servlets (jsp, image processors) do not have any prefix
+@WebServlet(UrlPath.SERVLET_CONST + "/*")
 public class DispatcherServlet extends HttpPatchServlet {
 
     private static final RequestProcessorFactory requestProcessorFactory = new RequestProcessorFactory();

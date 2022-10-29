@@ -7,16 +7,24 @@ import java.util.Optional;
 
 public enum UrlPath {
 
-    AUTHORIZATION("/auth"),
-    REGISTRATION("/register");
+    AUTHORIZATION("/auth", "authorization"),
+    REGISTRATION("/register", "registration");
 
     private final String urlPath;
+    private final String jspFileName;
+
+    public static final String SERVLET_CONST = "/app";
 
     public String get() {
-        return "/app" + urlPath;
+        return SERVLET_CONST + urlPath;
     }
 
-    UrlPath(String urlPath) {
+    public String getJspFileName() {
+        return jspFileName;
+    }
+
+    UrlPath(String urlPath, String jspFileName) {
+        this.jspFileName = jspFileName;
         this.urlPath = urlPath;
     }
 
