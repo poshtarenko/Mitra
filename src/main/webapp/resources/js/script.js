@@ -12,12 +12,12 @@ window.onload = () => {
 }
 
 
-document.addEventListener('DOMContentLoaded', function(){
-    console.log('document');
-    setTimeout(() => {
-        transitionEl.classList.remove("isActive");
-    },200)
-});
+// document.addEventListener('DOMContentLoaded', function(){
+//     console.log('document');
+//     setTimeout(() => {
+//         transitionEl.classList.remove("isActive");
+//     },200)
+// });
 
 // document.onreadystatechange = () => {
 //     if (document.readyState === 'complete') {
