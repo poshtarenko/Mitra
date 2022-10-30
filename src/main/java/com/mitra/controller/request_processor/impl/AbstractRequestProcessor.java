@@ -46,8 +46,7 @@ abstract class AbstractRequestProcessor implements RequestProcessor {
     }
 
     protected void redirect(HttpServletResponse response, String path) throws IOException {
-        String completedPath = JSP_PATH + path + ".jsp";
-        response.sendRedirect(completedPath);
+        response.sendRedirect(path);
     }
 
 }

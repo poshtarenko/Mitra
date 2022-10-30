@@ -4,10 +4,14 @@ import com.mitra.db.connection.ConnectionManager;
 import com.mitra.db.dao.UserDao;
 import com.mitra.db.dao.impl.UserDaoImpl;
 import com.mitra.dto.UserDto;
+import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.dto.mapper.UserDtoMapper;
 import com.mitra.entity.Role;
 import com.mitra.entity.User;
+import com.mitra.exception.ValidationException;
 import com.mitra.service.UserService;
+import com.mitra.validator.UserDtoValidator;
+import com.mitra.validator.Validator;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -18,7 +22,8 @@ public class UserServiceImpl implements UserService {
     private static final UserServiceImpl INSTANCE = new UserServiceImpl();
 
     private static final UserDao userDao = UserDaoImpl.getInstance();
-    private static final UserDtoMapper userDtoMapper = UserDtoMapper.getInstance();
+    private static final DtoMapper<UserDto, User> userDtoMapper = UserDtoMapper.getInstance();
+    private static final Validator<UserDto> userDtoValidator = UserDtoValidator.getInstance();
 
     private UserServiceImpl(){}
 
@@ -27,11 +32,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> tryLogin(String email, String password) {
+    public Optional<UserDto> tryLogin(UserDto userDto) {
         try (Connection connection = ConnectionManager.get()) {
-            // TODO : validation (in order not to make redundant requests to DB)
+            checkUserDtoIsValid(userDto); //validation in order not to make redundant requests to DB
 
-            Optional<User> user = userDao.find(connection, email, password);
+            Optional<User> user = userDao.find(connection, userDto.getEmail(), userDto.getPassword());
 
             return user.map(userDtoMapper::mapToDto);
         } catch (SQLException e) {
@@ -43,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean register(UserDto userDto) {
         try (Connection connection = ConnectionManager.get()) {
-            // TODO : validation
+            checkUserDtoIsValid(userDto);
 
             User user = userDtoMapper.mapToEntity(userDto);
             userDao.save(connection, user);
@@ -72,5 +77,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void ban(UserDto userDto) {
 
+    }
+
+    private static void checkUserDtoIsValid(UserDto userDto) {
+        if (!userDtoValidator.isValid(userDto)){
+            throw new ValidationException(userDto + " is invalid.");
+        }
     }
 }
