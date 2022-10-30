@@ -1,5 +1,5 @@
 window.onload = () => {
-
+    console.log('this is document onload');
     const transitionEl = document.querySelector(".transition-2");
     const anchors = document.querySelectorAll('.jump');
 
@@ -23,3 +23,11 @@ window.onload = () => {
 
     }
 }
+
+// window.
+
+// document.onreadystatechange = () => {
+//     if (document.readyState === 'complete') {
+//       // document ready
+//     }
+//   };
