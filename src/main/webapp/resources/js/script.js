@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function(){
     setTimeout(() => {
         transitionEl.classList.remove("isActive");
     },200)
-}
+});
 
 // document.onreadystatechange = () => {
 //     if (document.readyState === 'complete') {
