@@ -25,19 +25,19 @@ public class DispatcherServlet extends HttpPatchServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getProcessor(String.valueOf(request.getRequestURL()))
+        getProcessor(String.valueOf(request.getRequestURI()))
                 .processPost(request, response);
     }
 
     @Override
     public void doPatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getProcessor(String.valueOf(request.getRequestURL()))
+        getProcessor(String.valueOf(request.getRequestURI()))
                 .processPatch(request, response);
     }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getProcessor(String.valueOf(request.getRequestURL()))
+        getProcessor(String.valueOf(request.getRequestURI()))
                 .processDelete(request, response);
     }
 
