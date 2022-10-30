@@ -3,6 +3,7 @@ package com.mitra.controller.request_processor.impl;
 import com.mitra.controller.UrlPath;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Role;
+import com.mitra.exception.ValidationException;
 import com.mitra.service.UserService;
 import com.mitra.service.impl.UserServiceImpl;
 
@@ -31,6 +32,10 @@ public class RegistrationProcessor extends AbstractRequestProcessor {
                 .role(Role.USER)
                 .build();
 
-        userService.register(userDto);
+        try {
+            userService.register(userDto);
+        } catch (ValidationException e) {
+            redirect(response, UrlPath.REGISTRATION.get());
+        }
     }
 }

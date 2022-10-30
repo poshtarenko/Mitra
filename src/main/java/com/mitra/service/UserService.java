@@ -9,7 +9,7 @@ public interface UserService {
 
     // TODO : comments
 
-    Optional<UserDto> tryLogin(String email, String password);
+    Optional<UserDto> tryLogin(UserDto userDto);
 
     boolean register(UserDto userDto);
 

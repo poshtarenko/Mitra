@@ -12,6 +12,10 @@ public enum UrlPath {
     private final String jspFileName;
 
     public String get() {
+        return urlPath;
+    }
+
+    private String getFictitiousPath() {
         return SERVLET_CONST + urlPath;
     }
 
@@ -26,7 +30,7 @@ public enum UrlPath {
 
     public static Optional<UrlPath> getByPath(String path) {
         return Arrays.stream(UrlPath.values())
-                .filter(urlPath -> urlPath.get().equals(path))
+                .filter(urlPath -> urlPath.getFictitiousPath().equals(path))
                 .findFirst();
     }
 
