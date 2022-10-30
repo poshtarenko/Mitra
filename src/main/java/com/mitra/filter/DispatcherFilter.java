@@ -1,22 +1,33 @@
 package com.mitra.filter;
 
-import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.HttpServletRequest;
 
+import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @WebFilter("/*")
 public class DispatcherFilter implements Filter {
+
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequest req = (HttpServletRequest) servletRequest;
         String path = req.getRequestURI().substring(req.getContextPath().length());
 
         if (path.startsWith("/WEB-INF/") || path.startsWith("/resources/"))
-            chain.doFilter(request, response);
+            filterChain.doFilter(servletRequest, servletResponse);
         else
-            request.getRequestDispatcher("/app" + path)
-                    .forward(request, response);
+            servletRequest.getRequestDispatcher("/app" + path)
+                    .forward(servletRequest, servletResponse);
+    }
+
+    // Overriding with empty method body of init() and destroy()
+    // methods, because Tomcat don't want to startup without it
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
+    @Override
+    public void destroy() {
     }
 }
