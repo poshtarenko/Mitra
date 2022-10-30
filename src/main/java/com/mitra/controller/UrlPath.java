@@ -13,8 +13,6 @@ public enum UrlPath {
     private final String urlPath;
     private final String jspFileName;
 
-    public static final String SERVLET_CONST = "/app";
-
     public String get() {
         return SERVLET_CONST + urlPath;
     }
@@ -28,13 +26,14 @@ public enum UrlPath {
         this.urlPath = urlPath;
     }
 
-    public static UrlPath getByPath(String path) {
-        Optional<UrlPath> result = Arrays.stream(UrlPath.values())
+    public static Optional<UrlPath> getByPath(String path) {
+        return Arrays.stream(UrlPath.values())
                 .filter(urlPath -> urlPath.get().equals(path))
                 .findFirst();
-
-        if (result.isPresent())
-            return result.get();
-        else throw new PageDontExistException("Path " + path + " is not represented");
     }
+
+    // All requests on default servlets are marked with prefix "/app"
+    // Another requests don't have prefixes, they use directories names
+    // ("resources" for css/js/images, "WEB-INF for jsp, etc)
+    public static final String SERVLET_CONST = "/app";
 }

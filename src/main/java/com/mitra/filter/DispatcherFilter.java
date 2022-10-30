@@ -22,7 +22,7 @@ public class DispatcherFilter implements Filter {
     }
 
     // Overriding with empty method body of init() and destroy()
-    // methods, because Tomcat don't want to startup without it
+    // methods, because Tomcat can't start up without it
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }

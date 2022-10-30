@@ -2,15 +2,16 @@ package com.mitra.controller;
 
 import com.mitra.controller.request_processor.RequestProcessor;
 import com.mitra.controller.request_processor.RequestProcessorFactory;
+import com.mitra.exception.PageDontExistException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Optional;
 
-// All requests on default servlets marked with prefix "/app"
-// Another servlets (jsp, image processors) do not have any prefix
 @WebServlet(UrlPath.SERVLET_CONST + "/*")
 public class DispatcherServlet extends HttpPatchServlet {
 
@@ -41,8 +42,12 @@ public class DispatcherServlet extends HttpPatchServlet {
     }
 
     public RequestProcessor getProcessor(String requestUrl) {
-        UrlPath urlPath = UrlPath.getByPath(requestUrl);
-        return requestProcessorFactory.getProcessor(urlPath);
+        Optional<UrlPath> urlPath = UrlPath.getByPath(requestUrl);
+
+        if (!urlPath.isPresent())
+            throw new PageDontExistException("Path " + requestUrl + " is not represented");
+
+        return requestProcessorFactory.getProcessor(urlPath.get());
     }
 
 }
