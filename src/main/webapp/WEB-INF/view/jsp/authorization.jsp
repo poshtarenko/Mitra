@@ -22,22 +22,24 @@
 
                 <div class="login-sign">Авторизація </div>
 
-                <div class="input-box email-box">
-                    <i class="fas fa-envelope"></i>
-                    <input type="text" placeholder="Введіть ваш email" required>
-                </div>
+                <form action="${pageContext.request.contextPath}/auth" method="post">
+                    <div class="input-box email-box">
+                        <i class="fas fa-envelope"></i>
+                        <input name="email" type="text" placeholder="Введіть ваш email" required>
+                    </div>
 
-                <div class="input-box password-box">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Введіть ваш пароль" required>
-                </div>
-                <a href="D:\ОНПУ_РАБОТЫ\3 КУРС\Гнучки методології\Project\Pages\forgotPassword.html" class="forgot-password jump">Забули пароль?</a>
+                    <div class="input-box password-box">
+                        <i class="fas fa-lock"></i>
+                        <input name="password" type="password" placeholder="Введіть ваш пароль" required>
+                    </div>
+                    <a href="D:\ОНПУ_РАБОТЫ\3 КУРС\Гнучки методології\Project\Pages\forgotPassword.html" class="forgot-password">Забули пароль?</a>
 
-                <button class="main-button jump" onclick="location.href='Pages/secondpage.html'">
-                    Далі
-                </button>
+                    <button type="submit" class="main-button">
+                        Увійти
+                    </button>
+                </form>
 
-                <div class="to-login">Немає аккаунта? <a href="${pageContext.request.contextPath}/register" class="authorization jump">Зареєструйтесь</a></div>
+                <div class="to-login">Немає аккаунта? <a href="${pageContext.request.contextPath}/register" class="authorization">Зареєструйтесь</a></div>
 
 
             </div>

@@ -34,6 +34,7 @@ public class RegistrationProcessor extends AbstractRequestProcessor {
 
         try {
             userService.register(userDto);
+            redirect(response, "SOME SUCCESS PAGE"); // TODO : change redirect page when it will be realized
         } catch (ValidationException e) {
             redirect(response, UrlPath.REGISTRATION.get());
         }
