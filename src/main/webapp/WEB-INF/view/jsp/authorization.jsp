@@ -22,7 +22,7 @@
 
                 <div class="login-sign">Авторизація </div>
 
-                <form action="${pageContext.request.contextPath}/auth" method="post">
+                <form action="${pageContext.request.contextPath}/app/auth" method="post">
                     <div class="input-box email-box">
                         <i class="fas fa-envelope"></i>
                         <input name="email" type="text" placeholder="Введіть ваш email" required>
@@ -39,7 +39,7 @@
                     </button>
                 </form>
 
-                <div class="to-login">Немає аккаунта? <a href="${pageContext.request.contextPath}/register" class="authorization">Зареєструйтесь</a></div>
+                <div class="to-login">Немає аккаунта? <a href="${pageContext.request.contextPath}/app/register" class="authorization">Зареєструйтесь</a></div>
 
 
             </div>

@@ -1,5 +1,6 @@
 package com.mitra.controller.request_processor.impl;
 
+import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Role;
@@ -38,7 +39,7 @@ public class AuthorizationProcessor extends AbstractRequestProcessor {
             if (!user.isPresent()){
                 throw new ValidationException("Credentials are invalid");
             }
-            request.getSession().setAttribute("USER", user.get());
+            request.getSession().setAttribute(SessionAttributes.USER.name(), user.get());
             redirect(response, "SOME SUCCESS PAGE"); // TODO : change redirect page when it will be realized
         } catch (ValidationException e) {
             redirect(response, UrlPath.AUTHORIZATION.get());

@@ -23,7 +23,7 @@
 
                 <div class="login-sign">Реєстрація </div>
 
-                <form action="${pageContext.request.contextPath}/register" method="post">
+                <form action="${pageContext.request.contextPath}/app/register" method="post">
                     <div class="input-box email-box">
                         <i class="fas fa-envelope"></i>
                         <input name="email" type="text" placeholder="Введіть ваш email" required>
@@ -39,7 +39,7 @@
                     </button>
                 </form>
 
-                <div class="to-login">Вже є аккаунт? <a href="${pageContext.request.contextPath}/auth" class="authorization jump">Авторізуйтесь</a></div>
+                <div class="to-login">Вже є аккаунт? <a href="${pageContext.request.contextPath}/app/auth" class="authorization">Авторізуйтесь</a></div>
 
 
             </div>
