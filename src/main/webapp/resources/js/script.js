@@ -1,6 +1,7 @@
 const transitionEl = document.querySelector(".transition-2");
 
 window.onload = () => {
+    console.log('window.onload');
 
     // const transitionEl = document.querySelector(".transition-2");
 
@@ -12,6 +13,7 @@ window.onload = () => {
 
 
 document.addEventListener('DOMContentLoaded', function(){
+    console.log('document');
     setTimeout(() => {
         transitionEl.classList.remove("isActive");
     },200)
