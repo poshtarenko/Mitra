@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class AuthorizationProcessor extends AbstractRequestProcessor {
 
-    private static final UserService userService = new UserServiceImpl();
+    private static final UserService userService = UserServiceImpl.getInstance();
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

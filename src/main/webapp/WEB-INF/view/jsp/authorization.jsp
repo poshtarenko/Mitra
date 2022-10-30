@@ -20,7 +20,7 @@
             <div class="leftInner">
 
 
-                <div class="login-sign">Авторізація </div>
+                <div class="login-sign">Авторизація </div>
 
                 <div class="input-box email-box">
                     <i class="fas fa-envelope"></i>
@@ -37,7 +37,7 @@
                     Далі
                 </button>
 
-                <div class="to-login">Немає аккаунта? <a href="Mitra\src\main\webapp\WEB-INF\view\jsp\registration.jsp" class="authorization jump">Зареєструйтесь</a></div>
+                <div class="to-login">Немає аккаунта? <a href="${pageContext.request.contextPath}/register" class="authorization jump">Зареєструйтесь</a></div>
 
 
             </div>

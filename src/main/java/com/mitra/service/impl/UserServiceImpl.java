@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     private static final UserDao userDao = UserDaoImpl.getInstance();
     private static final UserDtoMapper userDtoMapper = UserDtoMapper.getInstance();
 
-    public UserServiceImpl(){}
+    private UserServiceImpl(){}
 
     public static UserServiceImpl getInstance() {
         return INSTANCE;
