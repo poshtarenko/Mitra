@@ -13,6 +13,7 @@ import java.io.IOException;
 
 @WebFilter(UrlPath.SERVLET_CONST + "/*")
 public class AuthorizationFilter implements Filter {
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
@@ -27,13 +28,15 @@ public class AuthorizationFilter implements Filter {
         }
     }
 
+
+
     // Overriding with empty method body of init() and destroy()
     // methods, because Tomcat can't start up without this :(
-//    @Override
-//    public void init(FilterConfig filterConfig) throws ServletException {
-//    }
-//
-//    @Override
-//    public void destroy() {
-//    }
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
+    @Override
+    public void destroy() {
+    }
 }
