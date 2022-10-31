@@ -28,12 +28,12 @@ public class AuthorizationFilter implements Filter {
     }
 
     // Overriding with empty method body of init() and destroy()
-    // methods, because Tomcat can't start up without it
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
-
-    @Override
-    public void destroy() {
-    }
+    // methods, because Tomcat can't start up without this :(
+//    @Override
+//    public void init(FilterConfig filterConfig) throws ServletException {
+//    }
+//
+//    @Override
+//    public void destroy() {
+//    }
 }
