@@ -39,8 +39,8 @@
         <div class="container">
 
             <div class="titlesFirstBlock">
-                <div class="title">MITRA</div>
-                <div class="subTitle">Наша мета - об'єднати!</div>
+                <h1 class="title">MITRA</h1>
+                <h2 class="subTitle">Наша мета - об'єднати!</h2>
 
                 <a href="${pageContext.request.contextPath}/app/register">
                     <button type="submit" class="btn-blue firstBlockBtn">Зареєструйтесь!</button>
@@ -68,10 +68,10 @@
 
                 <div class="secondBlockSubText">
 
-                    <div class="secondBlockSubTitle">Що таке <span class="blueword">&nbsp;Mitra?</span></div>
-                    <div class="secondBlockSubSub">Mitra - це платформа для знайомств музикантів. <br><br>У дійсності, необхідних людей доволі непросто знайти,
+                    <h1 class="secondBlockSubTitle">Що таке <span class="blueword">&nbsp;Mitra?</span></h1>
+                    <h1 class="secondBlockSubSub">Mitra - це платформа для знайомств музикантів. <br><br>У дійсності, необхідних людей доволі непросто знайти,
                          на це може піти безліч вашого золотого часу.<br>Mitra допоможе розв'язати ці питання, заощадить ваш час та зусилля. Ми зануримо вас у творчу
-                         спільноту людей, насправді відданих музиці!</div>
+                         спільноту людей, насправді відданих музиці!</h1>
                     <!-- <button class="btn-red secondBlockBtn">LEARN MORE</button> -->
 
                 </div>
