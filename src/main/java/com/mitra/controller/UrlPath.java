@@ -5,6 +5,7 @@ import java.util.Optional;
 
 public enum UrlPath {
 
+    LANDING_PAGE("", "landing"),
     AUTHORIZATION("/auth", "authorization"),
     REGISTRATION("/register", "registration");
 

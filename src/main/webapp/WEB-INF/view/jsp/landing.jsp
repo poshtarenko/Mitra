@@ -8,7 +8,6 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/styleLanding.css">
-    <link rel="stylesheet" href="style.css">
     <title>Mitra</title>
 </head>
 <body>
@@ -42,7 +41,10 @@
             <div class="titlesFirstBlock">
                 <div class="title">MITRA</div>
                 <div class="subTitle">Наша ціль - об'єднати!</div>
-                <button class="btn-blue firstBlockBtn">Реєстрація</button>
+
+                <a href="${pageContext.request.contextPath}/app/register">
+                    <button type="submit" class="btn-blue firstBlockBtn">Реєстрація</button>
+                </a>
 
             </div>
             
