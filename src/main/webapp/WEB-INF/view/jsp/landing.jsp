@@ -23,7 +23,7 @@
 
     <div class="right">
         <a class="link Right" id="Home">Головна</a>
-        <a class="link Right" id="About">О нас</a>
+        <a class="link Right" id="About">Про нас</a>
         <a class="link Right" id="Services">Переваги</a>
         <a class="link Right" id="Contact">Контакти</a>
     </div>     
@@ -40,10 +40,10 @@
 
             <div class="titlesFirstBlock">
                 <div class="title">MITRA</div>
-                <div class="subTitle">Наша ціль - об'єднати!</div>
+                <div class="subTitle">Наша мета - об'єднати!</div>
 
                 <a href="${pageContext.request.contextPath}/app/register">
-                    <button type="submit" class="btn-blue firstBlockBtn">Реєстрація</button>
+                    <button type="submit" class="btn-blue firstBlockBtn">Зареєструйтесь!</button>
                 </a>
 
             </div>
@@ -69,8 +69,9 @@
                 <div class="secondBlockSubText">
 
                     <div class="secondBlockSubTitle">Що таке <span class="blueword">&nbsp;Mitra?</span></div>
-                    <div class="secondBlockSubSub">Mitra - це платформа для знайомств музикантів. <br><br>У дійсності потрібних людей доволі важко шукати, 
-                        не говорячи про те, що на це може уйти уйму вашого «золотого» часу.<br>Mitra може вирішити ці питання та заощадити ваш час та зусилля.</div>
+                    <div class="secondBlockSubSub">Mitra - це платформа для знайомств музикантів. <br><br>У дійсності, необхідних людей доволі непросто знайти,
+                         на це може піти безліч вашого золотого часу.<br>Mitra допоможе розв'язати ці питання, заощадить ваш час та зусилля. Ми зануримо вас у творчу
+                         спільноту людей, насправді відданих музиці!</div>
                     <!-- <button class="btn-red secondBlockBtn">LEARN MORE</button> -->
 
                 </div>
@@ -99,7 +100,7 @@
                         <i class="fa fa-clock-o"></i>
                         <div class="SubPartTitle">Швидкість</div>
     
-                        <div class="SubPartText">У людей не вистачає часу на «реальні» знайомства через завантаженість робочого дня та інші обставини. Наша платформа поважає ваш час та економить його</div>
+                        <div class="SubPartText">У людей не вистачає часу на реальні знайомства через завантаженість робочого дня та інші прикрі обставини. Соціальні мережі доволі громіздкі. Наша платформа поважає ваш час та зекономить його.</div>
     
                     </div>
                     
@@ -110,7 +111,7 @@
                         <i class="fa fa-solid fa-crosshairs"></i>
                         <div class="SubPartTitle">Націленість</div>
     
-                        <div class="SubPartText">Mitra - платформа націлена на музикантів та ставить перед собою задачу створити дружню "екосистему" у якій би могли знаходитись та кооперувати саме музиканти.  </div>
+                        <div class="SubPartText">Mitra - платформа націлена на музикантів та ставить перед собою задачу створити дружню екосистему, у якій би могли без обмежень знаходитись, кооперувати та творити музиканти.  </div>
                     </div>
     
                     <div class="thirdBlockSubPart">
@@ -118,7 +119,7 @@
                         <i class="fa fa-rocket"></i>
                         <div class="SubPartTitle">Ефективність</div>
     
-                        <div class="SubPartText">Проста та ефективна система фільтрації анкет Mitra допоможе вам знайти потрібного вам музиканта там де вам це потрібно.</div>
+                        <div class="SubPartText">Проста та ефективна система фільтрації анкет Mitra допоможе вам швидко знайти потрібну вам людину до вашого музичного гурту або для простого приємного спілкування.</div>
                     </div>   
                 </div>
             </div>
