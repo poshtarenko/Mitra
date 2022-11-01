@@ -19,17 +19,20 @@ public class UserDtoValidator implements Validator<UserDto> {
 
     @Override
     public boolean isValid(UserDto dto) {
-        String email = dto.getEmail();
+        return emailIsValid(dto.getEmail())
+                && passwordIsValid(dto.getPassword());
+    }
+
+    private boolean emailIsValid(String email){
         Pattern emailPattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
         Matcher emailMatcher = emailPattern.matcher(email);
-        if (!emailMatcher.matches()) {
-            return false;
-        }
 
-        String password = dto.getPassword();
-        if (password.length() < 6)
-            return false;
+        return emailMatcher.matches();
 
-        return true;
+        // TODO : check if there are the same email in the database
+    }
+
+    private boolean passwordIsValid(String password){
+        return password.length() >= 6;
     }
 }

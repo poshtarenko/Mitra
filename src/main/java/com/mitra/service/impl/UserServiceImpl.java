@@ -9,6 +9,8 @@ import com.mitra.dto.mapper.UserDtoMapper;
 import com.mitra.entity.Role;
 import com.mitra.entity.User;
 import com.mitra.exception.ValidationException;
+import com.mitra.security.EncryptorSHA512;
+import com.mitra.security.PasswordEncryptor;
 import com.mitra.service.UserService;
 import com.mitra.validator.UserDtoValidator;
 import com.mitra.validator.Validator;
@@ -24,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private static final UserDao userDao = UserDaoImpl.getInstance();
     private static final DtoMapper<UserDto, User> userDtoMapper = UserDtoMapper.getInstance();
     private static final Validator<UserDto> userDtoValidator = UserDtoValidator.getInstance();
+    private static final PasswordEncryptor passwordEncryptor = EncryptorSHA512.getInstance();
 
     private UserServiceImpl(){}
 
@@ -36,7 +39,9 @@ public class UserServiceImpl implements UserService {
         try (Connection connection = ConnectionManager.get()) {
             checkUserDtoIsValid(userDto); //validation in order not to make redundant requests to DB
 
-            Optional<User> user = userDao.find(connection, userDto.getEmail(), userDto.getPassword());
+            String encryptedPassword = encryptPassword(userDto.getPassword());
+
+            Optional<User> user = userDao.find(connection, userDto.getEmail(), encryptedPassword);
 
             return user.map(userDtoMapper::mapToDto);
         } catch (SQLException e) {
@@ -51,7 +56,11 @@ public class UserServiceImpl implements UserService {
             checkUserDtoIsValid(userDto);
 
             User user = userDtoMapper.mapToEntity(userDto);
+            String encryptedPassword = encryptPassword(userDto.getPassword());
+            user.setPassword(encryptedPassword);
+
             userDao.save(connection, user);
+
             return true;
         } catch (SQLException e) {
             // TODO : log
@@ -83,5 +92,9 @@ public class UserServiceImpl implements UserService {
         if (!userDtoValidator.isValid(userDto)){
             throw new ValidationException(userDto + " is invalid.");
         }
+    }
+
+    private static String encryptPassword(String password){
+        return passwordEncryptor.encrypt(password);
     }
 }
