@@ -39,6 +39,8 @@ public class LocationDaoImpl implements LocationDao {
 
     public static final String FIND_SQL = FIND_ALL_SQL + String.format(" WHERE %s = ?", Column.CITY.ID);
 
+    public static final String FIND_BY_CITY_SQL = FIND_ALL_SQL + String.format(" WHERE %s = ?", Column.CITY.NAME);
+
     public static final String SAVE_SQL = null;
 
     public static final String UPDATE_SQL = null;
@@ -51,7 +53,17 @@ public class LocationDaoImpl implements LocationDao {
     }
 
     @Override
+    public Optional<Location> findByCity(Connection connection, String city) throws DaoException {
+        return queryExecutor.find(connection, FIND_BY_CITY_SQL, city);
+    }
+
+    @Override
     public List<Location> findAll(Connection connection, Filter filter) throws DaoException {
+        return queryExecutor.findAll(connection, FIND_ALL_SQL);
+    }
+
+    @Override
+    public List<Location> findAll(Connection connection) throws DaoException {
         return queryExecutor.findAll(connection, FIND_ALL_SQL);
     }
 

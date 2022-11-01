@@ -17,6 +17,7 @@ public class UserDtoMapper implements DtoMapper<UserDto, User> {
     @Override
     public User mapToEntity(UserDto dto) {
         return new User(
+                dto.getId(),
                 dto.getEmail(),
                 dto.getPassword(),
                 dto.getRole()
@@ -26,6 +27,7 @@ public class UserDtoMapper implements DtoMapper<UserDto, User> {
     @Override
     public UserDto mapToDto(User entity) {
         return UserDto.builder()
+                .id(entity.getId())
                 .email(entity.getEmail())
                 .password(entity.getPassword())
                 .role(entity.getRole())

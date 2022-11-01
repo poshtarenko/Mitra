@@ -86,6 +86,7 @@ public class QueryExecutor<K extends Number, E extends Identifiable<K>> {
                 preparedStatement.setObject(i + 1, params[i]);
             }
 
+            System.out.println(preparedStatement);
             return preparedStatement;
         } catch (SQLException e) {
             throw new RuntimeException(e);

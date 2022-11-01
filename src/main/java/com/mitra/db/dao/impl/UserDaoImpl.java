@@ -91,6 +91,7 @@ public class UserDaoImpl implements UserDao {
                 .location(userLocation)
                 .build();
 
+        // When creating a user, an empty user profile must be created
         profileDao.save(connection, userProfile);
 
         return userId;

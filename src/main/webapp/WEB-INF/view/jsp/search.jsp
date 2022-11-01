@@ -1,0 +1,28 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: catem
+  Date: 01.11.2022
+  Time: 14:16
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body style="padding-left: 200px; margin-top: 30px; padding-right: 1100px">
+
+<h2>Всі анкети користувачів :</h2>
+
+<c:forEach var="profile" items="${requestScope.profiles}">
+    <hr>
+    <h3>${profile.getName()}</h3>
+    <p><b>Вік :</b> ${profile.getAge()} років</p>
+    <p><b>Місто :</b> ${profile.getLocation()}</p>
+    <p><b>Стать :</b> ${profile.getGender().name()}</p>
+    <p><b>Текст анкети :</b> ${profile.getText()}</p>
+</c:forEach>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.mitra.controller.request_processor.impl;
 
+import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Role;
@@ -11,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 public class RegistrationProcessor extends AbstractRequestProcessor {
 
@@ -27,6 +29,7 @@ public class RegistrationProcessor extends AbstractRequestProcessor {
         String password = request.getParameter("password");
 
         UserDto userDto = UserDto.builder()
+                .id(0)
                 .email(email)
                 .password(password)
                 .role(Role.USER)
@@ -34,7 +37,14 @@ public class RegistrationProcessor extends AbstractRequestProcessor {
 
         try {
             userService.register(userDto);
-            redirect(response, "SOME SUCCESS PAGE"); // TODO : change redirect page when it will be realized
+
+            Optional<UserDto> user = userService.tryLogin(userDto);
+            if (!user.isPresent()){
+                throw new ValidationException("Credentials are invalid");
+            }
+            request.getSession().setAttribute(SessionAttributes.USER.name(), user.get());
+
+            redirect(response, UrlPath.CREATE_PROFILE.get()); // TODO : change redirect page when it will be realized
         } catch (ValidationException e) {
             redirect(response, UrlPath.REGISTRATION.get());
         }
