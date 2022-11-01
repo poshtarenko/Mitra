@@ -21,14 +21,13 @@ public class AuthorizationFilter implements Filter {
         UserDto user = (UserDto) req.getSession().getAttribute(SessionAttributes.USER.name());
         if (user == null
                 && !String.valueOf(req.getRequestURI()).equals(UrlPath.AUTHORIZATION.get())
-                && !String.valueOf(req.getRequestURI()).equals(UrlPath.REGISTRATION.get())){
+                && !String.valueOf(req.getRequestURI()).equals(UrlPath.REGISTRATION.get())
+                && !String.valueOf(req.getRequestURI()).equals(UrlPath.LANDING_PAGE.get())){
             resp.sendRedirect(UrlPath.AUTHORIZATION.get());
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }
     }
-
-
 
     // Overriding with empty method body of init() and destroy()
     // methods, because Tomcat can't start up without this :(

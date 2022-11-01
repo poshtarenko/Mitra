@@ -8,7 +8,6 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/styleLanding.css">
-    <link rel="stylesheet" href="style.css">
     <title>Mitra</title>
 </head>
 <body>
@@ -24,7 +23,7 @@
 
     <div class="right">
         <a class="link Right" id="Home">Головна</a>
-        <a class="link Right" id="About">О нас</a>
+        <a class="link Right" id="About">Про нас</a>
         <a class="link Right" id="Services">Переваги</a>
         <a class="link Right" id="Contact">Контакти</a>
     </div>     
@@ -40,9 +39,12 @@
         <div class="container">
 
             <div class="titlesFirstBlock">
-                <h1 class="title">MITRA</h1>
-                <h2 class="subTitle">Наша ціль - об'єднати!</h2>
-                <button class="btn-blue firstBlockBtn">Реєстрація</button>
+                <div class="title">MITRA</div>
+                <div class="subTitle">Наша мета - об'єднати!</div>
+
+                <a href="${pageContext.request.contextPath}/app/register">
+                    <button type="submit" class="btn-blue firstBlockBtn">Зареєструйтесь!</button>
+                </a>
 
             </div>
             
@@ -67,9 +69,10 @@
                 <div class="secondBlockSubText">
 
                     <div class="secondBlockSubTitle">Що таке <span class="blueword">&nbsp;Mitra?</span></div>
-                    <h1 class="secondBlockSubSub">Mitra - це платформа для знайомств музикантів. <br><br>У дійсності потрібних людей доволі важко шукати, 
-                        не говорячи про те, що на це може уйти уйму вашого «золотого» часу.<br>Mitra може вирішити ці питання та заощадити ваш час та зусилля.</h1>
-                    
+                    <div class="secondBlockSubSub">Mitra - це платформа для знайомств музикантів. <br><br>У дійсності, необхідних людей доволі непросто знайти,
+                         на це може піти безліч вашого золотого часу.<br>Mitra допоможе розв'язати ці питання, заощадить ваш час та зусилля. Ми зануримо вас у творчу
+                         спільноту людей, насправді відданих музиці!</div>
+                    <!-- <button class="btn-red secondBlockBtn">LEARN MORE</button> -->
 
                 </div>
             </div>
@@ -97,7 +100,7 @@
                         <i class="fa fa-clock-o"></i>
                         <div class="SubPartTitle">Швидкість</div>
     
-                        <h1 class="SubPartText">У людей не вистачає часу на «реальні» знайомства через завантаженість робочого дня та інші обставини. Наша платформа поважає ваш час та економить його</h1>
+                        <div class="SubPartText">У людей не вистачає часу на реальні знайомства через завантаженість робочого дня та інші прикрі обставини. Соціальні мережі доволі громіздкі. Наша платформа поважає ваш час та зекономить його.</div>
     
                     </div>
                     
@@ -108,7 +111,7 @@
                         <i class="fa fa-solid fa-crosshairs"></i>
                         <div class="SubPartTitle">Націленість</div>
     
-                        <h1 class="SubPartText">Mitra - платформа націлена на музикантів та ставить перед собою задачу створити дружню "екосистему" у якій би могли знаходитись та кооперувати саме музиканти.  </h1>
+                        <div class="SubPartText">Mitra - платформа націлена на творчих людей. Ми ставимо перед нами задачу створити дружню екосистему, у якій музиканти можуть без обмежень кооперувати та творити.  </div>
                     </div>
     
                     <div class="thirdBlockSubPart">
@@ -116,7 +119,7 @@
                         <i class="fa fa-rocket"></i>
                         <div class="SubPartTitle">Ефективність</div>
     
-                        <h1 class="SubPartText">Проста та ефективна система фільтрації анкет Mitra допоможе вам знайти потрібного вам музиканта там де вам це потрібно.</h1>
+                        <div class="SubPartText">Проста та ефективна система фільтрації анкет Mitra допоможе вам швидко знайти потрібну вам людину до вашого музичного гурту або для простого приємного спілкування.</div>
                     </div>   
                 </div>
             </div>

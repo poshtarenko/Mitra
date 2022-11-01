@@ -39,7 +39,7 @@
                     </button>
                 </form>
 
-                <div class="to-login">Вже є аккаунт? <a href="${pageContext.request.contextPath}/app/auth" class="authorization">Авторізуйтесь</a></div>
+                <div class="to-login">Вже є аккаунт? <a href="${pageContext.request.contextPath}/app/auth" class="authorization">Авторизуйтесь</a></div>
 
 
             </div>
