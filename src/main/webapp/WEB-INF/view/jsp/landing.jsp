@@ -40,8 +40,8 @@
         <div class="container">
 
             <div class="titlesFirstBlock">
-                <div class="title">MITRA</div>
-                <div class="subTitle">Наша ціль - об'єднати!</div>
+                <h1 class="title">MITRA</h1>
+                <h2 class="subTitle">Наша ціль - об'єднати!</h2>
                 <button class="btn-blue firstBlockBtn">Реєстрація</button>
 
             </div>
@@ -67,9 +67,9 @@
                 <div class="secondBlockSubText">
 
                     <div class="secondBlockSubTitle">Що таке <span class="blueword">&nbsp;Mitra?</span></div>
-                    <div class="secondBlockSubSub">Mitra - це платформа для знайомств музикантів. <br><br>У дійсності потрібних людей доволі важко шукати, 
-                        не говорячи про те, що на це може уйти уйму вашого «золотого» часу.<br>Mitra може вирішити ці питання та заощадити ваш час та зусилля.</div>
-                    <!-- <button class="btn-red secondBlockBtn">LEARN MORE</button> -->
+                    <h1 class="secondBlockSubSub">Mitra - це платформа для знайомств музикантів. <br><br>У дійсності потрібних людей доволі важко шукати, 
+                        не говорячи про те, що на це може уйти уйму вашого «золотого» часу.<br>Mitra може вирішити ці питання та заощадити ваш час та зусилля.</h1>
+                    
 
                 </div>
             </div>
@@ -97,7 +97,7 @@
                         <i class="fa fa-clock-o"></i>
                         <div class="SubPartTitle">Швидкість</div>
     
-                        <div class="SubPartText">У людей не вистачає часу на «реальні» знайомства через завантаженість робочого дня та інші обставини. Наша платформа поважає ваш час та економить його</div>
+                        <h1 class="SubPartText">У людей не вистачає часу на «реальні» знайомства через завантаженість робочого дня та інші обставини. Наша платформа поважає ваш час та економить його</h1>
     
                     </div>
                     
@@ -108,7 +108,7 @@
                         <i class="fa fa-solid fa-crosshairs"></i>
                         <div class="SubPartTitle">Націленість</div>
     
-                        <div class="SubPartText">Mitra - платформа націлена на музикантів та ставить перед собою задачу створити дружню "екосистему" у якій би могли знаходитись та кооперувати саме музиканти.  </div>
+                        <h1 class="SubPartText">Mitra - платформа націлена на музикантів та ставить перед собою задачу створити дружню "екосистему" у якій би могли знаходитись та кооперувати саме музиканти.  </h1>
                     </div>
     
                     <div class="thirdBlockSubPart">
@@ -116,7 +116,7 @@
                         <i class="fa fa-rocket"></i>
                         <div class="SubPartTitle">Ефективність</div>
     
-                        <div class="SubPartText">Проста та ефективна система фільтрації анкет Mitra допоможе вам знайти потрібного вам музиканта там де вам це потрібно.</div>
+                        <h1 class="SubPartText">Проста та ефективна система фільтрації анкет Mitra допоможе вам знайти потрібного вам музиканта там де вам це потрібно.</h1>
                     </div>   
                 </div>
             </div>
@@ -140,7 +140,7 @@
                         </div>
 
                         <div class="contact-right">
-                            <div class="fourthSubPartText">@MitraApp</div>
+                            <h1 class="fourthSubPartText">@MitraApp</h1>
                         </div>
                     </div>
     
@@ -149,7 +149,7 @@
                         <i class="fa fa-phone" id="fourth-fa"></i>
                         </div>
                         <div class="contact-right">
-                        <div class="fourthSubPartText">+380 50 274 65 11<br>+380 50 274 65 11</div>
+                        <h1 class="fourthSubPartText">+380 50 274 65 11<br>+380 50 274 65 11</h1>
                         </div>
                     </div>
     
@@ -158,7 +158,7 @@
                         <i class="fa fa-envelope-o" id="fourth-fa"></i>
                         </div>
                         <div class="contact-right">
-                        <div class="fourthSubPartText">Mitra@mitra.com<br>Mitra@gmail.com</div>
+                        <h1 class="fourthSubPartText">Mitra@mitra.com<br>Mitra@gmail.com</h1>
                         </div>
                     </div>  
                 </div>
