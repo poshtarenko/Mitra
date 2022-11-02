@@ -14,7 +14,8 @@ public class User implements Identifiable<Integer> {
     private Role role;
     private Profile profile;
 
-    public User(String email, String password, Role role) {
+    public User(int id, String email, String password, Role role) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.role = role;

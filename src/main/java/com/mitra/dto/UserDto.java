@@ -8,6 +8,7 @@ import lombok.Value;
 @Value
 @Builder
 public class UserDto implements Dto{
+    Integer id;
     String email;
     String password;
     Role role;

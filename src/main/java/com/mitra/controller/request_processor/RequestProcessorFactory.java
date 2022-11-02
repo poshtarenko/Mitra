@@ -1,9 +1,7 @@
 package com.mitra.controller.request_processor;
 
 import com.mitra.controller.UrlPath;
-import com.mitra.controller.request_processor.impl.AuthorizationProcessor;
-import com.mitra.controller.request_processor.impl.LandingProcessor;
-import com.mitra.controller.request_processor.impl.RegistrationProcessor;
+import com.mitra.controller.request_processor.impl.*;
 import com.mitra.exception.PageDontExistException;
 
 import java.util.HashMap;
@@ -17,6 +15,8 @@ public class RequestProcessorFactory {
         requestProcessorsMap.put(UrlPath.LANDING_PAGE, new LandingProcessor());
         requestProcessorsMap.put(UrlPath.AUTHORIZATION, new AuthorizationProcessor());
         requestProcessorsMap.put(UrlPath.REGISTRATION, new RegistrationProcessor());
+        requestProcessorsMap.put(UrlPath.CREATE_PROFILE, new CreateProfileProcessor());
+        requestProcessorsMap.put(UrlPath.SEARCH, new SearchProcessor());
     }
 
     public RequestProcessor getProcessor(UrlPath urlPath) {

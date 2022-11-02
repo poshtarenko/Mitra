@@ -7,7 +7,9 @@ public enum UrlPath {
 
     LANDING_PAGE("", "landing"),
     AUTHORIZATION("/auth", "authorization"),
-    REGISTRATION("/register", "registration");
+    REGISTRATION("/register", "registration"),
+    CREATE_PROFILE("/create_profile", "create_profile"),
+    SEARCH("/search", "search");
 
     private final String urlPath;
     private final String jspFileName;
