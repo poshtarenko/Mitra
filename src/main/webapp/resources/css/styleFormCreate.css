@@ -1,0 +1,346 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+    font-smooth: auto;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-family: 'Open Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+body{
+    height: 100%;
+    margin: 0px;
+}
+html {
+    height: 100%;
+	scroll-behavior: smooth;
+}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Poppins:wght@400;500;600;700&family=Roboto:wght@500;700;900&display=swap');
+
+.container{
+    width: 100%;
+    max-width: 1600px;
+    /* padding: 0 15px; */
+    margin: 0 auto;
+}
+/* Background  */
+
+.background{
+    /* background: linear-gradient(
+      rgba(0, 0, 0, 0.04),
+      rgba(0, 0, 0, 0.02)),linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%); */
+
+      /* background: linear-gradient(
+        rgba(0, 0, 0, 0.1),
+        rgba(0, 0, 0, 0.3)), url('images/abackground3.png'); */
+
+
+
+
+      /* background: url('images/musician_divka.jpg'); */
+      box-shadow: inset 0 0 0 1000px rgba(29, 68, 132, 0.2);
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, 0.7)url('../img/abackground2.png');
+
+
+    background-blend-mode:darken;
+
+}
+/* FORM BLOCK */
+.formBlock{
+    display: flex;
+    flex-direction: row;
+    width: 1000px;
+    height: 500px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+    border-radius: 10px;
+    overflow: hidden;
+    opacity: 1;
+}
+.left{
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.right{
+    width: 50%;
+    height: 100%;
+    /* background-color: #a1c4fd; */
+
+    /* background: url('images/instruments.jpg');
+    box-shadow: inset 0 0 0 1000px rgb(131, 173, 239,0.9); */
+    
+    background-size: cover;
+    overflow: hidden;
+    transition: box-shadow 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ICONS  */
+.icon{
+    width: 200px;
+    height: 200px;
+    fill: #a1c4fd;
+    transition: all 0.5s;
+}
+/* LEFT  */
+
+.leftInner{
+    height: 90%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+.inpt{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 322.5px;
+    width: 100%;
+    height: 200px;
+}
+
+
+
+/* RIGHT  */
+.rightInner{
+    display: flex;
+    flex-direction: column;
+    
+    align-items: center;
+    height: 90%;
+    width: 100%;
+    
+
+}
+.title{
+    font-size: 30px;
+    display: flex;
+    width: 100%;
+    height: 25%;
+    justify-content: center;
+    margin-top: 20px;
+    text-align: center;
+    color:#0d1523;
+    /* color: #7e7e7e; */
+    font-weight: 700;
+    line-height: 1 !important;
+    
+}
+
+.iconAndDescription{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* height: 75%; */
+    height: 316.5px !important;
+}
+
+.icon-box{
+height: 200px;
+width: 200px;
+
+}
+
+
+.description{
+    width: 80%;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 22px;
+    color:#0d1523;
+}
+
+/* INPUTS  */
+
+.input-box{
+    display: flex;
+    align-items: center;
+    height: 50px;
+    width: 100%;
+    margin: 10px 0;
+    position: relative;
+  }
+  input{
+    text-align: center;
+  }
+
+  .input-box input{
+    height: 100%;
+    width: 100%;
+    outline: none;
+    border: none;
+    padding: 0 30px;
+    font-size: 22px;
+    font-weight: 500;
+    border-bottom: 2px solid rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+  }
+  .input-box input:focus,
+  .input-box input:valid{
+    border-color: #a1c4fd;
+  }
+  .input-box i{
+    position: absolute;
+    color: #a1c4fd;
+    font-size: 17px;
+  }
+
+.raz { 
+  -moz-appearance: textfield;
+  
+}
+.raz::-webkit-inner-spin-button { 
+  display: none;
+}
+
+
+
+
+
+
+
+
+  /* .textArea{
+    border-radius: 15px;
+    height: 100%;
+    width: 100%;
+    resize: none;
+    font-size: 22px;
+    text-align: center;
+    background-color:rgb(126, 126, 126,0.05);
+  }
+  .textArea:focus{
+   
+    border: rgba(0,0,0,0.2) 2px solid;
+  } */
+  .form-control{
+    
+    resize: none;
+    height: 100%;
+    transition: all 0.5s;
+  }
+  .form-control:focus {
+    
+    box-shadow: 0 0 0 0.2rem rgb(161, 196, 253,0.5) !important;
+    } 
+
+
+  .form-select:focus{
+
+    box-shadow: 0 0 0 0.1rem rgb(161, 196, 253,0.5) !important;
+    border-color: #a1c4fd;
+  }
+
+
+  .display-none{
+    display: none;
+  }
+
+  .display-true{
+    display:flex;
+  }
+
+  .display-block{
+    display:block;
+  }
+
+  .opacity-none{
+    opacity: 0;
+  }
+  .opacity-all{
+    opacity: 1;
+  }
+  
+  .selectpicker{
+    width: 360px;
+  }
+
+  #sex-input-box button,#location-input-box button{
+    background-color: rgb(238, 238, 238,0.5);
+    font-size: 18px !important;
+    border-color: #a1c4fd !important;
+    font-family: 'Open Sans', sans-serif !important;
+  }
+
+
+
+
+/* BUTTON  */
+.main-button{
+    color: #fff;
+    margin-top: auto;
+    margin-bottom: auto;
+    border: none;
+    width: 100%;
+    height: 50px;
+  }
+  .main-button{
+    color: #fff;
+    background: #a1c4fd;
+    border-radius: 6px;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    font-size: 22px;
+    margin-left: auto;
+    margin-right: auto;
+    
+  }
+  .main-button:hover{
+    background: #90bbff;
+  }
+
+  .buttons-container{
+
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 70px;
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+/* ANIMATION */
+.transition-2{
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    bottom: 0;
+    z-index: 101;
+    background-color: #0d1523;
+    pointer-events: none;
+    transition: 0.5s;
+   }
+   .transition-2.isActive{
+    left: 0px;
+    
+   }
