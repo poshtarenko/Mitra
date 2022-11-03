@@ -8,7 +8,7 @@ public enum UrlPath {
     LANDING_PAGE("", "landing"),
     AUTHORIZATION("/auth", "authorization"),
     REGISTRATION("/register", "registration"),
-    CREATE_PROFILE("/create_profile", "create_profile"),
+    CREATE_PROFILE("/create_profile", "formCreateGrouped"),
     SEARCH("/search", "search");
 
     private final String urlPath;
