@@ -110,10 +110,26 @@ html {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 322.5px;
+    /* height: 322.5px; */
     width: 100%;
     height: 200px;
 }
+.forma{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+.rightContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
 
 
 
@@ -291,6 +307,9 @@ width: 200px;
     border: none;
     width: 100%;
     height: 50px;
+    text-align: center;
+    line-height: 50px;
+    
   }
   .main-button{
     color: #fff;
@@ -316,6 +335,28 @@ width: 200px;
     height: 70px;
 
   }
+  .main-button-submit{
+    text-align: center;
+    color: #fff;
+    background: #a1c4fd;
+    border-radius: 6px;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    font-size: 22px;
+    color: #fff;
+    margin-top: auto;
+    margin-bottom: auto;
+    border: none;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    justify-content: center;
+    }
+    .main-button-submit:hover{
+      background: #90bbff;
+    }
 
 
 

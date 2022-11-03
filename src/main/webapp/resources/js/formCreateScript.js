@@ -12,6 +12,10 @@ window.onload = () => {
     },200)
 
 }
+// SUBMIT FORM BTN
+const submitFormBtn = document.querySelector("#submitFormBtn")
+
+
 // INPUTS
 const inputName = document.querySelector("#name-input-box");
 
@@ -116,9 +120,19 @@ const changeStages = function (){
             inputText.classList.remove("display-true");
             inputText.classList.add("display-none")
 
+
+
+
             inputLocation.classList.remove("display-none");
             inputLocation.classList.add("display-true");
 
+
+            btnNext.classList.remove("display-true");
+            btnNext.classList.add("display-none")
+
+
+            submitFormBtn.classList.remove("display-none");
+            submitFormBtn.classList.add("display-true");
 
 
             title.textContent = "Звідки ти?";

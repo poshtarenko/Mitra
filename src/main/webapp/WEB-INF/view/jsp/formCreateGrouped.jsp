@@ -36,7 +36,7 @@
                 <div class="title">Як тебе звати?</div>
                 <div class="iconAndDescription">
 
-                    <form class="inpt" action="${pageContext.request.contextPath}/app/create_profile" method="post">
+                    <form class="forma" action="${pageContext.request.contextPath}/app/create_profile" method="post">
 
 
 
@@ -89,16 +89,17 @@
                                 <option selected>Чоловік</option>
                                 <option value="1">Жінка</option>
                               </select> -->
+                            
+                              <div class="main-button">
+                                Далі
+                            </div>
 
 
+                            <input id="submitFormBtn" value="ВІДПРАВИТИ АНКЕТУ"  type="submit" class="main-button-submit display-none"></input>
 
-                        <!-- <div class="buttons-container"> -->
-                        <div class="main-button">
-                            Далі
-                        </div>
-                        <input value="ВІДПРАВИТИ АНКЕТУ" type="submit"></input>
-                        <!-- </div> -->
                     </form>
+                        <!-- <div class="buttons-container"> -->     
+                        <!-- </div> -->
                 </div>
 
             </div>
@@ -107,8 +108,11 @@
 
         <div class="right">
             <div class="rightInner">
-                <h1 class="title">Почнемо Знайомитись!</h1>
+                <div class="title">Почнемо Знайомитись!</div>
                 <div class="iconAndDescription">
+                <div class="rightContainer">
+                    
+
                     <div class="icon-box">
                         <svg id="icon-name" class="icon display-true opacity-all" xmlns="http://www.w3.org/2000/svg"
                              viewBox="0 0 512 512">
@@ -132,6 +136,8 @@
                         </svg>
                     </div>
                     <h2 class="description">Напиши як тебе звуть. </h2>
+
+                </div>
                 </div>
 
             </div>
