@@ -5,18 +5,18 @@ import com.mitra.controller.UrlPath;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Role;
 import com.mitra.exception.ValidationException;
+import com.mitra.service.ServiceFactory;
 import com.mitra.service.UserService;
-import com.mitra.service.impl.UserServiceImpl;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.util.Optional;
 
 public class AuthorizationProcessor extends AbstractRequestProcessor {
 
-    private static final UserService userService = UserServiceImpl.getInstance();
+    private static final UserService userService = ServiceFactory.getUserService();
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,7 +40,7 @@ public class AuthorizationProcessor extends AbstractRequestProcessor {
                 throw new ValidationException("Credentials are invalid");
             }
             request.getSession().setAttribute(SessionAttributes.USER.name(), user.get());
-            redirect(response, "SOME SUCCESS PAGE"); // TODO : change redirect page when it will be realized
+            redirect(response, UrlPath.SEARCH.get());
         } catch (ValidationException e) {
             redirect(response, UrlPath.AUTHORIZATION.get());
         }

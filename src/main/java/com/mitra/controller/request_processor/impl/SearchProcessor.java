@@ -2,7 +2,7 @@ package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.UrlPath;
 import com.mitra.service.ProfileService;
-import com.mitra.service.impl.ProfileServiceImpl;
+import com.mitra.service.ServiceFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class SearchProcessor extends AbstractRequestProcessor {
 
-    private static final ProfileService profileService = ProfileServiceImpl.getInstance();
+    private static final ProfileService profileService = ServiceFactory.getProfileService();
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

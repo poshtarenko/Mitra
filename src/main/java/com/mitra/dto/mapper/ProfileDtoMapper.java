@@ -5,24 +5,26 @@ import com.mitra.entity.Location;
 import com.mitra.entity.Profile;
 import com.mitra.exception.ServiceException;
 import com.mitra.service.LocationService;
-import com.mitra.service.impl.LocationServiceImpl;
+import com.mitra.service.ServiceFactory;
+
+import java.sql.Connection;
 
 public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
 
     private static final ProfileDtoMapper INSTANCE = new ProfileDtoMapper();
-    private static final LocationService locationService = LocationServiceImpl.getInstance();
+    private static final LocationService locationService = ServiceFactory.getLocationService();
 
-    private ProfileDtoMapper(){}
+    private ProfileDtoMapper() {
+    }
 
     public static ProfileDtoMapper getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public Profile mapToEntity(ProfileDto dto) {
-        Location location = locationService.getByCity(dto.getLocation())
-                .orElse(locationService.getById(1)
-                        .orElseThrow(() -> new ServiceException("There must be any city with id = 1, but it doesn't")));
+    public Profile mapToEntity(Connection connection, ProfileDto dto) {
+        Location location = locationService.getByCity(connection, dto.getLocation())
+                .orElseThrow(() -> new ServiceException("City " + dto.getLocation() + " not found"));
 
         return Profile.builder()
                 .name(dto.getName())

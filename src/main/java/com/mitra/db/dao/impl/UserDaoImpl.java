@@ -8,9 +8,9 @@ import com.mitra.db.filter.Filter;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.db.mapper.UserRowMapper;
 import com.mitra.entity.Gender;
+import com.mitra.entity.Location;
 import com.mitra.entity.Profile;
 import com.mitra.entity.User;
-import com.mitra.entity.Location;
 import com.mitra.exception.DaoException;
 
 import java.sql.Connection;
@@ -78,21 +78,21 @@ public class UserDaoImpl implements UserDao {
         Integer userId = queryExecutor.save(connection, SAVE_SQL,
                 entity.getEmail(), entity.getPassword(), entity.getRole().name());
 
-        // By default, user have location at Kyiv (city.id = 1)
+        // By default, user has an empty profile with location at Kyiv (city.id = 1)
         Location userLocation = locationDao.find(connection, 1)
                 .orElseThrow(() -> new DaoException("There must be any city with id = 1"));
 
-        Profile userProfile = Profile.builder()
+        Profile emptryUserProfile = Profile.builder()
                 .id(userId)
-                .name("UNDEFINED")
+                .name("Undefined")
                 .age(0)
-                .gender(Gender.NEED_INIT)
-                .text("UNDEFINED")
+                .gender(Gender.MALE)
+                .text("Empty")
                 .location(userLocation)
                 .build();
 
         // When creating a user, an empty user profile must be created
-        profileDao.save(connection, userProfile);
+        profileDao.save(connection, emptryUserProfile);
 
         return userId;
     }

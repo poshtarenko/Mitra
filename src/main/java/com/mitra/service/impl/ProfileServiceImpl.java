@@ -54,7 +54,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public boolean updateProfile(int userId, ProfileDto profileDto) {
         try (Connection connection = ConnectionManager.get()) {
-            Profile profile = profileDtoMapper.mapToEntity(profileDto);
+            Profile profile = profileDtoMapper.mapToEntity(connection, profileDto);
             profileDao.update(connection, userId, profile);
             return true;
         } catch (SQLException e) {

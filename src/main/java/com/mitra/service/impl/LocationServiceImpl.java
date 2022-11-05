@@ -3,7 +3,6 @@ package com.mitra.service.impl;
 import com.mitra.db.connection.ConnectionManager;
 import com.mitra.db.dao.LocationDao;
 import com.mitra.db.dao.impl.LocationDaoImpl;
-import com.mitra.db.filter.UserFilter;
 import com.mitra.entity.Location;
 import com.mitra.service.LocationService;
 
@@ -44,7 +43,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public Optional<Location> getById(int locationId) {
         try (Connection connection = ConnectionManager.get()) {
-            return locationDao.find(connection, locationId);
+            return getById(connection, locationId);
         } catch (SQLException e) {
             // TODO : log
             return Optional.empty();
@@ -52,12 +51,22 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
+    public Optional<Location> getById(Connection connection, int locationId) {
+        return locationDao.find(connection, locationId);
+    }
+
+    @Override
     public Optional<Location> getByCity(String city) {
         try (Connection connection = ConnectionManager.get()) {
-            return locationDao.findByCity(connection, city);
+            return getByCity(connection, city);
         } catch (SQLException e) {
             // TODO : log
             return Optional.empty();
         }
+    }
+
+    @Override
+    public Optional<Location> getByCity(Connection connection, String city) {
+        return locationDao.findByCity(connection, city);
     }
 }

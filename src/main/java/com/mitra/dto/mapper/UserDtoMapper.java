@@ -1,21 +1,23 @@
 package com.mitra.dto.mapper;
 
-import com.mitra.db.mapper.UserRowMapper;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.User;
+
+import java.sql.Connection;
 
 public class UserDtoMapper implements DtoMapper<UserDto, User> {
 
     private static final UserDtoMapper INSTANCE = new UserDtoMapper();
 
-    private UserDtoMapper(){}
+    private UserDtoMapper() {
+    }
 
     public static UserDtoMapper getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public User mapToEntity(UserDto dto) {
+    public User mapToEntity(Connection connection, UserDto dto) {
         return new User(
                 dto.getId(),
                 dto.getEmail(),

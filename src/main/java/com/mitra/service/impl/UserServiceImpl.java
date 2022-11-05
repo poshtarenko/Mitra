@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
         try (Connection connection = ConnectionManager.get()) {
             checkUserDtoIsValid(userDto);
 
-            User user = userDtoMapper.mapToEntity(userDto);
+            User user = userDtoMapper.mapToEntity(connection, userDto);
             String encryptedPassword = encryptPassword(userDto.getPassword());
             user.setPassword(encryptedPassword);
 
