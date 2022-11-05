@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
+    <link rel="shortcut icon" href="../../resources/img/icon.png">
     <title>Title</title>
 </head>
 <body style="padding-left: 200px; margin-top: 30px; padding-right: 1100px">
