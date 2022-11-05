@@ -11,7 +11,8 @@ import java.io.IOException;
 
 public class SearchProcessor extends AbstractRequestProcessor {
 
-    private static final ProfileService profileService = ServiceFactory.getProfileService();
+    private static final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private static final ProfileService profileService = serviceFactory.getProfileService();
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

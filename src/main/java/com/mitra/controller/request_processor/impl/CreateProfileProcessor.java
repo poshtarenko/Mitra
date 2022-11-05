@@ -8,6 +8,8 @@ import com.mitra.entity.Gender;
 import com.mitra.service.LocationService;
 import com.mitra.service.ProfileService;
 import com.mitra.service.ServiceFactory;
+import com.mitra.service.impl.LocationServiceImpl;
+import com.mitra.service.impl.ProfileServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,8 +18,10 @@ import java.io.IOException;
 
 public class CreateProfileProcessor extends AbstractRequestProcessor {
 
-    private static final LocationService locationService = ServiceFactory.getLocationService();
-    private static final ProfileService profileService = ServiceFactory.getProfileService();
+    private static final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+
+    private static final LocationService locationService = serviceFactory.getLocationService();
+    private static final ProfileService profileService = serviceFactory.getProfileService();
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

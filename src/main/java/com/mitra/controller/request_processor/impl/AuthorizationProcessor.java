@@ -16,7 +16,8 @@ import java.util.Optional;
 
 public class AuthorizationProcessor extends AbstractRequestProcessor {
 
-    private static final UserService userService = ServiceFactory.getUserService();
+    private static final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private static final UserService userService = serviceFactory.getUserService();
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

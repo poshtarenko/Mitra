@@ -6,25 +6,33 @@ import com.mitra.service.impl.UserServiceImpl;
 
 public class ServiceFactory {
 
-    private static final UserService userService;
-    private static final ProfileService profileService;
-    private static final LocationService locationService;
+    private static ServiceFactory INSTANCE;
 
-    static {
-        userService = UserServiceImpl.getInstance();
-        profileService = ProfileServiceImpl.getInstance();
-        locationService = LocationServiceImpl.getInstance();
+    private final UserService userService;
+    private final ProfileService profileService;
+    private final LocationService locationService;
+
+    private ServiceFactory() {
+        userService = new UserServiceImpl();
+        profileService = new ProfileServiceImpl();
+        locationService = new LocationServiceImpl();
     }
 
-    public static UserService getUserService() {
+    public static ServiceFactory getInstance() {
+        if (INSTANCE == null)
+            INSTANCE = new ServiceFactory();
+        return INSTANCE;
+    }
+
+    public UserService getUserService() {
         return userService;
     }
 
-    public static ProfileService getProfileService() {
+    public ProfileService getProfileService() {
         return profileService;
     }
 
-    public static LocationService getLocationService() {
+    public LocationService getLocationService() {
         return locationService;
     }
 }

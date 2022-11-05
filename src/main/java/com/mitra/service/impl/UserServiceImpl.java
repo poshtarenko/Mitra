@@ -21,18 +21,10 @@ import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
 
-    private static final UserServiceImpl INSTANCE = new UserServiceImpl();
-
     private static final UserDao userDao = UserDaoImpl.getInstance();
     private static final DtoMapper<UserDto, User> userDtoMapper = UserDtoMapper.getInstance();
     private static final Validator<UserDto> userDtoValidator = UserDtoValidator.getInstance();
     private static final PasswordEncryptor passwordEncryptor = EncryptorSHA512.getInstance();
-
-    private UserServiceImpl(){}
-
-    public static UserServiceImpl getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public Optional<UserDto> tryLogin(UserDto userDto) {

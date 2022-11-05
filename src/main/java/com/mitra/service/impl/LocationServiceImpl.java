@@ -15,14 +15,7 @@ import java.util.Optional;
 
 public class LocationServiceImpl implements LocationService {
 
-    private static final LocationServiceImpl INSTANCE = new LocationServiceImpl();
     private static final LocationDao locationDao = LocationDaoImpl.getInstance();
-
-    private LocationServiceImpl(){}
-
-    public static LocationServiceImpl getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public List<String> getAllCities() {

@@ -18,15 +18,8 @@ import java.util.stream.Collectors;
 
 public class ProfileServiceImpl implements ProfileService {
 
-    private static final ProfileServiceImpl INSTANCE = new ProfileServiceImpl();
     private static final ProfileDao profileDao = ProfileDaoImpl.getInstance();
     private static final DtoMapper<ProfileDto, Profile> profileDtoMapper = ProfileDtoMapper.getInstance();
-
-    private ProfileServiceImpl(){}
-
-    public static ProfileServiceImpl getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public List<ProfileDto> findAll() {

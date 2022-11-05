@@ -12,7 +12,7 @@ import java.sql.Connection;
 public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
 
     private static final ProfileDtoMapper INSTANCE = new ProfileDtoMapper();
-    private static final LocationService locationService = ServiceFactory.getLocationService();
+    private static final LocationService locationService = ServiceFactory.getInstance().getLocationService();
 
     private ProfileDtoMapper() {
     }

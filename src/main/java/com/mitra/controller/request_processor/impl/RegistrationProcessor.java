@@ -7,6 +7,7 @@ import com.mitra.entity.Role;
 import com.mitra.exception.ValidationException;
 import com.mitra.service.ServiceFactory;
 import com.mitra.service.UserService;
+import com.mitra.service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +17,8 @@ import java.util.Optional;
 
 public class RegistrationProcessor extends AbstractRequestProcessor {
 
-    private static final UserService userService = ServiceFactory.getUserService();
+    private static final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private static final UserService userService = serviceFactory.getUserService();
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
