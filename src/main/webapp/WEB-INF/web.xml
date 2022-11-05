@@ -3,27 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-  <!--    <error-page>-->
-  <!--        <exception-type>java.lang.Exception</exception-type>-->
-  <!--        <location>/WEB-INF/jsp/error.jsp</location>-->
-  <!--    </error-page>-->
 
-<!--  <filter>-->
-<!--    <filter-name>DispatcherFilter</filter-name>-->
-<!--    <filter-class>com.mitra.filter.DispatcherFilter</filter-class>-->
-<!--  </filter>-->
-<!--  <filter-mapping>-->
-<!--    <filter-name>DispatcherFilter</filter-name>-->
-<!--    <url-pattern>/*</url-pattern>-->
-<!--  </filter-mapping>-->
+    <request-character-encoding>UTF-8</request-character-encoding>
+    <response-character-encoding>UTF-8</response-character-encoding>
 
-<!--  <filter>-->
-<!--    <filter-name>AuthorizationFilter</filter-name>-->
-<!--    <filter-class>com.mitra.filter.AuthorizationFilter</filter-class>-->
-<!--  </filter>-->
-<!--  <filter-mapping>-->
-<!--    <filter-name>AuthorizationFilter</filter-name>-->
-<!--    <url-pattern>/app/*</url-pattern>-->
-<!--  </filter-mapping>-->
+    <!--    <error-page>-->
+    <!--        <exception-type>java.lang.Exception</exception-type>-->
+    <!--        <location>/WEB-INF/jsp/error.jsp</location>-->
+    <!--    </error-page>-->
 
 </web-app>
