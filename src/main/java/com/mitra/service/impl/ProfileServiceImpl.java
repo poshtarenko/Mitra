@@ -1,13 +1,9 @@
 package com.mitra.service.impl;
 
 import com.mitra.db.connection.ConnectionManager;
-import com.mitra.db.dao.DaoFactory;
 import com.mitra.db.dao.ProfileDao;
-import com.mitra.db.dao.impl.ProfileDaoImpl;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.mapper.DtoMapper;
-import com.mitra.dto.mapper.DtoMapperFactory;
-import com.mitra.dto.mapper.ProfileDtoMapper;
 import com.mitra.entity.Profile;
 import com.mitra.service.ProfileService;
 
@@ -20,8 +16,13 @@ import java.util.stream.Collectors;
 
 public class ProfileServiceImpl implements ProfileService {
 
-    private ProfileDao profileDao = DaoFactory.getInstance().getProfileDao();
-    private DtoMapper<ProfileDto, Profile> profileDtoMapper = DtoMapperFactory.getInstance().getProfileDtoMapper();
+    private final ProfileDao profileDao;
+    private final DtoMapper<ProfileDto, Profile> profileDtoMapper;
+
+    public ProfileServiceImpl(ProfileDao profileDao, DtoMapper<ProfileDto, Profile> profileDtoMapper) {
+        this.profileDao = profileDao;
+        this.profileDtoMapper = profileDtoMapper;
+    }
 
     @Override
     public List<ProfileDto> findAll() {

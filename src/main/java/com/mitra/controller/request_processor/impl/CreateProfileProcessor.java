@@ -16,6 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CreateProfileProcessor extends AbstractRequestProcessor {
 
@@ -26,7 +28,10 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("cities", locationService.getAllCities());
+        List<String> locations = locationService.getAllCities().stream()
+                .map(this::locationDtoToString)
+                .collect(Collectors.toList());
+        request.setAttribute("cities", locations);
         request.setAttribute("genders", Gender.values());
 
         forward(request, response, UrlPath.CREATE_PROFILE.getJspFileName());
@@ -39,12 +44,7 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
 
         System.out.println(request.getParameter("name"));
 
-        LocationDto locationDto = LocationDto.builder()
-                .city(request.getParameter("city"))
-                .localArea(request.getParameter("localArea"))
-                .region(request.getParameter("region"))
-                .country(request.getParameter("country"))
-                .build();
+        LocationDto locationDto = stringToLocationDto(request.getParameter("city"));
 
         ProfileDto profile = ProfileDto.builder()
                 .name(request.getParameter("name"))
@@ -57,6 +57,29 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
         profileService.updateProfile(user.getId(), profile);
 
         redirect(response, UrlPath.SEARCH.get());
+    }
+
+    private String locationDtoToString(LocationDto locationDto) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String delimiter = ", ";
+        stringBuilder.append(locationDto.getCity())
+                .append(delimiter)
+                .append(locationDto.getLocalArea())
+                .append(delimiter)
+                .append(locationDto.getRegion())
+                .append(delimiter)
+                .append(locationDto.getCountry());
+        return stringBuilder.toString();
+    }
+
+    private LocationDto stringToLocationDto(String string) {
+        String[] split = string.split(", ");
+        return LocationDto.builder()
+                .city(split[0])
+                .localArea(split[1])
+                .region(split[2])
+                .country(split[3])
+                .build();
     }
 
 }

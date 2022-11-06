@@ -1,8 +1,12 @@
 package com.mitra.service;
 
+import com.mitra.db.dao.DaoFactory;
+import com.mitra.dto.mapper.DtoMapperFactory;
+import com.mitra.security.EncryptorSHA512;
 import com.mitra.service.impl.LocationServiceImpl;
 import com.mitra.service.impl.ProfileServiceImpl;
 import com.mitra.service.impl.UserServiceImpl;
+import com.mitra.validator.ValidatorFactory;
 
 public class ServiceFactory {
 
@@ -13,9 +17,14 @@ public class ServiceFactory {
     private LocationService locationService;
 
     private ServiceFactory() {
-        userService = new UserServiceImpl();
-        profileService = new ProfileServiceImpl();
-        locationService = new LocationServiceImpl();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        DtoMapperFactory dtoMapperFactory = DtoMapperFactory.getInstance();
+        ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
+
+        userService = new UserServiceImpl(daoFactory.getUserDao(), dtoMapperFactory.getUserDtoMapper(),
+                validatorFactory.getUserDtoValidator(), EncryptorSHA512.getInstance());
+        profileService = new ProfileServiceImpl(daoFactory.getProfileDao(), dtoMapperFactory.getProfileDtoMapper());
+        locationService = new LocationServiceImpl(daoFactory.getLocationDao(), dtoMapperFactory.getLocationDtoMapper());
     }
 
     public static ServiceFactory getInstance() {

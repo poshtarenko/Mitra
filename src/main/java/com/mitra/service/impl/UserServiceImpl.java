@@ -1,22 +1,15 @@
 package com.mitra.service.impl;
 
 import com.mitra.db.connection.ConnectionManager;
-import com.mitra.db.dao.DaoFactory;
 import com.mitra.db.dao.UserDao;
-import com.mitra.db.dao.impl.UserDaoImpl;
 import com.mitra.dto.UserDto;
 import com.mitra.dto.mapper.DtoMapper;
-import com.mitra.dto.mapper.DtoMapperFactory;
-import com.mitra.dto.mapper.UserDtoMapper;
 import com.mitra.entity.Role;
 import com.mitra.entity.User;
 import com.mitra.exception.ValidationException;
-import com.mitra.security.EncryptorSHA512;
 import com.mitra.security.PasswordEncryptor;
 import com.mitra.service.UserService;
-import com.mitra.validator.UserDtoValidator;
 import com.mitra.validator.Validator;
-import com.mitra.validator.ValidatorFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -24,10 +17,18 @@ import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
 
-    private UserDao userDao = DaoFactory.getInstance().getUserDao();
-    private DtoMapper<UserDto, User> userDtoMapper = DtoMapperFactory.getInstance().getUserDtoMapper();
-    private Validator<UserDto> userDtoValidator = ValidatorFactory.getInstance().getUserDtoValidator();
-    private PasswordEncryptor passwordEncryptor = EncryptorSHA512.getInstance();
+    private final UserDao userDao;
+    private final DtoMapper<UserDto, User> userDtoMapper;
+    private final Validator<UserDto> userDtoValidator;
+    private final PasswordEncryptor passwordEncryptor;
+
+    public UserServiceImpl(UserDao userDao, DtoMapper<UserDto, User> userDtoMapper,
+                           Validator<UserDto> userDtoValidator, PasswordEncryptor passwordEncryptor) {
+        this.userDao = userDao;
+        this.userDtoMapper = userDtoMapper;
+        this.userDtoValidator = userDtoValidator;
+        this.passwordEncryptor = passwordEncryptor;
+    }
 
     @Override
     public Optional<UserDto> tryLogin(UserDto userDto) {

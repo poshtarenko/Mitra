@@ -32,4 +32,8 @@ public class DtoMapperFactory {
     public DtoMapper<ProfileDto, Profile> getProfileDtoMapper() {
         return profileDtoMapper;
     }
+
+    public DtoMapper<LocationDto, Location> getLocationDtoMapper() {
+        return locationDtoMapper;
+    }
 }

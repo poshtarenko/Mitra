@@ -1,65 +1,37 @@
 package com.mitra.service.impl;
 
 import com.mitra.db.connection.ConnectionManager;
-import com.mitra.db.dao.DaoFactory;
 import com.mitra.db.dao.LocationDao;
+import com.mitra.dto.LocationDto;
+import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Location;
 import com.mitra.service.LocationService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class LocationServiceImpl implements LocationService {
 
-    private LocationDao locationDao = DaoFactory.getInstance().getLocationDao();
+    private final LocationDao locationDao;
+    private final DtoMapper<LocationDto, Location> locationDtoMapper;
+
+    public LocationServiceImpl(LocationDao locationDao, DtoMapper<LocationDto, Location> locationDtoMapper) {
+        this.locationDao = locationDao;
+        this.locationDtoMapper = locationDtoMapper;
+    }
 
     @Override
-    public List<String> getAllCities() {
+    public List<LocationDto> getAllCities() {
         try (Connection connection = ConnectionManager.get()) {
-            List<String> cities = new ArrayList<>();
-
-            List<Location> locations = locationDao.findAll(connection);
-            for (Location location : locations) {
-                cities.add(location.getCity());
-            }
-            return cities;
+            return locationDao.findAll(connection).stream()
+                    .map(locationDtoMapper::mapToDto)
+                    .collect(Collectors.toList());
         } catch (SQLException e) {
             // TODO : log
             return Collections.emptyList();
         }
-    }
-
-    @Override
-    public Optional<Location> getById(int locationId) {
-        try (Connection connection = ConnectionManager.get()) {
-            return getById(connection, locationId);
-        } catch (SQLException e) {
-            // TODO : log
-            return Optional.empty();
-        }
-    }
-
-    @Override
-    public Optional<Location> getById(Connection connection, int locationId) {
-        return locationDao.find(connection, locationId);
-    }
-
-    @Override
-    public Optional<Location> getByCity(String city) {
-        try (Connection connection = ConnectionManager.get()) {
-            return getByCity(connection, city);
-        } catch (SQLException e) {
-            // TODO : log
-            return Optional.empty();
-        }
-    }
-
-    @Override
-    public Optional<Location> getByCity(Connection connection, String city) {
-        return locationDao.findByCity(connection, city);
     }
 }
