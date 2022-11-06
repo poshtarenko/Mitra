@@ -2,6 +2,7 @@ package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.UrlPath;
 import com.mitra.controller.request_processor.CookieNames;
+import com.mitra.dto.ProfileDto;
 import com.mitra.service.ProfileService;
 import com.mitra.service.ServiceFactory;
 import com.mitra.util.CookieHelper;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class SearchBySlideProcessor extends AbstractRequestProcessor {
 
@@ -21,30 +23,32 @@ public class SearchBySlideProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         Cookie profileIdsCookie = CookieHelper.getCookie(request, CookieNames.PROFILE_IDS.name());
-        String profileIdsCookieValue;
-        if (profileIdsCookie == null
-                || profileIdsCookie.getValue() == null
-                || profileIdsCookie.getValue().equals("")) {
-            profileIdsCookieValue = profileIdsToString(profileService.getAllIds());
-            response.addCookie(createProfileIdsCookie(profileIdsCookieValue));
-        } else {
-            profileIdsCookieValue = profileIdsCookie.getValue();
+        // update cookie if not exists
+        if (profileIdsCookie == null) {
+            profileIdsCookie = updateProfileIdsCookie(response, profileIdsToString(profileService.getAllIds()));
         }
 
-        String profileIdParam = request.getParameter("i");
-        int profileId;
-        if (profileIdParam == null || profileIdParam.equals(""))
-            profileId = getProfileIdFromString(profileIdsCookieValue);
-        else
-            profileId = Integer.parseInt(profileIdParam);
+        String profileIdsCookieValue = profileIdsCookie.getValue();
+        // update cookie if value is incorrect
+        if (profileIdsCookieValue == null || profileIdsCookieValue.equals("")){
+            profileIdsCookieValue = profileIdsToString(profileService.getAllIds());
+            updateProfileIdsCookie(response, profileIdsCookieValue);
+        }
 
-        request.setAttribute("nextProfileId", getProfileIdFromString(profileIdsCookieValue));
-        request.setAttribute("profile", profileService.getByUserId(profileId).get());
+        int id = getProfileIdFromString(profileIdsCookieValue);
 
-        profileIdsCookieValue = getCutProfileIdsCookie(profileIdsCookieValue);
-        response.addCookie(createProfileIdsCookie(profileIdsCookieValue));
+        Optional<ProfileDto> profileOptional = profileService.getById(id);
+        if (!profileOptional.isPresent()){
+            redirect(response, UrlPath.SLIDE_SEARCH.get());
+        }
+
+        request.setAttribute("profile", profileOptional.get());
+        request.setAttribute("nextProfileId", id);
+
+        // update cookie with new value
+        profileIdsCookieValue = cutProfileIds(profileIdsCookieValue, id);
+        updateProfileIdsCookie(response, profileIdsCookieValue);
 
         forward(request, response, UrlPath.SLIDE_SEARCH.getJspFileName());
     }
@@ -72,23 +76,16 @@ public class SearchBySlideProcessor extends AbstractRequestProcessor {
         return Integer.parseInt(number.toString());
     }
 
-    private String getCutProfileIdsCookie(String profileIds) {
-        StringBuilder cutProfileIds = new StringBuilder(profileIds);
-        int l = cutProfileIds.length();
-        for (int i = 0; i < l; i++) {
-            char sym = cutProfileIds.charAt(0);
-
-            cutProfileIds.deleteCharAt(0);
-            if (sym == delimiter)
-                break;
-        }
-
-        return cutProfileIds.toString();
+    private String cutProfileIds(String profileIds, int profileId) {
+        String profileIds1 = delimiter + profileIds;
+        String substrToCut = delimiter + String.valueOf(profileId) + delimiter;
+        return profileIds1.replace(substrToCut, String.valueOf(delimiter)).substring(1);
     }
 
-    private Cookie createProfileIdsCookie(String value) {
+    private Cookie updateProfileIdsCookie(HttpServletResponse response, String value) {
         Cookie cookie = new Cookie(CookieNames.PROFILE_IDS.name(), value);
         cookie.setMaxAge(8 * 60 * 60); // 8 hours
+        response.addCookie(cookie);
         return cookie;
     }
 }
