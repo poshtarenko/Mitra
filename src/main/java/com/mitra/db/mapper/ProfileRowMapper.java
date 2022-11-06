@@ -9,14 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ProfileRowMapper implements RowMapper<Profile> {
-    private static final ProfileRowMapper INSTANCE = new ProfileRowMapper();
-
-    private ProfileRowMapper() {
-    }
-
-    public static ProfileRowMapper getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public Profile map(Connection connection, ResultSet resultSet) throws SQLException {

@@ -7,16 +7,6 @@ import java.util.regex.Pattern;
 
 public class UserDtoValidator implements Validator<UserDto> {
 
-    private static final UserDtoValidator INSTANCE = new UserDtoValidator();
-
-    private UserDtoValidator() {
-
-    }
-
-    public static UserDtoValidator getInstance() {
-        return INSTANCE;
-    }
-
     @Override
     public boolean isValid(UserDto dto) {
         return emailIsValid(dto.getEmail())

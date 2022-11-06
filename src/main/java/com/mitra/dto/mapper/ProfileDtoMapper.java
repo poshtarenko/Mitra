@@ -1,5 +1,6 @@
 package com.mitra.dto.mapper;
 
+import com.mitra.dto.LocationDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.entity.Location;
 import com.mitra.entity.Profile;
@@ -11,20 +12,15 @@ import java.sql.Connection;
 
 public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
 
-    private static final ProfileDtoMapper INSTANCE = new ProfileDtoMapper();
-    private static final LocationService locationService = ServiceFactory.getInstance().getLocationService();
+    private DtoMapper<LocationDto, Location> locationDtoMapper;
 
-    private ProfileDtoMapper() {
-    }
-
-    public static ProfileDtoMapper getInstance() {
-        return INSTANCE;
+    public ProfileDtoMapper(DtoMapper<LocationDto, Location> locationDtoMapper) {
+        this.locationDtoMapper = locationDtoMapper;
     }
 
     @Override
-    public Profile mapToEntity(Connection connection, ProfileDto dto) {
-        Location location = locationService.getByCity(connection, dto.getLocation())
-                .orElseThrow(() -> new ServiceException("City " + dto.getLocation() + " not found"));
+    public Profile mapToEntity(ProfileDto dto) {
+        Location location = locationDtoMapper.mapToEntity(dto.getLocation());
 
         return Profile.builder()
                 .name(dto.getName())
@@ -37,12 +33,14 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
 
     @Override
     public ProfileDto mapToDto(Profile entity) {
+        LocationDto locationDto = locationDtoMapper.mapToDto(entity.getLocation());
+
         return ProfileDto.builder()
                 .name(entity.getName())
                 .age(entity.getAge())
                 .gender(entity.getGender())
                 .text(entity.getText())
-                .location(entity.getLocation().getCity())
+                .location(locationDto)
                 .build();
     }
 }

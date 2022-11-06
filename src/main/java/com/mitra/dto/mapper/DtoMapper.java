@@ -9,7 +9,7 @@ public interface DtoMapper<D extends Dto, E extends Identifiable> {
 
     // TODO : comment
 
-    E mapToEntity(Connection connection, D dto);
+    E mapToEntity(D dto);
 
     D mapToDto(E entity);
 

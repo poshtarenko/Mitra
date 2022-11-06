@@ -10,6 +10,6 @@ public class ProfileDto implements Dto {
     String name;
     Integer age;
     Gender gender;
-    String location;
+    LocationDto location;
     String text;
 }

@@ -1,8 +1,8 @@
 package com.mitra.service.impl;
 
 import com.mitra.db.connection.ConnectionManager;
+import com.mitra.db.dao.DaoFactory;
 import com.mitra.db.dao.LocationDao;
-import com.mitra.db.dao.impl.LocationDaoImpl;
 import com.mitra.entity.Location;
 import com.mitra.service.LocationService;
 
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class LocationServiceImpl implements LocationService {
 
-    private static final LocationDao locationDao = LocationDaoImpl.getInstance();
+    private LocationDao locationDao = DaoFactory.getInstance().getLocationDao();
 
     @Override
     public List<String> getAllCities() {

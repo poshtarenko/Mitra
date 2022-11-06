@@ -2,10 +2,10 @@ package com.mitra.db.dao.impl;
 
 import com.mitra.db.Column;
 import com.mitra.db.Table;
-import com.mitra.db.dao.QueryExecutor;
-import com.mitra.db.dao.UserDao;
+import com.mitra.db.dao.*;
 import com.mitra.db.filter.Filter;
 import com.mitra.db.mapper.RowMapper;
+import com.mitra.db.mapper.RowMapperFactory;
 import com.mitra.db.mapper.UserRowMapper;
 import com.mitra.entity.Gender;
 import com.mitra.entity.Location;
@@ -19,19 +19,15 @@ import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
 
-    private static final UserDaoImpl INSTANCE = new UserDaoImpl();
-    private static final ProfileDaoImpl profileDao = ProfileDaoImpl.getInstance();
-    private static final LocationDaoImpl locationDao = LocationDaoImpl.getInstance();
+    private ProfileDao profileDao;
+    private LocationDao locationDao;
+    private QueryExecutor<Integer, User> queryExecutor;
 
-    private UserDaoImpl() {
+    public UserDaoImpl(ProfileDao profileDao, LocationDao locationDao, RowMapper<User> userRowMapper) {
+        this.profileDao = profileDao;
+        this.locationDao = locationDao;
+        this.queryExecutor = new QueryExecutor<>(userRowMapper);
     }
-
-    public static UserDaoImpl getInstance() {
-        return INSTANCE;
-    }
-
-    private static final RowMapper<User> userRowMapper = UserRowMapper.getInstance();
-    private static final QueryExecutor<Integer, User> queryExecutor = new QueryExecutor<>(userRowMapper);
 
     public static final String FIND_ALL_SQL = String.format(
             "SELECT %s, %s, %s, %s FROM %s JOIN %s ON %s = %s",
@@ -59,7 +55,15 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> find(Connection connection, Integer id) throws DaoException {
-        return queryExecutor.find(connection, FIND_SQL, id);
+        Optional<User> optionalUser = queryExecutor.find(connection, FIND_SQL, id);
+
+        if (optionalUser.isPresent()){
+            Profile profile = profileDao.find(connection, id)
+                    .orElseThrow(() -> new DaoException("User without profile"));
+            optionalUser.get().setProfile(profile);
+        }
+
+        return optionalUser;
     }
 
     @Override
@@ -82,7 +86,7 @@ public class UserDaoImpl implements UserDao {
         Location userLocation = locationDao.find(connection, 1)
                 .orElseThrow(() -> new DaoException("There must be any city with id = 1"));
 
-        Profile emptryUserProfile = Profile.builder()
+        Profile emptyUserProfile = Profile.builder()
                 .id(userId)
                 .name("Undefined")
                 .age(0)
@@ -92,7 +96,7 @@ public class UserDaoImpl implements UserDao {
                 .build();
 
         // When creating a user, an empty user profile must be created
-        profileDao.save(connection, emptryUserProfile);
+        profileDao.save(connection, emptyUserProfile);
 
         return userId;
     }

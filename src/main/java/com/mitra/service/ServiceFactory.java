@@ -6,11 +6,11 @@ import com.mitra.service.impl.UserServiceImpl;
 
 public class ServiceFactory {
 
-    private static ServiceFactory INSTANCE;
+    private static final ServiceFactory INSTANCE = new ServiceFactory();
 
-    private final UserService userService;
-    private final ProfileService profileService;
-    private final LocationService locationService;
+    private UserService userService;
+    private ProfileService profileService;
+    private LocationService locationService;
 
     private ServiceFactory() {
         userService = new UserServiceImpl();
@@ -19,8 +19,6 @@ public class ServiceFactory {
     }
 
     public static ServiceFactory getInstance() {
-        if (INSTANCE == null)
-            INSTANCE = new ServiceFactory();
         return INSTANCE;
     }
 

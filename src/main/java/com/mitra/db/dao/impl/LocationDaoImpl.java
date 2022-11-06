@@ -7,6 +7,7 @@ import com.mitra.db.dao.QueryExecutor;
 import com.mitra.db.filter.Filter;
 import com.mitra.db.mapper.LocationRowMapper;
 import com.mitra.db.mapper.RowMapper;
+import com.mitra.db.mapper.RowMapperFactory;
 import com.mitra.entity.Location;
 import com.mitra.exception.DaoException;
 
@@ -16,16 +17,8 @@ import java.util.Optional;
 
 public class LocationDaoImpl implements LocationDao {
 
-    private static final LocationDaoImpl INSTANCE = new LocationDaoImpl();
-
-    private static final RowMapper<Location> locationRowMapper = LocationRowMapper.getInstance();
-    private static final QueryExecutor<Integer, Location> queryExecutor = new QueryExecutor<>(locationRowMapper);
-
-    private LocationDaoImpl(){}
-
-    public static LocationDaoImpl getInstance() {
-        return INSTANCE;
-    }
+    private RowMapper<Location> locationRowMapper = RowMapperFactory.getInstance().getLocationRowMapper();
+    private QueryExecutor<Integer, Location> queryExecutor = new QueryExecutor<>(locationRowMapper);
 
     public static final String FIND_ALL_SQL = String.format(
             "SELECT %s, %s, %s, %s FROM %s " +

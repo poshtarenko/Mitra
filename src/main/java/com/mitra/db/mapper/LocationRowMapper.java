@@ -8,15 +8,6 @@ import java.sql.SQLException;
 
 public class LocationRowMapper implements RowMapper<Location> {
 
-    private static final LocationRowMapper INSTANCE = new LocationRowMapper();
-
-    private LocationRowMapper() {
-    }
-
-    public static LocationRowMapper getInstance() {
-        return INSTANCE;
-    }
-
     @Override
     public Location map(Connection connection, ResultSet resultSet) throws SQLException {
         return Location.builder()

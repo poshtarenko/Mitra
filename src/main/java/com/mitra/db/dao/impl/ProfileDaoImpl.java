@@ -7,6 +7,7 @@ import com.mitra.db.dao.QueryExecutor;
 import com.mitra.db.filter.Filter;
 import com.mitra.db.mapper.ProfileRowMapper;
 import com.mitra.db.mapper.RowMapper;
+import com.mitra.db.mapper.RowMapperFactory;
 import com.mitra.entity.Profile;
 import com.mitra.exception.DaoException;
 
@@ -15,16 +16,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class ProfileDaoImpl implements ProfileDao {
-    private static final ProfileDaoImpl INSTANCE = new ProfileDaoImpl();
 
-    private static final RowMapper<Profile> profileRowMapper = ProfileRowMapper.getInstance();
-    private static final QueryExecutor<Integer, Profile> queryExecutor = new QueryExecutor<>(profileRowMapper);
-
-    private ProfileDaoImpl(){}
-
-    public static ProfileDaoImpl getInstance() {
-        return INSTANCE;
-    }
+    private RowMapper<Profile> profileRowMapper = RowMapperFactory.getInstance().getProfileRowMapper();
+    private QueryExecutor<Integer, Profile> queryExecutor = new QueryExecutor<>(profileRowMapper);
 
     public static final String FIND_ALL_SQL = String.format(
             "SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s " +

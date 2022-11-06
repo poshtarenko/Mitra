@@ -1,10 +1,12 @@
 package com.mitra.service.impl;
 
 import com.mitra.db.connection.ConnectionManager;
+import com.mitra.db.dao.DaoFactory;
 import com.mitra.db.dao.UserDao;
 import com.mitra.db.dao.impl.UserDaoImpl;
 import com.mitra.dto.UserDto;
 import com.mitra.dto.mapper.DtoMapper;
+import com.mitra.dto.mapper.DtoMapperFactory;
 import com.mitra.dto.mapper.UserDtoMapper;
 import com.mitra.entity.Role;
 import com.mitra.entity.User;
@@ -14,6 +16,7 @@ import com.mitra.security.PasswordEncryptor;
 import com.mitra.service.UserService;
 import com.mitra.validator.UserDtoValidator;
 import com.mitra.validator.Validator;
+import com.mitra.validator.ValidatorFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,10 +24,10 @@ import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
 
-    private static final UserDao userDao = UserDaoImpl.getInstance();
-    private static final DtoMapper<UserDto, User> userDtoMapper = UserDtoMapper.getInstance();
-    private static final Validator<UserDto> userDtoValidator = UserDtoValidator.getInstance();
-    private static final PasswordEncryptor passwordEncryptor = EncryptorSHA512.getInstance();
+    private UserDao userDao = DaoFactory.getInstance().getUserDao();
+    private DtoMapper<UserDto, User> userDtoMapper = DtoMapperFactory.getInstance().getUserDtoMapper();
+    private Validator<UserDto> userDtoValidator = ValidatorFactory.getInstance().getUserDtoValidator();
+    private PasswordEncryptor passwordEncryptor = EncryptorSHA512.getInstance();
 
     @Override
     public Optional<UserDto> tryLogin(UserDto userDto) {
@@ -47,7 +50,7 @@ public class UserServiceImpl implements UserService {
         try (Connection connection = ConnectionManager.get()) {
             checkUserDtoIsValid(userDto);
 
-            User user = userDtoMapper.mapToEntity(connection, userDto);
+            User user = userDtoMapper.mapToEntity(userDto);
             String encryptedPassword = encryptPassword(userDto.getPassword());
             user.setPassword(encryptedPassword);
 
@@ -80,13 +83,13 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private static void checkUserDtoIsValid(UserDto userDto) {
+    private void checkUserDtoIsValid(UserDto userDto) {
         if (!userDtoValidator.isValid(userDto)){
             throw new ValidationException(userDto + " is invalid.");
         }
     }
 
-    private static String encryptPassword(String password){
+    private String encryptPassword(String password){
         return passwordEncryptor.encrypt(password);
     }
 }

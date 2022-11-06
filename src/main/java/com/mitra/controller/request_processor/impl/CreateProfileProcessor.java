@@ -2,6 +2,7 @@ package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
+import com.mitra.dto.LocationDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Gender;
@@ -38,12 +39,19 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
 
         System.out.println(request.getParameter("name"));
 
+        LocationDto locationDto = LocationDto.builder()
+                .city(request.getParameter("city"))
+                .localArea(request.getParameter("localArea"))
+                .region(request.getParameter("region"))
+                .country(request.getParameter("country"))
+                .build();
+
         ProfileDto profile = ProfileDto.builder()
                 .name(request.getParameter("name"))
                 .age(Integer.valueOf(request.getParameter("age")))
                 .gender(Gender.valueOf(request.getParameter("gender")))
                 .text(request.getParameter("text"))
-                .location(request.getParameter("city"))
+                .location(locationDto)
                 .build();
 
         profileService.updateProfile(user.getId(), profile);
