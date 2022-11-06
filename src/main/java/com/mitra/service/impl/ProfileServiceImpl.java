@@ -48,6 +48,27 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    public Optional<ProfileDto> getById(int id) {
+        try (Connection connection = ConnectionManager.get()) {
+            Optional<Profile> profile = profileDao.find(connection, id);
+            return profile.map(profileDtoMapper::mapToDto);
+        } catch (SQLException e) {
+            // TODO : log
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public List<Integer> getAllIds() {
+        try (Connection connection = ConnectionManager.get()) {
+            return profileDao.getAllIds(connection);
+        } catch (SQLException e) {
+            // TODO : log
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
     public boolean updateProfile(int userId, ProfileDto profileDto) {
         try (Connection connection = ConnectionManager.get()) {
             Profile profile = profileDtoMapper.mapToEntity(profileDto);

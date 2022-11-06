@@ -5,13 +5,16 @@ import com.mitra.db.Table;
 import com.mitra.db.dao.ProfileDao;
 import com.mitra.db.dao.QueryExecutor;
 import com.mitra.db.filter.Filter;
-import com.mitra.db.mapper.ProfileRowMapper;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.db.mapper.RowMapperFactory;
 import com.mitra.entity.Profile;
 import com.mitra.exception.DaoException;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +62,10 @@ public class ProfileDaoImpl implements ProfileDao {
             "DELETE FROM %s WHERE %s = ?",
             Table.PROFILE, Column.PROFILE.ID);
 
+    public static final String GET_ALL_IDS = String.format(
+            "SELECT %s FROM %s",
+            Column.USER.ID, Table.USER);
+
     @Override
     public Optional<Profile> find(Connection connection, Integer id) throws DaoException {
         return queryExecutor.find(connection, FIND_SQL, id);
@@ -72,6 +79,19 @@ public class ProfileDaoImpl implements ProfileDao {
     @Override
     public List<Profile> findAll(Connection connection) throws DaoException {
         return queryExecutor.findAll(connection, FIND_ALL_SQL);
+    }
+
+    @Override
+    public List<Integer> getAllIds(Connection connection) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_IDS)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Integer> ids = new ArrayList<>();
+            while (resultSet.next())
+                ids.add(resultSet.getInt(1));
+            return ids;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override

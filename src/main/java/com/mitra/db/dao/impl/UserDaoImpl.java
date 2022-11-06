@@ -2,11 +2,12 @@ package com.mitra.db.dao.impl;
 
 import com.mitra.db.Column;
 import com.mitra.db.Table;
-import com.mitra.db.dao.*;
+import com.mitra.db.dao.LocationDao;
+import com.mitra.db.dao.ProfileDao;
+import com.mitra.db.dao.QueryExecutor;
+import com.mitra.db.dao.UserDao;
 import com.mitra.db.filter.Filter;
 import com.mitra.db.mapper.RowMapper;
-import com.mitra.db.mapper.RowMapperFactory;
-import com.mitra.db.mapper.UserRowMapper;
 import com.mitra.entity.Gender;
 import com.mitra.entity.Location;
 import com.mitra.entity.Profile;

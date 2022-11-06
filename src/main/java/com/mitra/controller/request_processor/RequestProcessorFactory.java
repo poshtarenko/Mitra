@@ -17,6 +17,7 @@ public class RequestProcessorFactory {
         requestProcessorsMap.put(UrlPath.REGISTRATION, new RegistrationProcessor());
         requestProcessorsMap.put(UrlPath.CREATE_PROFILE, new CreateProfileProcessor());
         requestProcessorsMap.put(UrlPath.SEARCH, new SearchProcessor());
+        requestProcessorsMap.put(UrlPath.SLIDE_SEARCH, new SearchBySlideProcessor());
     }
 
     public RequestProcessor getProcessor(UrlPath urlPath) {

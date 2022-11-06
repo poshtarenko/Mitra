@@ -22,8 +22,7 @@ public class UserServiceImpl implements UserService {
     private final Validator<UserDto> userDtoValidator;
     private final PasswordEncryptor passwordEncryptor;
 
-    public UserServiceImpl(UserDao userDao, DtoMapper<UserDto, User> userDtoMapper,
-                           Validator<UserDto> userDtoValidator, PasswordEncryptor passwordEncryptor) {
+    public UserServiceImpl(UserDao userDao, DtoMapper<UserDto, User> userDtoMapper, Validator<UserDto> userDtoValidator, PasswordEncryptor passwordEncryptor) {
         this.userDao = userDao;
         this.userDtoMapper = userDtoMapper;
         this.userDtoValidator = userDtoValidator;

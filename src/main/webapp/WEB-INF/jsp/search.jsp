@@ -7,7 +7,9 @@
     <link rel="shortcut icon" href="../../resources/img/icon.png">
     <title>Title</title>
 </head>
-<body style="padding-left: 200px; margin-top: 30px; padding-right: 1100px">
+<body>
+
+<a href="${pageContext.request.contextPath}/app/go">Пошук слайдом</a>
 
 <h2>Всі анкети користувачів :</h2>
 

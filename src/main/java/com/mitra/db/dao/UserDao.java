@@ -17,4 +17,5 @@ public interface UserDao extends Dao<Integer, User> {
      * @throws DaoException if something bad
      */
     Optional<User> find(Connection connection, String email, String password) throws DaoException;
+
 }
