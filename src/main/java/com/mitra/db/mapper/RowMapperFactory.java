@@ -1,6 +1,6 @@
 package com.mitra.db.mapper;
 
-import com.mitra.db.dao.DaoFactory;
+import com.mitra.entity.Instrument;
 import com.mitra.entity.Location;
 import com.mitra.entity.Profile;
 import com.mitra.entity.User;
@@ -12,11 +12,13 @@ public class RowMapperFactory {
     private RowMapper<User> userRowMapper;
     private RowMapper<Profile> profileRowMapper;
     private RowMapper<Location> locationRowMapper;
+    private final RowMapper<Instrument> instrumentRowMapper;
 
     private RowMapperFactory() {
         userRowMapper = new UserRowMapper();
         profileRowMapper = new ProfileRowMapper();
         locationRowMapper = new LocationRowMapper();
+        instrumentRowMapper = new InstrumentRowMapper();
     }
 
     public static RowMapperFactory getInstance() {
@@ -33,5 +35,9 @@ public class RowMapperFactory {
 
     public RowMapper<Location> getLocationRowMapper() {
         return locationRowMapper;
+    }
+
+    public RowMapper<Instrument> getInstrumentRowMapper() {
+        return instrumentRowMapper;
     }
 }
