@@ -14,6 +14,16 @@
 <p><b>Місто :</b> ${requestScope.profile.getLocation()}</p>
 <p><b>Стать :</b> ${requestScope.profile.getGender().name()}</p>
 <p><b>Текст анкети :</b> ${requestScope.profile.getText()}</p>
+<p><b>Інструменти :</b>
+    <c:forEach var="instrument" items="${requestScope.profile.getInstruments()}">
+        <span>${instrument.getName()}   </span>
+    </c:forEach>
+</p>
+<p><b>Спеціальність :</b>
+    <c:forEach var="speciality" items="${requestScope.profile.getSpecialities()}">
+        <span>${speciality.getName()}   </span>
+    </c:forEach>
+</p>
 
 <a href="${pageContext.request.contextPath}/app/go?i=${requestScope.nextProfileId}">Наступна анкета!</a>
 

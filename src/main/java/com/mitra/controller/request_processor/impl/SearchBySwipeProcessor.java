@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-public class SearchBySlideProcessor extends AbstractRequestProcessor {
+public class SearchBySwipeProcessor extends AbstractRequestProcessor {
 
     private static final char delimiter = 'x';
 
