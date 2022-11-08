@@ -5,6 +5,7 @@ import com.mitra.db.Table;
 import com.mitra.db.dao.InstrumentDao;
 import com.mitra.db.dao.ProfileDao;
 import com.mitra.db.dao.QueryExecutor;
+import com.mitra.db.dao.SpecialityDao;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.db.mapper.RowMapperFactory;
 import com.mitra.entity.Profile;
@@ -23,10 +24,12 @@ public class ProfileDaoImpl implements ProfileDao {
     private final RowMapper<Profile> profileRowMapper;
     private final QueryExecutor<Integer, Profile> queryExecutor;
     private final InstrumentDao instrumentDao;
+    private final SpecialityDao specialityDao;
 
-    public ProfileDaoImpl(RowMapper<Profile> profileRowMapper, InstrumentDao instrumentDao) {
+    public ProfileDaoImpl(RowMapper<Profile> profileRowMapper, InstrumentDao instrumentDao, SpecialityDao specialityDao) {
         this.profileRowMapper = profileRowMapper;
         this.instrumentDao = instrumentDao;
+        this.specialityDao = specialityDao;
         this.queryExecutor = new QueryExecutor<>(profileRowMapper);
     }
 
@@ -75,12 +78,22 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public Optional<Profile> find(Connection connection, Integer id) throws DaoException {
-        return queryExecutor.find(connection, FIND_SQL, id);
+        Optional<Profile> profile = queryExecutor.find(connection, FIND_SQL, id);
+        if (profile.isPresent()) {
+            profile.get().setInstruments(instrumentDao.getProfileInstruments(connection, id));
+            profile.get().setSpecialities(specialityDao.getProfileSpecialities(connection, id));
+        }
+        return profile;
     }
 
     @Override
     public List<Profile> findAll(Connection connection) throws DaoException {
-        return queryExecutor.findAll(connection, FIND_ALL_SQL);
+        List<Profile> profiles = queryExecutor.findAll(connection, FIND_ALL_SQL);
+        profiles.forEach(profile -> {
+            profile.setInstruments(instrumentDao.getProfileInstruments(connection, profile.getId()));
+            profile.setSpecialities(specialityDao.getProfileSpecialities(connection, profile.getId()));
+        });
+        return profiles;
     }
 
     @Override
@@ -110,6 +123,7 @@ public class ProfileDaoImpl implements ProfileDao {
                 entity.getLocation().getCity(), id);
 
         instrumentDao.setProfileInstruments(connection, id, entity.getInstruments());
+        specialityDao.setProfileSpecialities(connection, id, entity.getSpecialities());
     }
 
     @Override

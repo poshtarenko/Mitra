@@ -3,10 +3,7 @@ package com.mitra.service;
 import com.mitra.db.dao.DaoFactory;
 import com.mitra.dto.mapper.DtoMapperFactory;
 import com.mitra.security.EncryptorSHA512;
-import com.mitra.service.impl.InstrumentServiceImpl;
-import com.mitra.service.impl.LocationServiceImpl;
-import com.mitra.service.impl.ProfileServiceImpl;
-import com.mitra.service.impl.UserServiceImpl;
+import com.mitra.service.impl.*;
 import com.mitra.validator.ValidatorFactory;
 
 public class ServiceFactory {
@@ -16,7 +13,8 @@ public class ServiceFactory {
     private UserService userService;
     private ProfileService profileService;
     private LocationService locationService;
-    private final InstrumentService instrumentService;
+    private InstrumentService instrumentService;
+    private SpecialityService specialityService;
 
     private ServiceFactory() {
         DaoFactory daoFactory = DaoFactory.getInstance();
@@ -28,6 +26,7 @@ public class ServiceFactory {
         profileService = new ProfileServiceImpl(daoFactory.getProfileDao(), dtoMapperFactory.getProfileDtoMapper());
         locationService = new LocationServiceImpl(daoFactory.getLocationDao(), dtoMapperFactory.getLocationDtoMapper());
         instrumentService = new InstrumentServiceImpl(daoFactory.getInstrumentDao(), dtoMapperFactory.getInstrumentDtoMapper());
+        specialityService = new SpecialityServiceImpl(daoFactory.getSpecialityDao(), dtoMapperFactory.getSpecialityDtoMapper());
     }
 
     public static ServiceFactory getInstance() {
@@ -48,5 +47,9 @@ public class ServiceFactory {
 
     public InstrumentService getInstrumentService() {
         return instrumentService;
+    }
+
+    public SpecialityService getSpecialityService() {
+        return specialityService;
     }
 }

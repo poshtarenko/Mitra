@@ -3,16 +3,13 @@ package com.mitra.controller.request_processor.impl;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.controller.request_processor.util.LocationHelper;
+import com.mitra.controller.request_processor.util.ProfileHelper;
 import com.mitra.dto.InstrumentDto;
-import com.mitra.dto.LocationDto;
 import com.mitra.dto.ProfileDto;
+import com.mitra.dto.SpecialityDto;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Gender;
-import com.mitra.entity.Profile;
-import com.mitra.service.InstrumentService;
-import com.mitra.service.LocationService;
-import com.mitra.service.ProfileService;
-import com.mitra.service.ServiceFactory;
+import com.mitra.service.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +24,7 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
     private final ProfileService profileService = serviceFactory.getProfileService();
     private final LocationService locationService = serviceFactory.getLocationService();
     private final InstrumentService instrumentService = serviceFactory.getInstrumentService();
+    private final SpecialityService specialityService = serviceFactory.getSpecialityService();
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -39,9 +37,12 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
         ProfileDto profile = profileOptional.get();
         String profileLocation = LocationHelper.locationDtoToString(profile.getLocation());
         String profileGender = profile.getGender().name();
-        Set<String> profileInstruments = instrumentService.getProfileInstruments(user.getId()).stream()
+        List<String> profileInstruments = instrumentService.getProfileInstruments(user.getId()).stream()
                 .map(InstrumentDto::getName)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
+        List<String> profileSpecialities = specialityService.getProfileSpecialities(user.getId()).stream()
+                .map(SpecialityDto::getName)
+                .collect(Collectors.toList());
 
         request.setAttribute("profileName", profile.getName());
         request.setAttribute("profileAge", profile.getAge());
@@ -49,24 +50,27 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
         request.setAttribute("profileText", profile.getText());
         request.setAttribute("profileLocation", profileLocation);
         request.setAttribute("profileInstruments", profileInstruments);
+        request.setAttribute("profileSpecialities", profileSpecialities);
 
-        Set<String> otherGenders = Arrays.stream(Gender.values())
+        List<String> otherGenders = Arrays.stream(Gender.values())
                 .map(Enum::name)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
         otherGenders.remove(profileGender);
         request.setAttribute("otherGenders", otherGenders);
 
-        Set<String> otherLocations = locationService.getAll().stream()
+        List<String> otherLocations = locationService.getAll().stream()
                 .map(LocationHelper::locationDtoToString)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
         otherLocations.remove(profileLocation);
         request.setAttribute("otherLocations", otherLocations);
 
-        Set<String> otherInstruments = instrumentService.getAll().stream()
-                .map(InstrumentDto::getName)
-                .collect(Collectors.toSet());
+        List<String> otherInstruments = ProfileHelper.getInstrumentsAsStrings(instrumentService);
         otherInstruments.removeAll(profileInstruments);
         request.setAttribute("otherInstruments", otherInstruments);
+
+        List<String> otherSpecialities = ProfileHelper.getSpecialitiesAsStrings(specialityService);
+        otherSpecialities.removeAll(profileSpecialities);
+        request.setAttribute("otherSpecialities", otherSpecialities);
 
         forward(request, response, UrlPath.UPDATE_PROFILE.getJspFileName());
     }
@@ -75,15 +79,19 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int userId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
 
-        Set<String> instrumentsParams;
+        List<InstrumentDto> instruments;
         if (request.getParameterValues("instruments") != null)
-            instrumentsParams = new HashSet<>(Arrays.asList(request.getParameterValues("instruments")));
-        else
-            instrumentsParams = Collections.emptySet();
+            instruments = Arrays.stream(request.getParameterValues("instruments"))
+                    .map(val -> InstrumentDto.builder().id(0).name(val).build())
+                    .collect(Collectors.toList());
+        else instruments = Collections.emptyList();
 
-        List<InstrumentDto> instruments = instrumentsParams.stream()
-                .map(val -> InstrumentDto.builder().id(0).name(val).build())
-                .collect(Collectors.toList());
+        List<SpecialityDto> specialities;
+        if (request.getParameterValues("specialities") != null)
+            specialities = Arrays.stream(request.getParameterValues("specialities"))
+                    .map(val -> SpecialityDto.builder().id(0).name(val).build())
+                    .collect(Collectors.toList());
+        else specialities = Collections.emptyList();
 
         ProfileDto profileDto = ProfileDto.builder()
                 .name(request.getParameter("name"))
@@ -92,6 +100,7 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
                 .text(request.getParameter("text"))
                 .location(LocationHelper.stringToLocationDto(request.getParameter("location")))
                 .instruments(instruments)
+                .specialities(specialities)
                 .build();
 
         profileService.updateProfile(userId, profileDto);

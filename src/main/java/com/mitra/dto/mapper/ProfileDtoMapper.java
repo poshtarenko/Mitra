@@ -3,9 +3,11 @@ package com.mitra.dto.mapper;
 import com.mitra.dto.InstrumentDto;
 import com.mitra.dto.LocationDto;
 import com.mitra.dto.ProfileDto;
+import com.mitra.dto.SpecialityDto;
 import com.mitra.entity.Instrument;
 import com.mitra.entity.Location;
 import com.mitra.entity.Profile;
+import com.mitra.entity.Speciality;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,10 +17,14 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
 
     private DtoMapper<LocationDto, Location> locationDtoMapper;
     private DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper;
+    private DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
 
-    public ProfileDtoMapper(DtoMapper<LocationDto, Location> locationDtoMapper, DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper) {
+    public ProfileDtoMapper(DtoMapper<LocationDto, Location> locationDtoMapper,
+                            DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper,
+                            DtoMapper<SpecialityDto, Speciality> specialityDtoMapper) {
         this.locationDtoMapper = locationDtoMapper;
         this.instrumentDtoMapper = instrumentDtoMapper;
+        this.specialityDtoMapper = specialityDtoMapper;
     }
 
     @Override
@@ -33,6 +39,14 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
         } else
             instruments = Collections.emptyList();
 
+        List<Speciality> specialities;
+        if (dto.getInstruments() != null) {
+            specialities = dto.getSpecialities().stream()
+                    .map(specialityDtoMapper::mapToEntity)
+                    .collect(Collectors.toList());
+        } else
+            specialities = Collections.emptyList();
+
         return Profile.builder()
                 .name(dto.getName())
                 .age(dto.getAge())
@@ -40,12 +54,14 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
                 .text(dto.getText())
                 .location(location)
                 .instruments(instruments)
+                .specialities(specialities)
                 .build();
     }
 
     @Override
     public ProfileDto mapToDto(Profile entity) {
         LocationDto locationDto = locationDtoMapper.mapToDto(entity.getLocation());
+
         List<InstrumentDto> instrumentDtos;
         if (entity.getInstruments() != null)
             instrumentDtos = entity.getInstruments().stream()
@@ -54,6 +70,14 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
         else
             instrumentDtos = Collections.emptyList();
 
+        List<SpecialityDto> specialityDtos;
+        if (entity.getSpecialities() != null)
+            specialityDtos = entity.getSpecialities().stream()
+                    .map(specialityDtoMapper::mapToDto)
+                    .collect(Collectors.toList());
+        else
+            specialityDtos = Collections.emptyList();
+
         return ProfileDto.builder()
                 .name(entity.getName())
                 .age(entity.getAge())
@@ -61,6 +85,7 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
                 .text(entity.getText())
                 .location(locationDto)
                 .instruments(instrumentDtos)
+                .specialities(specialityDtos)
                 .build();
     }
 }

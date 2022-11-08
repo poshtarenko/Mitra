@@ -15,4 +15,5 @@ public class ProfileDto implements Dto {
     LocationDto location;
     String text;
     List<InstrumentDto> instruments;
+    List<SpecialityDto> specialities;
 }
