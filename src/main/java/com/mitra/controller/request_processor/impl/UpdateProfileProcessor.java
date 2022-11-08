@@ -63,8 +63,8 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
         otherLocations.remove(profileLocation);
         request.setAttribute("otherLocations", otherLocations);
 
-        List<String> otherInstruments = specialityService.getAll().stream()
-                .map(SpecialityDto::getName)
+        List<String> otherInstruments = instrumentService.getAll().stream()
+                .map(InstrumentDto::getName)
                 .collect(Collectors.toList());
         otherInstruments.removeAll(profileInstruments);
         request.setAttribute("otherInstruments", otherInstruments);
