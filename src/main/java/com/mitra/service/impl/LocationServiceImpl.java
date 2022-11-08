@@ -24,7 +24,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public List<LocationDto> getAllCities() {
+    public List<LocationDto> getAll() {
         try (Connection connection = ConnectionManager.get()) {
             return locationDao.findAll(connection).stream()
                     .map(locationDtoMapper::mapToDto)

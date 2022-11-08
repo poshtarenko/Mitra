@@ -4,6 +4,8 @@ import com.mitra.entity.Gender;
 import lombok.Builder;
 import lombok.Value;
 
+import java.util.List;
+
 @Value
 @Builder
 public class ProfileDto implements Dto {
@@ -12,4 +14,5 @@ public class ProfileDto implements Dto {
     Gender gender;
     LocationDto location;
     String text;
+    List<InstrumentDto> instruments;
 }

@@ -2,9 +2,9 @@ package com.mitra.db.dao.impl;
 
 import com.mitra.db.Column;
 import com.mitra.db.Table;
+import com.mitra.db.dao.InstrumentDao;
 import com.mitra.db.dao.ProfileDao;
 import com.mitra.db.dao.QueryExecutor;
-import com.mitra.db.filter.Filter;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.db.mapper.RowMapperFactory;
 import com.mitra.entity.Profile;
@@ -20,8 +20,15 @@ import java.util.Optional;
 
 public class ProfileDaoImpl implements ProfileDao {
 
-    private RowMapper<Profile> profileRowMapper = RowMapperFactory.getInstance().getProfileRowMapper();
-    private QueryExecutor<Integer, Profile> queryExecutor = new QueryExecutor<>(profileRowMapper);
+    private final RowMapper<Profile> profileRowMapper;
+    private final QueryExecutor<Integer, Profile> queryExecutor;
+    private final InstrumentDao instrumentDao;
+
+    public ProfileDaoImpl(RowMapper<Profile> profileRowMapper, InstrumentDao instrumentDao) {
+        this.profileRowMapper = profileRowMapper;
+        this.instrumentDao = instrumentDao;
+        this.queryExecutor = new QueryExecutor<>(profileRowMapper);
+    }
 
     public static final String FIND_ALL_SQL = String.format(
             "SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s " +
@@ -72,11 +79,6 @@ public class ProfileDaoImpl implements ProfileDao {
     }
 
     @Override
-    public List<Profile> findAll(Connection connection, Filter filter) throws DaoException {
-        return queryExecutor.findAll(connection, FIND_ALL_SQL);
-    }
-
-    @Override
     public List<Profile> findAll(Connection connection) throws DaoException {
         return queryExecutor.findAll(connection, FIND_ALL_SQL);
     }
@@ -106,6 +108,8 @@ public class ProfileDaoImpl implements ProfileDao {
         queryExecutor.update(connection, UPDATE_SQL,
                 entity.getName(), entity.getAge(), entity.getGender().name(), entity.getText(),
                 entity.getLocation().getCity(), id);
+
+        instrumentDao.setProfileInstruments(connection, id, entity.getInstruments());
     }
 
     @Override

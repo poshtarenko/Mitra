@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface LocationService {
 
-    List<LocationDto> getAllCities();
+    List<LocationDto> getAll();
 
 }

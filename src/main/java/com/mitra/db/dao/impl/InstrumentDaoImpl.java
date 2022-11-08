@@ -4,9 +4,7 @@ import com.mitra.db.Column;
 import com.mitra.db.Table;
 import com.mitra.db.dao.InstrumentDao;
 import com.mitra.db.dao.QueryExecutor;
-import com.mitra.db.filter.Filter;
 import com.mitra.db.mapper.RowMapper;
-import com.mitra.db.mapper.RowMapperFactory;
 import com.mitra.entity.Instrument;
 import com.mitra.exception.DaoException;
 
@@ -17,8 +15,13 @@ import java.util.stream.Collectors;
 
 public class InstrumentDaoImpl implements InstrumentDao {
 
-    private final RowMapper<Instrument> locationRowMapper = RowMapperFactory.getInstance().getInstrumentRowMapper();
-    private final QueryExecutor<Integer, Instrument> queryExecutor = new QueryExecutor<>(locationRowMapper);
+    private final RowMapper<Instrument> instrumentRowMapper;
+    private final QueryExecutor<Integer, Instrument> queryExecutor;
+
+    public InstrumentDaoImpl(RowMapper<Instrument> locationRowMapper) {
+        this.instrumentRowMapper = locationRowMapper;
+        this.queryExecutor = new QueryExecutor<>(locationRowMapper);
+    }
 
     public static final String FIND_ALL_SQL = String.format(
             "SELECT %s, %s FROM %s ",
@@ -53,7 +56,7 @@ public class InstrumentDaoImpl implements InstrumentDao {
     }
 
     @Override
-    public List<Instrument> findAll(Connection connection, Filter filter) throws DaoException {
+    public List<Instrument> findAll(Connection connection) throws DaoException {
         return queryExecutor.findAll(connection, FIND_ALL_SQL);
     }
 
@@ -81,12 +84,13 @@ public class InstrumentDaoImpl implements InstrumentDao {
     public void setProfileInstruments(Connection connection, int profileId, List<Instrument> instruments) {
         deleteAllProfileInstruments(connection, profileId);
 
-        String SQL = SET_INSTRUMENTS_TO_PROFILE.replace("#L",
-                instruments.stream().map(v -> "?").collect(Collectors.joining(", ")));
+        if (instruments.size() > 0) {
+            String SQL = SET_INSTRUMENTS_TO_PROFILE.replace("#L",
+                    instruments.stream().map(v -> "?").collect(Collectors.joining(", ")));
 
-        List<String> instrumentNames = instruments.stream().map(Instrument::getName).collect(Collectors.toList());
-        queryExecutor.update(connection, SQL, profileId, instrumentNames);
-
+            List<String> instrumentNames = instruments.stream().map(Instrument::getName).collect(Collectors.toList());
+            queryExecutor.update(connection, SQL, profileId, instrumentNames);
+        }
     }
 
     @Override

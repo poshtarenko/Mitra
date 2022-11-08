@@ -9,7 +9,8 @@
 </head>
 <body>
 
-<a href="${pageContext.request.contextPath}/app/go">Пошук слайдом</a>
+<a href="${pageContext.request.contextPath}/app/go">Пошук свайпом</a>
+<a href="${pageContext.request.contextPath}/app/upd_profile">   Оновити анкету</a>
 
 <h2>Всі анкети користувачів :</h2>
 

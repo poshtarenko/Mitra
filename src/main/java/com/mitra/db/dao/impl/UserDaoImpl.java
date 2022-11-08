@@ -6,7 +6,6 @@ import com.mitra.db.dao.LocationDao;
 import com.mitra.db.dao.ProfileDao;
 import com.mitra.db.dao.QueryExecutor;
 import com.mitra.db.dao.UserDao;
-import com.mitra.db.filter.Filter;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Gender;
 import com.mitra.entity.Location;
@@ -20,9 +19,9 @@ import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
 
-    private ProfileDao profileDao;
-    private LocationDao locationDao;
-    private QueryExecutor<Integer, User> queryExecutor;
+    private final ProfileDao profileDao;
+    private final LocationDao locationDao;
+    private final QueryExecutor<Integer, User> queryExecutor;
 
     public UserDaoImpl(ProfileDao profileDao, LocationDao locationDao, RowMapper<User> userRowMapper) {
         this.profileDao = profileDao;
@@ -74,7 +73,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> findAll(Connection connection, Filter filter) throws DaoException {
+    public List<User> findAll(Connection connection) throws DaoException {
         return queryExecutor.findAll(connection, FIND_ALL_SQL);
     }
 

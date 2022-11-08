@@ -39,8 +39,8 @@ abstract class AbstractRequestProcessor implements RequestProcessor {
         response.sendError(400, msg);
     }
 
-    protected void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
-        String completedPath = JSP_PATH + path + ".jsp";
+    protected void forward(HttpServletRequest request, HttpServletResponse response, String jspPath) throws ServletException, IOException {
+        String completedPath = JSP_PATH + jspPath + ".jsp";
         request.getRequestDispatcher(completedPath)
                 .forward(request, response);
     }
