@@ -21,6 +21,16 @@
     <p><b>Місто :</b> ${profile.getLocation()}</p>
     <p><b>Стать :</b> ${profile.getGender().name()}</p>
     <p><b>Текст анкети :</b> ${profile.getText()}</p>
+    <p><b>Інструменти :</b>
+        <c:forEach var="instrument" items="${profile.getInstruments()}">
+            <span>${instrument.getName()}   </span>
+        </c:forEach>
+    </p>
+    <p><b>Спеціальність :</b>
+        <c:forEach var="speciality" items="${profile.getSpecialities()}">
+            <span>${speciality.getName()}   </span>
+        </c:forEach>
+    </p>
 </c:forEach>
 </body>
 </html>

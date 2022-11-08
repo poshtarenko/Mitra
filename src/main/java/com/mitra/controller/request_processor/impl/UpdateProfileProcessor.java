@@ -3,7 +3,6 @@ package com.mitra.controller.request_processor.impl;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.controller.request_processor.util.LocationHelper;
-import com.mitra.controller.request_processor.util.ProfileHelper;
 import com.mitra.dto.InstrumentDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.SpecialityDto;
@@ -64,11 +63,15 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
         otherLocations.remove(profileLocation);
         request.setAttribute("otherLocations", otherLocations);
 
-        List<String> otherInstruments = ProfileHelper.getInstrumentsAsStrings(instrumentService);
+        List<String> otherInstruments = specialityService.getAll().stream()
+                .map(SpecialityDto::getName)
+                .collect(Collectors.toList());
         otherInstruments.removeAll(profileInstruments);
         request.setAttribute("otherInstruments", otherInstruments);
 
-        List<String> otherSpecialities = ProfileHelper.getSpecialitiesAsStrings(specialityService);
+        List<String> otherSpecialities = specialityService.getAll().stream()
+                .map(SpecialityDto::getName)
+                .collect(Collectors.toList());
         otherSpecialities.removeAll(profileSpecialities);
         request.setAttribute("otherSpecialities", otherSpecialities);
 
