@@ -12,10 +12,10 @@ public class ProfileRowMapper implements RowMapper<Profile> {
     @Override
     public Profile map(ResultSet resultSet) throws SQLException {
         Location location = Location.builder()
-                .city(resultSet.getString(6))
-                .localArea(resultSet.getString(7))
-                .region(resultSet.getString(8))
-                .country(resultSet.getString(9))
+                .city(resultSet.getString(7))
+                .localArea(resultSet.getString(8))
+                .region(resultSet.getString(9))
+                .country(resultSet.getString(10))
                 .build();
 
         return Profile.builder()
@@ -24,6 +24,7 @@ public class ProfileRowMapper implements RowMapper<Profile> {
                 .age(resultSet.getInt(3))
                 .gender(Gender.valueOf(resultSet.getString(4)))
                 .text(resultSet.getString(5))
+                .photoPath(resultSet.getString(6))
                 .location(location)
                 .build();
     }

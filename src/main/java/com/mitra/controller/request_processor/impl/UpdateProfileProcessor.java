@@ -9,11 +9,15 @@ import com.mitra.dto.SpecialityDto;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Gender;
 import com.mitra.service.*;
+import com.mitra.util.ImageHelper;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,17 +40,15 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
         ProfileDto profile = profileOptional.get();
         String profileLocation = LocationHelper.locationDtoToString(profile.getLocation());
         String profileGender = profile.getGender().name();
-        List<String> profileInstruments = instrumentService.getProfileInstruments(user.getId()).stream()
+        List<String> profileInstruments = profile.getInstruments().stream()
                 .map(InstrumentDto::getName)
                 .collect(Collectors.toList());
-        List<String> profileSpecialities = specialityService.getProfileSpecialities(user.getId()).stream()
+        List<String> profileSpecialities = profile.getSpecialities().stream()
                 .map(SpecialityDto::getName)
                 .collect(Collectors.toList());
 
-        request.setAttribute("profileName", profile.getName());
-        request.setAttribute("profileAge", profile.getAge());
+        request.setAttribute("profile", profile);
         request.setAttribute("profileGender", profileGender);
-        request.setAttribute("profileText", profile.getText());
         request.setAttribute("profileLocation", profileLocation);
         request.setAttribute("profileInstruments", profileInstruments);
         request.setAttribute("profileSpecialities", profileSpecialities);
@@ -95,6 +97,14 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
                     .map(val -> SpecialityDto.builder().id(0).name(val).build())
                     .collect(Collectors.toList());
         else specialities = Collections.emptyList();
+
+        Part image = request.getPart("photo");
+
+        if (image.getSize() != 0) {
+            String path = request.getServletContext().getRealPath("/resources/img/profile/")
+                    +  5 + ".jpg";
+            ImageHelper.save(path, image.getInputStream());
+        }
 
         ProfileDto profileDto = ProfileDto.builder()
                 .name(request.getParameter("name"))

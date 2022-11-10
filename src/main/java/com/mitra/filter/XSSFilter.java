@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@WebFilter("/*")
+//@WebFilter("/*")
 public class XSSFilter implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

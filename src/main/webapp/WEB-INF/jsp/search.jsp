@@ -10,12 +10,19 @@
 <body>
 
 <a href="${pageContext.request.contextPath}/app/go">Пошук свайпом</a>
-<a href="${pageContext.request.contextPath}/app/upd_profile">   Оновити анкету</a>
+<a href="${pageContext.request.contextPath}/app/upd_profile"> Оновити анкету</a>
 
 <h2>Всі анкети користувачів :</h2>
 
 <c:forEach var="profile" items="${requestScope.profiles}">
     <hr>
+    <c:if test="${not empty profile.getPhotoPath()}">
+        <img src="${pageContext.request.contextPath}/resources/img/profile/${profile.getPhotoPath()}.jpg"/>
+    </c:if>
+    <c:if test="${empty profile.getPhotoPath()}">
+        <img src="${pageContext.request.contextPath}/resources/img/profile/no_photo.png"/>
+    </c:if>
+
     <h3>${profile.getName()}</h3>
     <p><b>Вік :</b> ${profile.getAge()} років</p>
     <p><b>Місто :</b> ${profile.getLocation()}</p>
@@ -23,14 +30,15 @@
     <p><b>Текст анкети :</b> ${profile.getText()}</p>
     <p><b>Інструменти :</b>
         <c:forEach var="instrument" items="${profile.getInstruments()}">
-            <span>${instrument.getName()}   </span>
+            <span>${instrument.getName()} </span>
         </c:forEach>
     </p>
     <p><b>Спеціальність :</b>
         <c:forEach var="speciality" items="${profile.getSpecialities()}">
-            <span>${speciality.getName()}   </span>
+            <span>${speciality.getName()} </span>
         </c:forEach>
     </p>
+
 </c:forEach>
 </body>
 </html>

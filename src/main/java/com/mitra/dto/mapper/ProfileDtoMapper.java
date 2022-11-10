@@ -48,10 +48,12 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
             specialities = Collections.emptyList();
 
         return Profile.builder()
+                .id(dto.getId())
                 .name(dto.getName())
                 .age(dto.getAge())
                 .gender(dto.getGender())
                 .text(dto.getText())
+                .photoPath(dto.getPhotoPath())
                 .location(location)
                 .instruments(instruments)
                 .specialities(specialities)
@@ -79,10 +81,12 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
             specialityDtos = Collections.emptyList();
 
         return ProfileDto.builder()
+                .id(entity.getId())
                 .name(entity.getName())
                 .age(entity.getAge())
                 .gender(entity.getGender())
                 .text(entity.getText())
+                .photoPath(entity.getPhotoPath())
                 .location(locationDto)
                 .instruments(instrumentDtos)
                 .specialities(specialityDtos)

@@ -7,21 +7,33 @@
     <title>Title</title>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/app/upd_profile" method="post">
+<form action="${pageContext.request.contextPath}/app/upd_profile" method="post" enctype='multipart/form-data'>
+    <c:if test="${not empty requestScope.profile.getPhotoPath()}">
+        <img src="${pageContext.request.contextPath}/resources/img/profile/${requestScope.profile.getPhotoPath()}.jpg"/>
+    </c:if>
+    <c:if test="${empty requestScope.profile.getPhotoPath()}">
+        <img src="${pageContext.request.contextPath}/resources/img/profile/no_photo.png"/>
+    </c:if>
+
+    <label for="photo"> Фотографія:
+        <input type="file" name="photo" id="photo">
+    </label><br>
+
     <label for="name">Ім'я:</label><br>
-    <input id="name" type="text" name="name" value="${requestScope.profileName}"><br>
+    <input id="name" type="text" name="name" value="${requestScope.profile.getName()}"><br>
 
     <label for="age">Вік:</label><br>
-    <input id="age" type="number" name="age" value="${requestScope.profileAge}"><br>
+    <input id="age" type="number" name="age" value="${requestScope.profile.getAge()}"><br>
 
     <label for="gender">Стать:</label><br>
-    <input type="radio" name="gender" id="gender" value="${requestScope.profileGender}" checked>${requestScope.profileGender}
+    <input type="radio" name="gender" id="gender" value="${requestScope.profileGender}"
+           checked>${requestScope.profileGender}
     <c:forEach var="gender" items="${requestScope.otherGenders}">
         <input type="radio" name="gender" id="gender" value="${gender}">${gender}
     </c:forEach><br>
 
     <label for="text">Текст анкети:</label><br>
-    <input id="text" type="text" name="text" value="${requestScope.profileText}"><br>
+    <input id="text" type="text" name="text" value="${requestScope.profile.getText()}"><br>
 
     <label for="location">Місто:</label><br>
     <select name="location" id="location">
