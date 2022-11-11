@@ -5,6 +5,7 @@ import com.mitra.controller.request_processor.RequestProcessorFactory;
 import com.mitra.exception.PageDontExistException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @WebServlet(UrlPath.SERVLET_CONST + "/*")
+@MultipartConfig()
 public class DispatcherServlet extends HttpPatchServlet {
 
     private static final RequestProcessorFactory requestProcessorFactory = new RequestProcessorFactory();

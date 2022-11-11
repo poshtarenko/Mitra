@@ -1,6 +1,5 @@
 package com.mitra.db.dao;
 
-import com.mitra.db.filter.Filter;
 import com.mitra.entity.Identifiable;
 import com.mitra.exception.DaoException;
 
@@ -24,11 +23,10 @@ public interface Dao<K extends Number, E extends Identifiable> {
      * Execute select of part of db entity table
      *
      * @param connection Connection to db
-     * @param filter     filter with params like limit, offset etc
      * @return list of found mapped entities
      * @throws DaoException if something bad
      */
-    List<E> findAll(Connection connection, Filter filter) throws DaoException;
+    List<E> findAll(Connection connection) throws DaoException;
 
     /**
      * Execute insert of 1 row to db table

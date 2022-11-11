@@ -1,46 +1,116 @@
 package com.mitra.dto.mapper;
 
+import com.mitra.cloud.CloudStorageProvider;
+import com.mitra.dto.InstrumentDto;
+import com.mitra.dto.LocationDto;
 import com.mitra.dto.ProfileDto;
+import com.mitra.dto.SpecialityDto;
+import com.mitra.entity.Instrument;
 import com.mitra.entity.Location;
 import com.mitra.entity.Profile;
-import com.mitra.exception.ServiceException;
-import com.mitra.service.LocationService;
-import com.mitra.service.impl.LocationServiceImpl;
+import com.mitra.entity.Speciality;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
 
-    private static final ProfileDtoMapper INSTANCE = new ProfileDtoMapper();
-    private static final LocationService locationService = LocationServiceImpl.getInstance();
+    private final DtoMapper<LocationDto, Location> locationDtoMapper;
+    private final DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper;
+    private final DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
+    private final CloudStorageProvider cloudStorageProvider;
 
-    private ProfileDtoMapper(){}
-
-    public static ProfileDtoMapper getInstance() {
-        return INSTANCE;
+    public ProfileDtoMapper(DtoMapper<LocationDto, Location> locationDtoMapper, DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper,
+                            DtoMapper<SpecialityDto, Speciality> specialityDtoMapper, CloudStorageProvider cloudStorageProvider) {
+        this.locationDtoMapper = locationDtoMapper;
+        this.instrumentDtoMapper = instrumentDtoMapper;
+        this.specialityDtoMapper = specialityDtoMapper;
+        this.cloudStorageProvider = cloudStorageProvider;
     }
 
     @Override
     public Profile mapToEntity(ProfileDto dto) {
-        Location location = locationService.getByCity(dto.getLocation())
-                .orElse(locationService.getById(1)
-                        .orElseThrow(() -> new ServiceException("There must be any city with id = 1, but it doesn't")));
+        Location location = locationDtoMapper.mapToEntity(dto.getLocation());
+
+        List<Instrument> instruments;
+        if (dto.getInstruments() != null) {
+            instruments = dto.getInstruments().stream()
+                    .map(instrumentDtoMapper::mapToEntity)
+                    .collect(Collectors.toList());
+        } else
+            instruments = Collections.emptyList();
+
+        List<Speciality> specialities;
+        if (dto.getInstruments() != null) {
+            specialities = dto.getSpecialities().stream()
+                    .map(specialityDtoMapper::mapToEntity)
+                    .collect(Collectors.toList());
+        } else
+            specialities = Collections.emptyList();
+
+        String photoPath = dto.getPhotoPath();
+        try {
+            if (dto.getPhotoContent() != null && dto.getPhotoContent().available() > 0) {
+                if (!"".equals(photoPath))
+                    cloudStorageProvider.deleteFile(photoPath);
+                photoPath = cloudStorageProvider.setProfilePhoto(dto.getId(), dto.getPhotoContent());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return Profile.builder()
+                .id(dto.getId())
                 .name(dto.getName())
                 .age(dto.getAge())
                 .gender(dto.getGender())
                 .text(dto.getText())
+                .photoPath(photoPath)
                 .location(location)
+                .instruments(instruments)
+                .specialities(specialities)
                 .build();
     }
 
     @Override
     public ProfileDto mapToDto(Profile entity) {
+        LocationDto locationDto = locationDtoMapper.mapToDto(entity.getLocation());
+
+        List<InstrumentDto> instrumentDtos;
+        if (entity.getInstruments() != null)
+            instrumentDtos = entity.getInstruments().stream()
+                    .map(instrumentDtoMapper::mapToDto)
+                    .collect(Collectors.toList());
+        else
+            instrumentDtos = Collections.emptyList();
+
+        List<SpecialityDto> specialityDtos;
+        if (entity.getSpecialities() != null)
+            specialityDtos = entity.getSpecialities().stream()
+                    .map(specialityDtoMapper::mapToDto)
+                    .collect(Collectors.toList());
+        else
+            specialityDtos = Collections.emptyList();
+
+        InputStream photoContent = null;
+        String photoPath = entity.getPhotoPath();
+        if (photoPath != null && !photoPath.equals(""))
+            photoContent = cloudStorageProvider.getImage(entity.getPhotoPath());
+
         return ProfileDto.builder()
+                .id(entity.getId())
                 .name(entity.getName())
                 .age(entity.getAge())
                 .gender(entity.getGender())
                 .text(entity.getText())
-                .location(entity.getLocation().getCity())
+                .photoPath(photoPath)
+                .photoContent(photoContent)
+                .location(locationDto)
+                .instruments(instrumentDtos)
+                .specialities(specialityDtos)
                 .build();
     }
 }

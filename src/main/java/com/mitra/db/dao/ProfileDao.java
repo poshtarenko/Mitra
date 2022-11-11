@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface ProfileDao extends Dao<Integer, Profile> {
 
-    List<Profile> findAll(Connection connection) throws DaoException;
-
+    List<Integer> getAllIds(Connection connection) throws DaoException;
 }

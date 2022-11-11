@@ -2,15 +2,15 @@ package com.mitra.db.dao.impl;
 
 import com.mitra.db.Column;
 import com.mitra.db.Table;
+import com.mitra.db.dao.LocationDao;
+import com.mitra.db.dao.ProfileDao;
 import com.mitra.db.dao.QueryExecutor;
 import com.mitra.db.dao.UserDao;
-import com.mitra.db.filter.Filter;
 import com.mitra.db.mapper.RowMapper;
-import com.mitra.db.mapper.UserRowMapper;
 import com.mitra.entity.Gender;
+import com.mitra.entity.Location;
 import com.mitra.entity.Profile;
 import com.mitra.entity.User;
-import com.mitra.entity.Location;
 import com.mitra.exception.DaoException;
 
 import java.sql.Connection;
@@ -19,19 +19,15 @@ import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
 
-    private static final UserDaoImpl INSTANCE = new UserDaoImpl();
-    private static final ProfileDaoImpl profileDao = ProfileDaoImpl.getInstance();
-    private static final LocationDaoImpl locationDao = LocationDaoImpl.getInstance();
+    private final ProfileDao profileDao;
+    private final LocationDao locationDao;
+    private final QueryExecutor<Integer, User> queryExecutor;
 
-    private UserDaoImpl() {
+    public UserDaoImpl(ProfileDao profileDao, LocationDao locationDao, RowMapper<User> userRowMapper) {
+        this.profileDao = profileDao;
+        this.locationDao = locationDao;
+        this.queryExecutor = new QueryExecutor<>(userRowMapper);
     }
-
-    public static UserDaoImpl getInstance() {
-        return INSTANCE;
-    }
-
-    private static final RowMapper<User> userRowMapper = UserRowMapper.getInstance();
-    private static final QueryExecutor<Integer, User> queryExecutor = new QueryExecutor<>(userRowMapper);
 
     public static final String FIND_ALL_SQL = String.format(
             "SELECT %s, %s, %s, %s FROM %s JOIN %s ON %s = %s",
@@ -59,17 +55,29 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> find(Connection connection, Integer id) throws DaoException {
-        return queryExecutor.find(connection, FIND_SQL, id);
+        Optional<User> optionalUser = queryExecutor.find(connection, FIND_SQL, id);
+
+        if (optionalUser.isPresent()){
+            Profile profile = profileDao.find(connection, id)
+                    .orElseThrow(() -> new DaoException("User without profile must be impossible"));
+            optionalUser.get().setProfile(profile);
+        }
+
+        return optionalUser;
     }
 
     @Override
     public Optional<User> find(Connection connection, String email, String password) throws DaoException {
-        return queryExecutor.find(connection, FIND_BY_EMAIL_AND_PASSWORD,
+        Optional<User> user = queryExecutor.find(connection, FIND_BY_EMAIL_AND_PASSWORD,
                 email, password);
+        if (user.isPresent())
+            user.get().setProfile(profileDao.find(connection, user.get().getId())
+                    .orElseThrow(() -> new RuntimeException("User without profile must be impossible")));
+        return user;
     }
 
     @Override
-    public List<User> findAll(Connection connection, Filter filter) throws DaoException {
+    public List<User> findAll(Connection connection) throws DaoException {
         return queryExecutor.findAll(connection, FIND_ALL_SQL);
     }
 
@@ -78,21 +86,21 @@ public class UserDaoImpl implements UserDao {
         Integer userId = queryExecutor.save(connection, SAVE_SQL,
                 entity.getEmail(), entity.getPassword(), entity.getRole().name());
 
-        // By default, user have location at Kyiv (city.id = 1)
+        // By default, user has an empty profile with location at Kyiv (city.id = 1)
         Location userLocation = locationDao.find(connection, 1)
                 .orElseThrow(() -> new DaoException("There must be any city with id = 1"));
 
-        Profile userProfile = Profile.builder()
+        Profile emptyUserProfile = Profile.builder()
                 .id(userId)
-                .name("UNDEFINED")
+                .name("Undefined")
                 .age(0)
-                .gender(Gender.NEED_INIT)
-                .text("UNDEFINED")
+                .gender(Gender.MALE)
+                .text("Empty")
                 .location(userLocation)
                 .build();
 
         // When creating a user, an empty user profile must be created
-        profileDao.save(connection, userProfile);
+        profileDao.save(connection, emptyUserProfile);
 
         return userId;
     }

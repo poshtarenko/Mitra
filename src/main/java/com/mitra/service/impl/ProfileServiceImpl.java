@@ -2,10 +2,8 @@ package com.mitra.service.impl;
 
 import com.mitra.db.connection.ConnectionManager;
 import com.mitra.db.dao.ProfileDao;
-import com.mitra.db.dao.impl.ProfileDaoImpl;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.mapper.DtoMapper;
-import com.mitra.dto.mapper.ProfileDtoMapper;
 import com.mitra.entity.Profile;
 import com.mitra.service.ProfileService;
 
@@ -18,14 +16,12 @@ import java.util.stream.Collectors;
 
 public class ProfileServiceImpl implements ProfileService {
 
-    private static final ProfileServiceImpl INSTANCE = new ProfileServiceImpl();
-    private static final ProfileDao profileDao = ProfileDaoImpl.getInstance();
-    private static final DtoMapper<ProfileDto, Profile> profileDtoMapper = ProfileDtoMapper.getInstance();
+    private final ProfileDao profileDao;
+    private final DtoMapper<ProfileDto, Profile> profileDtoMapper;
 
-    private ProfileServiceImpl(){}
-
-    public static ProfileServiceImpl getInstance() {
-        return INSTANCE;
+    public ProfileServiceImpl(ProfileDao profileDao, DtoMapper<ProfileDto, Profile> profileDtoMapper) {
+        this.profileDao = profileDao;
+        this.profileDtoMapper = profileDtoMapper;
     }
 
     @Override
@@ -48,6 +44,27 @@ public class ProfileServiceImpl implements ProfileService {
         } catch (SQLException e) {
             // TODO : log
             return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<ProfileDto> getById(int id) {
+        try (Connection connection = ConnectionManager.get()) {
+            Optional<Profile> profile = profileDao.find(connection, id);
+            return profile.map(profileDtoMapper::mapToDto);
+        } catch (SQLException e) {
+            // TODO : log
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public List<Integer> getAllIds() {
+        try (Connection connection = ConnectionManager.get()) {
+            return profileDao.getAllIds(connection);
+        } catch (SQLException e) {
+            // TODO : log
+            return Collections.emptyList();
         }
     }
 

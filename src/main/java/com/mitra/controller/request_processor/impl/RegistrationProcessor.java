@@ -5,6 +5,7 @@ import com.mitra.controller.UrlPath;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Role;
 import com.mitra.exception.ValidationException;
+import com.mitra.service.ServiceFactory;
 import com.mitra.service.UserService;
 import com.mitra.service.impl.UserServiceImpl;
 
@@ -16,7 +17,8 @@ import java.util.Optional;
 
 public class RegistrationProcessor extends AbstractRequestProcessor {
 
-    private static final UserService userService = UserServiceImpl.getInstance();
+    private static final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private static final UserService userService = serviceFactory.getUserService();
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -44,7 +46,7 @@ public class RegistrationProcessor extends AbstractRequestProcessor {
             }
             request.getSession().setAttribute(SessionAttributes.USER.name(), user.get());
 
-            redirect(response, UrlPath.CREATE_PROFILE.get()); // TODO : change redirect page when it will be realized
+            redirect(response, UrlPath.CREATE_PROFILE.get());
         } catch (ValidationException e) {
             redirect(response, UrlPath.REGISTRATION.get());
         }

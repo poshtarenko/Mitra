@@ -40,7 +40,8 @@ public enum Column {
         GENDER_ID,
         TEXT,
         CITY_ID,
-        PREVIEW_MUSIC_ID;
+        PREVIEW_MUSIC_ID,
+        PHOTO_PATH;
 
         @Override
         public String toString() {

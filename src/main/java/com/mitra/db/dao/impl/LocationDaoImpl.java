@@ -4,8 +4,6 @@ import com.mitra.db.Column;
 import com.mitra.db.Table;
 import com.mitra.db.dao.LocationDao;
 import com.mitra.db.dao.QueryExecutor;
-import com.mitra.db.filter.Filter;
-import com.mitra.db.mapper.LocationRowMapper;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Location;
 import com.mitra.exception.DaoException;
@@ -16,15 +14,12 @@ import java.util.Optional;
 
 public class LocationDaoImpl implements LocationDao {
 
-    private static final LocationDaoImpl INSTANCE = new LocationDaoImpl();
+    private final RowMapper<Location> locationRowMapper;
+    private final QueryExecutor<Integer, Location> queryExecutor;
 
-    private static final RowMapper<Location> locationRowMapper = LocationRowMapper.getInstance();
-    private static final QueryExecutor<Integer, Location> queryExecutor = new QueryExecutor<>(locationRowMapper);
-
-    private LocationDaoImpl(){}
-
-    public static LocationDaoImpl getInstance() {
-        return INSTANCE;
+    public LocationDaoImpl(RowMapper<Location> locationRowMapper) {
+        this.locationRowMapper = locationRowMapper;
+        this.queryExecutor = new QueryExecutor<>(locationRowMapper);
     }
 
     public static final String FIND_ALL_SQL = String.format(
@@ -55,11 +50,6 @@ public class LocationDaoImpl implements LocationDao {
     @Override
     public Optional<Location> findByCity(Connection connection, String city) throws DaoException {
         return queryExecutor.find(connection, FIND_BY_CITY_SQL, city);
-    }
-
-    @Override
-    public List<Location> findAll(Connection connection, Filter filter) throws DaoException {
-        return queryExecutor.findAll(connection, FIND_ALL_SQL);
     }
 
     @Override

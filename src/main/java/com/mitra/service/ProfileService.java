@@ -11,7 +11,11 @@ public interface ProfileService {
 
     List<ProfileDto> findAll();
 
+    List<Integer> getAllIds();
+
     Optional<ProfileDto> getByUserId(int userId);
+
+    Optional<ProfileDto> getById(int id);
 
     boolean updateProfile(int userId, ProfileDto profileDto);
 

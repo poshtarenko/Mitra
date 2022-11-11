@@ -16,6 +16,7 @@ public class Profile implements Identifiable<Integer> {
     Gender gender;
     Location location;
     String text;
+    String photoPath;
     List<Instrument> instruments;
     List<Speciality> specialities;
     Track previewTrack;

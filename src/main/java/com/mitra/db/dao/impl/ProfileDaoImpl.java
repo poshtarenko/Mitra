@@ -3,37 +3,43 @@ package com.mitra.db.dao.impl;
 import com.mitra.db.Column;
 import com.mitra.db.Table;
 import com.mitra.db.dao.ProfileDao;
+import com.mitra.db.dao.InstrumentDao;
 import com.mitra.db.dao.QueryExecutor;
-import com.mitra.db.filter.Filter;
-import com.mitra.db.mapper.ProfileRowMapper;
+import com.mitra.db.dao.SpecialityDao;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Profile;
 import com.mitra.exception.DaoException;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ProfileDaoImpl implements ProfileDao {
-    private static final ProfileDaoImpl INSTANCE = new ProfileDaoImpl();
 
-    private static final RowMapper<Profile> profileRowMapper = ProfileRowMapper.getInstance();
-    private static final QueryExecutor<Integer, Profile> queryExecutor = new QueryExecutor<>(profileRowMapper);
+    private final RowMapper<Profile> profileRowMapper;
+    private final QueryExecutor<Integer, Profile> queryExecutor;
+    private final InstrumentDao instrumentDao;
+    private final SpecialityDao specialityDao;
 
-    private ProfileDaoImpl(){}
-
-    public static ProfileDaoImpl getInstance() {
-        return INSTANCE;
+    public ProfileDaoImpl(RowMapper<Profile> profileRowMapper, InstrumentDao instrumentDao, SpecialityDao specialityDao) {
+        this.profileRowMapper = profileRowMapper;
+        this.instrumentDao = instrumentDao;
+        this.specialityDao = specialityDao;
+        this.queryExecutor = new QueryExecutor<>(profileRowMapper);
     }
 
     public static final String FIND_ALL_SQL = String.format(
-            "SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s " +
+            "SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s " +
                     "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s ",
-            Column.PROFILE.ID, Column.PROFILE.NAME, Column.PROFILE.AGE, Column.GENDER.GENDER, Column.PROFILE.TEXT,
+            Column.PROFILE.ID, Column.PROFILE.NAME, Column.PROFILE.AGE, Column.GENDER.GENDER, Column.PROFILE.TEXT, Column.PROFILE.PHOTO_PATH,
             Column.CITY.NAME, Column.LOCAL_AREA.NAME, Column.REGION.NAME, Column.COUNTRY.NAME,
             Table.PROFILE,
             Table.GENDER, Column.PROFILE.GENDER_ID, Column.GENDER.ID,
@@ -45,19 +51,19 @@ public class ProfileDaoImpl implements ProfileDao {
     public static final String FIND_SQL = FIND_ALL_SQL + String.format(" WHERE %s = ?", Column.PROFILE.ID);
 
     public static final String SAVE_SQL = String.format(
-            "INSERT INTO %s (%s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, (SELECT %s FROM %s WHERE %s = ?), ?, (SELECT %s FROM %s WHERE %s = ?))",
+            "INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, (SELECT %s FROM %s WHERE %s = ?), ?, ?, (SELECT %s FROM %s WHERE %s = ?))",
             Table.PROFILE,
             Column.PROFILE.ID.shortName(), Column.PROFILE.NAME.shortName(), Column.PROFILE.AGE.shortName(),
-            Column.PROFILE.GENDER_ID.shortName(), Column.PROFILE.TEXT.shortName(), Column.PROFILE.CITY_ID.shortName(),
+            Column.PROFILE.GENDER_ID.shortName(), Column.PROFILE.TEXT.shortName(), Column.PROFILE.PHOTO_PATH.shortName(), Column.PROFILE.CITY_ID.shortName(),
             Column.GENDER.ID, Table.GENDER, Column.GENDER.GENDER,
             Column.CITY.ID, Table.CITY, Column.CITY.NAME);
 
     public static final String UPDATE_SQL = String.format(
-            "UPDATE %s SET %s = ?, %s = ?, %s = (SELECT %s FROM %s WHERE %s = ?), %s = ?,  %s = (SELECT %s FROM %s WHERE %s = ?) WHERE %s = ?",
+            "UPDATE %s SET %s = ?, %s = ?, %s = (SELECT %s FROM %s WHERE %s = ?), %s = ?, %s = ?,  %s = (SELECT %s FROM %s WHERE %s = ?) WHERE %s = ?",
             Table.PROFILE,
             Column.PROFILE.NAME.shortName(), Column.PROFILE.AGE.shortName(), Column.PROFILE.GENDER_ID.shortName(),
             Column.GENDER.ID, Table.GENDER, Column.GENDER.GENDER,
-            Column.PROFILE.TEXT.shortName(), Column.PROFILE.CITY_ID.shortName(),
+            Column.PROFILE.TEXT.shortName(), Column.PROFILE.PHOTO_PATH.shortName(), Column.PROFILE.CITY_ID.shortName(),
             Column.CITY.ID, Table.CITY, Column.CITY.NAME,
             Column.PROFILE.ID.shortName());
 
@@ -65,33 +71,57 @@ public class ProfileDaoImpl implements ProfileDao {
             "DELETE FROM %s WHERE %s = ?",
             Table.PROFILE, Column.PROFILE.ID);
 
-    @Override
-    public Optional<Profile> find(Connection connection, Integer id) throws DaoException {
-        return queryExecutor.find(connection, FIND_SQL, id);
-    }
+    public static final String GET_ALL_IDS = String.format(
+            "SELECT %s FROM %s",
+            Column.USER.ID, Table.USER);
 
     @Override
-    public List<Profile> findAll(Connection connection, Filter filter) throws DaoException {
-        return queryExecutor.findAll(connection, FIND_ALL_SQL);
+    public Optional<Profile> find(Connection connection, Integer id) throws DaoException {
+        Optional<Profile> profile = queryExecutor.find(connection, FIND_SQL, id);
+        if (profile.isPresent()) {
+            profile.get().setInstruments(instrumentDao.getProfileInstruments(connection, id));
+            profile.get().setSpecialities(specialityDao.getProfileSpecialities(connection, id));
+        }
+        return profile;
     }
 
     @Override
     public List<Profile> findAll(Connection connection) throws DaoException {
-        return queryExecutor.findAll(connection, FIND_ALL_SQL);
+        List<Profile> profiles = queryExecutor.findAll(connection, FIND_ALL_SQL);
+        profiles.forEach(profile -> {
+            profile.setInstruments(instrumentDao.getProfileInstruments(connection, profile.getId()));
+            profile.setSpecialities(specialityDao.getProfileSpecialities(connection, profile.getId()));
+        });
+        return profiles;
+    }
+
+    @Override
+    public List<Integer> getAllIds(Connection connection) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_IDS)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Integer> ids = new ArrayList<>();
+            while (resultSet.next())
+                ids.add(resultSet.getInt(1));
+            return ids;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public Integer save(Connection connection, Profile entity) throws DaoException {
         return queryExecutor.save(connection, SAVE_SQL,
                 entity.getId(), entity.getName(), entity.getAge(), entity.getGender().name(),
-                entity.getText(), entity.getLocation().getCity());
+                entity.getText(), entity.getPhotoPath(), entity.getLocation().getCity());
     }
 
     @Override
     public void update(Connection connection, Integer id, Profile entity) throws DaoException {
         queryExecutor.update(connection, UPDATE_SQL,
                 entity.getName(), entity.getAge(), entity.getGender().name(), entity.getText(),
-                entity.getLocation().getCity(), id);
+                entity.getPhotoPath(), entity.getLocation().getCity(), id);
+        instrumentDao.setProfileInstruments(connection, id, entity.getInstruments());
+        specialityDao.setProfileSpecialities(connection, id, entity.getSpecialities());
     }
 
     @Override
