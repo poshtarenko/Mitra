@@ -59,7 +59,7 @@ public class UserDaoImpl implements UserDao {
 
         if (optionalUser.isPresent()){
             Profile profile = profileDao.find(connection, id)
-                    .orElseThrow(() -> new DaoException("User without profile"));
+                    .orElseThrow(() -> new DaoException("User without profile must be impossible"));
             optionalUser.get().setProfile(profile);
         }
 
@@ -68,8 +68,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> find(Connection connection, String email, String password) throws DaoException {
-        return queryExecutor.find(connection, FIND_BY_EMAIL_AND_PASSWORD,
+        Optional<User> user = queryExecutor.find(connection, FIND_BY_EMAIL_AND_PASSWORD,
                 email, password);
+        if (user.isPresent())
+            user.get().setProfile(profileDao.find(connection, user.get().getId())
+                    .orElseThrow(() -> new RuntimeException("User without profile must be impossible")));
+        return user;
     }
 
     @Override

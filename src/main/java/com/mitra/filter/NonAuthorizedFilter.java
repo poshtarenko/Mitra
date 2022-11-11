@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @WebFilter(UrlPath.SERVLET_CONST + "/*")
-public class AuthorizationFilter implements Filter {
+public class NonAuthorizedFilter implements Filter {
 
     private static final Set<String> enabledUrlsForNonAuthorized;
 

@@ -7,6 +7,11 @@
     <request-character-encoding>UTF-8</request-character-encoding>
     <response-character-encoding>UTF-8</response-character-encoding>
 
+    <session-config>
+<!--   2days = 2880 = 24 * 2 * 60 * 60   -->
+        <session-timeout>2880</session-timeout>
+    </session-config>
+
     <!--    <error-page>-->
     <!--        <exception-type>java.lang.Exception</exception-type>-->
     <!--        <location>/WEB-INF/jsp/error.jsp</location>-->

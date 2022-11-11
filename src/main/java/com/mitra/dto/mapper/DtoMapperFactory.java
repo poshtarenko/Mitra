@@ -16,12 +16,12 @@ public class DtoMapperFactory {
     private DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
 
     private DtoMapperFactory() {
-        userDtoMapper = new UserDtoMapper();
         locationDtoMapper = new LocationDtoMapper();
         instrumentDtoMapper = new InstrumentDtoMapper();
         specialityDtoMapper = new SpecialityDtoMapper();
         profileDtoMapper = new ProfileDtoMapper(locationDtoMapper, instrumentDtoMapper, specialityDtoMapper,
                 new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService()));
+        userDtoMapper = new UserDtoMapper(profileDtoMapper);
     }
 
     public static DtoMapperFactory getInstance() {

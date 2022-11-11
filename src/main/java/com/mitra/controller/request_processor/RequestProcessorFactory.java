@@ -17,11 +17,14 @@ public class RequestProcessorFactory {
         requestProcessorsMap.put(UrlPath.LANDING_PAGE, new LandingProcessor());
         requestProcessorsMap.put(UrlPath.AUTHORIZATION, new AuthorizationProcessor());
         requestProcessorsMap.put(UrlPath.REGISTRATION, new RegistrationProcessor());
+        requestProcessorsMap.put(UrlPath.LOGOUT, new LogoutProcessor());
         requestProcessorsMap.put(UrlPath.CREATE_PROFILE, new CreateProfileProcessor());
         requestProcessorsMap.put(UrlPath.UPDATE_PROFILE, new UpdateProfileProcessor());
         requestProcessorsMap.put(UrlPath.SEARCH, new SearchProcessor());
         requestProcessorsMap.put(UrlPath.SLIDE_SEARCH, new SearchBySwipeProcessor());
-        requestProcessorsMap.put(UrlPath.IMAGES, new ImageProcessor(new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService())));
+        requestProcessorsMap.put(UrlPath.IMAGES,
+                new ImageProcessor(new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService())));
+        requestProcessorsMap.put(UrlPath.MY_PROFILE, new MyProfileProcessor());
     }
 
     public RequestProcessor getProcessor(UrlPath urlPath) {

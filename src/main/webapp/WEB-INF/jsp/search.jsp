@@ -9,10 +9,9 @@
 </head>
 <body>
 
-<a href="${pageContext.request.contextPath}/app/go">Пошук свайпом</a>
-<a href="${pageContext.request.contextPath}/app/upd_profile"> Оновити анкету</a>
+<%@ include file="header.jsp" %>
 
-<h2>Всі анкети користувачів :</h2>
+<br><h2>Всі анкети користувачів :</h2>
 
 <c:forEach var="profile" items="${requestScope.profiles}">
     <hr>

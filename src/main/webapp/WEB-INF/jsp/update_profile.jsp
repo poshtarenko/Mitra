@@ -7,6 +7,11 @@
     <title>Title</title>
 </head>
 <body>
+
+<%@ include file="header.jsp" %>
+
+<br><h2>Оновлення анкети</h2>
+
 <form action="${pageContext.request.contextPath}/app/upd_profile" method="post" enctype='multipart/form-data'>
 
     <input type="hidden" name="photoPath" value="${requestScope.profile.getPhotoPath()}">

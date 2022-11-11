@@ -12,4 +12,5 @@ public class UserDto implements Dto{
     String email;
     String password;
     Role role;
+    ProfileDto profile;
 }

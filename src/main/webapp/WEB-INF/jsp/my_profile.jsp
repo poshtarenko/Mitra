@@ -10,7 +10,10 @@
 <body>
 
 <%@ include file="header.jsp" %>
-<br><h2>Пошук свайпом</h2>
+<br>
+<h2>Моя анкета</h2>
+<a href="${pageContext.request.contextPath}/app/upd_profile">ОНОВИТИ АНКЕТУ</a>
+<br>
 <c:if test="${not empty requestScope.profile.getPhotoPath()}">
     <img width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
 </c:if>
@@ -33,7 +36,6 @@
     </c:forEach>
 </p>
 
-<a href="${pageContext.request.contextPath}/app/go?i=${requestScope.nextProfileId}">Наступна анкета!</a>
 
 </body>
 </html>

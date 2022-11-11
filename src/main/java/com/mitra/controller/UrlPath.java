@@ -9,8 +9,10 @@ public enum UrlPath {
     LANDING_PAGE("", "landing"),
     AUTHORIZATION("/auth", "authorization"),
     REGISTRATION("/register", "registration"),
+    LOGOUT("/logout", ""),
     CREATE_PROFILE("/create_profile", "formCreateGrouped"),
-    UPDATE_PROFILE("/upd_profile","update_profile"),
+    MY_PROFILE("/me", "my_profile"),
+    UPDATE_PROFILE("/upd_profile", "update_profile"),
     SEARCH("/search", "search"),
     SLIDE_SEARCH("/go", "slide_search");
 
