@@ -53,6 +53,21 @@ public enum Column {
         }
     }
 
+    public enum LIKE {
+        SENDER_ID,
+        RECEIVER_ID,
+        REACTION;
+
+        @Override
+        public String toString() {
+            return Table.LIKE + "." + shortName();
+        }
+
+        public String shortName() {
+            return name().toLowerCase();
+        }
+    }
+
     public enum GENDER {
         ID,
         GENDER;

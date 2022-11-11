@@ -11,6 +11,7 @@ public class RowMapperFactory {
     private RowMapper<Location> locationRowMapper;
     private RowMapper<Instrument> instrumentRowMapper;
     private RowMapper<Speciality> specialityRowMapper;
+    private RowMapper<Like> likeRowMapper;
 
     private RowMapperFactory() {
         userRowMapper = new UserRowMapper();
@@ -18,6 +19,7 @@ public class RowMapperFactory {
         locationRowMapper = new LocationRowMapper();
         instrumentRowMapper = new InstrumentRowMapper();
         specialityRowMapper = new SpecialityRowMapper();
+        likeRowMapper = new LikeRowMapper();
     }
 
     public static RowMapperFactory getInstance() {
@@ -42,5 +44,9 @@ public class RowMapperFactory {
 
     public RowMapper<Speciality> getSpecialityRowMapper() {
         return specialityRowMapper;
+    }
+
+    public RowMapper<Like> getLikeRowMapper() {
+        return likeRowMapper;
     }
 }

@@ -2,10 +2,7 @@ package com.mitra.db.dao.impl;
 
 import com.mitra.db.Column;
 import com.mitra.db.Table;
-import com.mitra.db.dao.ProfileDao;
-import com.mitra.db.dao.InstrumentDao;
-import com.mitra.db.dao.QueryExecutor;
-import com.mitra.db.dao.SpecialityDao;
+import com.mitra.db.dao.*;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Profile;
 import com.mitra.exception.DaoException;
@@ -24,11 +21,14 @@ public class ProfileDaoImpl implements ProfileDao {
     private final QueryExecutor<Integer, Profile> queryExecutor;
     private final InstrumentDao instrumentDao;
     private final SpecialityDao specialityDao;
+    private final LikeDao likeDao;
 
-    public ProfileDaoImpl(RowMapper<Profile> profileRowMapper, InstrumentDao instrumentDao, SpecialityDao specialityDao) {
+    public ProfileDaoImpl(RowMapper<Profile> profileRowMapper, InstrumentDao instrumentDao,
+                          SpecialityDao specialityDao, LikeDao likeDao) {
         this.profileRowMapper = profileRowMapper;
         this.instrumentDao = instrumentDao;
         this.specialityDao = specialityDao;
+        this.likeDao = likeDao;
         this.queryExecutor = new QueryExecutor<>(profileRowMapper);
     }
 
@@ -81,6 +81,7 @@ public class ProfileDaoImpl implements ProfileDao {
         if (profile.isPresent()) {
             profile.get().setInstruments(instrumentDao.getProfileInstruments(connection, id));
             profile.get().setSpecialities(specialityDao.getProfileSpecialities(connection, id));
+            profile.get().setLikes(likeDao.getProfileLikes(connection, id));
         }
         return profile;
     }
@@ -91,6 +92,7 @@ public class ProfileDaoImpl implements ProfileDao {
         profiles.forEach(profile -> {
             profile.setInstruments(instrumentDao.getProfileInstruments(connection, profile.getId()));
             profile.setSpecialities(specialityDao.getProfileSpecialities(connection, profile.getId()));
+            profile.setLikes(likeDao.getProfileLikes(connection, profile.getId()));
         });
         return profiles;
     }

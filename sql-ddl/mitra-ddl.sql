@@ -91,3 +91,9 @@ CREATE TABLE profile_speciality
     speciality_id INT REFERENCES speciality (id) NOT NULL
 );
 
+CREATE TABLE likes
+(
+    sender_id   INT REFERENCES profile (id) NOT NULL,
+    receiver_id INT REFERENCES profile (id) NOT NULL,
+    reaction    INT                         NOT NULL CHECK (reaction >= 0 AND reaction <= 3)
+);

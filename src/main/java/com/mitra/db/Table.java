@@ -5,6 +5,7 @@ public enum Table {
     USER,
     ROLE,
     PROFILE,
+    LIKE,
     GENDER,
     MUSIC,
     INSTRUMENT,
