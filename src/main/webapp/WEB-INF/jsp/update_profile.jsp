@@ -8,14 +8,18 @@
 </head>
 <body>
 <form action="${pageContext.request.contextPath}/app/upd_profile" method="post" enctype='multipart/form-data'>
+
+    <input type="hidden" name="photoPath" value="${requestScope.profile.getPhotoPath()}">
+
+    <p>Ваше фото : </p>
     <c:if test="${not empty requestScope.profile.getPhotoPath()}">
-        <img src="${pageContext.request.contextPath}/resources/img/profile/${requestScope.profile.getPhotoPath()}.jpg"/>
+        <img width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
     </c:if>
     <c:if test="${empty requestScope.profile.getPhotoPath()}">
-        <img src="${pageContext.request.contextPath}/resources/img/profile/no_photo.png"/>
-    </c:if>
+        <img width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile/no_photo.png"/>
+    </c:if><br>
 
-    <label for="photo"> Фотографія:
+    <label for="photo"> Нова фотографія:
         <input type="file" name="photo" id="photo">
     </label><br>
 

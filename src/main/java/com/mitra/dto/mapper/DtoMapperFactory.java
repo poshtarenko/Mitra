@@ -1,5 +1,7 @@
 package com.mitra.dto.mapper;
 
+import com.mitra.cloud.CloudStorageProviderImpl;
+import com.mitra.cloud.GoogleDriveInitializer;
 import com.mitra.dto.*;
 import com.mitra.entity.*;
 
@@ -18,7 +20,8 @@ public class DtoMapperFactory {
         locationDtoMapper = new LocationDtoMapper();
         instrumentDtoMapper = new InstrumentDtoMapper();
         specialityDtoMapper = new SpecialityDtoMapper();
-        profileDtoMapper = new ProfileDtoMapper(locationDtoMapper, instrumentDtoMapper, specialityDtoMapper);
+        profileDtoMapper = new ProfileDtoMapper(locationDtoMapper, instrumentDtoMapper, specialityDtoMapper,
+                new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService()));
     }
 
     public static DtoMapperFactory getInstance() {

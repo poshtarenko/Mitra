@@ -4,6 +4,7 @@ import com.mitra.entity.Gender;
 import lombok.Builder;
 import lombok.Value;
 
+import java.io.InputStream;
 import java.util.List;
 
 @Value
@@ -16,6 +17,7 @@ public class ProfileDto implements Dto {
     LocationDto location;
     String text;
     String photoPath;
+    InputStream photoContent;
     List<InstrumentDto> instruments;
     List<SpecialityDto> specialities;
 }

@@ -2,8 +2,8 @@ package com.mitra.db.dao.impl;
 
 import com.mitra.db.Column;
 import com.mitra.db.Table;
-import com.mitra.db.dao.InstrumentDao;
 import com.mitra.db.dao.ProfileDao;
+import com.mitra.db.dao.InstrumentDao;
 import com.mitra.db.dao.QueryExecutor;
 import com.mitra.db.dao.SpecialityDao;
 import com.mitra.db.mapper.RowMapper;

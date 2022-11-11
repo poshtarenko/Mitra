@@ -17,10 +17,10 @@
 <c:forEach var="profile" items="${requestScope.profiles}">
     <hr>
     <c:if test="${not empty profile.getPhotoPath()}">
-        <img src="${pageContext.request.contextPath}/resources/img/profile/${profile.getPhotoPath()}.jpg"/>
+        <img width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${profile.getPhotoPath()}"/>
     </c:if>
     <c:if test="${empty profile.getPhotoPath()}">
-        <img src="${pageContext.request.contextPath}/resources/img/profile/no_photo.png"/>
+        <img width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile/no_photo.png"/>
     </c:if>
 
     <h3>${profile.getName()}</h3>

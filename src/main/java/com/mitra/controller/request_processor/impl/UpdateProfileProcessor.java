@@ -9,16 +9,17 @@ import com.mitra.dto.SpecialityDto;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Gender;
 import com.mitra.service.*;
-import com.mitra.util.ImageHelper;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UpdateProfileProcessor extends AbstractRequestProcessor {
@@ -98,15 +99,14 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
                     .collect(Collectors.toList());
         else specialities = Collections.emptyList();
 
-        Part image = request.getPart("photo");
+        Part photoPart = request.getPart("photo");
+        InputStream photoInputStream = null;
+        if (photoPart != null)
+            photoInputStream = photoPart.getInputStream();
 
-        if (image.getSize() != 0) {
-            String path = request.getServletContext().getRealPath("/resources/img/profile/")
-                    +  5 + ".jpg";
-            ImageHelper.save(path, image.getInputStream());
-        }
 
         ProfileDto profileDto = ProfileDto.builder()
+                .id(userId)
                 .name(request.getParameter("name"))
                 .age(Integer.valueOf(request.getParameter("age")))
                 .gender(Gender.valueOf(request.getParameter("gender")))
@@ -114,6 +114,8 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
                 .location(LocationHelper.stringToLocationDto(request.getParameter("location")))
                 .instruments(instruments)
                 .specialities(specialities)
+                .photoPath(request.getParameter("photoPath"))
+                .photoContent(photoInputStream)
                 .build();
 
         profileService.updateProfile(userId, profileDto);

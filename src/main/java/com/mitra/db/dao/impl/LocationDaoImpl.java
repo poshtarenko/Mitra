@@ -5,7 +5,6 @@ import com.mitra.db.Table;
 import com.mitra.db.dao.LocationDao;
 import com.mitra.db.dao.QueryExecutor;
 import com.mitra.db.mapper.RowMapper;
-import com.mitra.db.mapper.RowMapperFactory;
 import com.mitra.entity.Location;
 import com.mitra.exception.DaoException;
 
