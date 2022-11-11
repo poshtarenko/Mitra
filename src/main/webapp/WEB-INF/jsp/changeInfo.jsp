@@ -163,7 +163,7 @@
                               <!-- <img alt="..." src="Images/Red_fox.jpg" class="img-thumbnail" id="image-preview"> -->
 
                               
-                            <img src="Images/lantlos11-06.png" class="rounded img-rounded" alt="..." id="image-preview">
+                            <img src="../../resources/img/lantlos11-06.png" class="rounded img-rounded" alt="..." id="image-preview">
                               
 
 
