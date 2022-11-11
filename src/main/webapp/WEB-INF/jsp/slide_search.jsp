@@ -13,7 +13,7 @@
     <img width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${profile.getPhotoPath()}"/>
 </c:if>
 <c:if test="${empty profile.getPhotoPath()}">
-    <img width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile/no_photo.png"/>
+    <img width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
 </c:if>
 <h3>${requestScope.profile.getName()}</h3>
 <p><b>Вік :</b> ${requestScope.profile.getAge()} років</p>

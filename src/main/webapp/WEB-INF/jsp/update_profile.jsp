@@ -16,7 +16,7 @@
         <img width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
     </c:if>
     <c:if test="${empty requestScope.profile.getPhotoPath()}">
-        <img width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile/no_photo.png"/>
+        <img width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
     </c:if><br>
 
     <label for="photo"> Нова фотографія:
