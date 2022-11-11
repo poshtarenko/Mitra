@@ -5,6 +5,7 @@ import java.util.Optional;
 
 public enum UrlPath {
 
+    IMAGES("/images", ""),
     LANDING_PAGE("", "landing"),
     AUTHORIZATION("/auth", "authorization"),
     REGISTRATION("/register", "registration"),
@@ -35,7 +36,7 @@ public enum UrlPath {
 
     public static Optional<UrlPath> getByPath(String path) {
         return Arrays.stream(UrlPath.values())
-                .filter(urlPath -> urlPath.getPathWithServletPrefix().equals(path))
+                .filter(urlPath -> urlPath.getPathWithServletPrefix().startsWith(path))
                 .findFirst();
     }
 
