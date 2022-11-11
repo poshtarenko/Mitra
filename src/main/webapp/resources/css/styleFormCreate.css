@@ -49,7 +49,7 @@ html {
     justify-content: center;
     align-items: center;
 
-    background: rgba(0, 0, 0, 0.7)url('images/abackground2.png');
+    background: rgba(0, 0, 0, 0.7)url('../images/abackground2.png');
 
 
     background-blend-mode:darken;
