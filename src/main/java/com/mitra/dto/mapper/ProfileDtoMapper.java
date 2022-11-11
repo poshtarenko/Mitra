@@ -10,6 +10,7 @@ import com.mitra.entity.Location;
 import com.mitra.entity.Profile;
 import com.mitra.entity.Speciality;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
@@ -51,10 +52,14 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
             specialities = Collections.emptyList();
 
         String photoPath = dto.getPhotoPath();
-        if (dto.getPhotoContent() != null) {
-            if (!"".equals(photoPath))
-                cloudStorageProvider.deleteFile(photoPath);
-            photoPath = cloudStorageProvider.setProfilePhoto(dto.getId(), dto.getPhotoContent());
+        try {
+            if (dto.getPhotoContent() != null && dto.getPhotoContent().available() > 0) {
+                if (!"".equals(photoPath))
+                    cloudStorageProvider.deleteFile(photoPath);
+                photoPath = cloudStorageProvider.setProfilePhoto(dto.getId(), dto.getPhotoContent());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return Profile.builder()
@@ -91,7 +96,8 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
             specialityDtos = Collections.emptyList();
 
         InputStream photoContent = null;
-        if (entity.getPhotoPath() != null)
+        String photoPath = entity.getPhotoPath();
+        if (photoPath != null && !photoPath.equals(""))
             photoContent = cloudStorageProvider.getImage(entity.getPhotoPath());
 
         return ProfileDto.builder()
@@ -100,7 +106,7 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
                 .age(entity.getAge())
                 .gender(entity.getGender())
                 .text(entity.getText())
-                .photoPath(entity.getPhotoPath())
+                .photoPath(photoPath)
                 .photoContent(photoContent)
                 .location(locationDto)
                 .instruments(instrumentDtos)
