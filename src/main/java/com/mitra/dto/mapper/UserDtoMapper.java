@@ -17,23 +17,31 @@ public class UserDtoMapper implements DtoMapper<UserDto, User> {
 
     @Override
     public User mapToEntity(UserDto dto) {
+        Profile profile = null;
+        if (dto.getProfile() != null)
+            profile = profileDtoMapper.mapToEntity(dto.getProfile());
+
         return new User(
                 dto.getId(),
                 dto.getEmail(),
                 dto.getPassword(),
                 dto.getRole(),
-                profileDtoMapper.mapToEntity(dto.getProfile())
+                profile
         );
     }
 
     @Override
     public UserDto mapToDto(User entity) {
+        ProfileDto profile = null;
+        if (entity.getProfile() != null)
+            profile = profileDtoMapper.mapToDto(entity.getProfile());
+
         return UserDto.builder()
                 .id(entity.getId())
                 .email(entity.getEmail())
                 .password(entity.getPassword())
                 .role(entity.getRole())
-                .profile(profileDtoMapper.mapToDto(entity.getProfile()))
+                .profile(profile)
                 .build();
     }
 }

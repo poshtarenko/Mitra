@@ -7,7 +7,6 @@ import com.mitra.db.dao.QueryExecutor;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Like;
 import com.mitra.entity.Reaction;
-import sun.tools.jconsole.Tab;
 
 import java.sql.Connection;
 import java.util.List;

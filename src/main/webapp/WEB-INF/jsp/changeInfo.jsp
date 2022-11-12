@@ -123,9 +123,9 @@
 
                 <main class="main">
 
-                    <form class="main-content">
+                    <form class="main-content" action="${pageContext.request.contextPath}/app/upd_profile" method="post" enctype='multipart/form-data'>
     
-                        <div class="nameUser">Владислав</div>
+                        <div class="nameUser">${requestScope.profile.getName()}</div>
 
                         <div class="block" id="imageBlock">
                             <!-- <h1 class="description">Аватар</h1> -->
@@ -162,14 +162,18 @@
 
                               <!-- <img alt="..." src="Images/Red_fox.jpg" class="img-thumbnail" id="image-preview"> -->
 
-                              
-                            <img src="../../resources/img/lantlos11-06.png" class="rounded img-rounded" alt="..." id="image-preview">
-                              
+
+                            <c:if test="${not empty requestScope.profile.getPhotoPath()}">
+                                <img class="rounded img-rounded" alt="..." id="image-preview" src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
+                            </c:if>
+                            <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                                <img class="rounded img-rounded" alt="..." id="image-preview" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
+                            </c:if><br>
 
 
 
                            
-                            <input type="file" onchange="showPreview(event)" class="form-control form-control-lg" style="font-size: 18px; width: 747px;" id="customFile" />
+                            <input type="file" name="photo" onchange="showPreview(event)" class="form-control form-control-lg" style="font-size: 18px; width: 747px;" id="customFile" />
 
                             
 
@@ -183,7 +187,8 @@
                             <h1 class="description">Ім'я</h1>
 
                             <div class="form-group">
-                                <input type="text" class="form-control form-control-lg" style="font-size: 18px; width: 747px;" id="exampleInputEmail1" placeholder="Введіть ім'я">
+                                <input type="text" class="form-control form-control-lg" style="font-size: 18px; width: 747px;" id="exampleInputEmail1" placeholder="Введіть ім'я"
+                                       name="name" value="${requestScope.profile.getName()}">
                                 <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
                               </div>
 
@@ -195,7 +200,8 @@
                             <h1 class="description">Вік</h1>
 
                             <div class="form-group">
-                                <input type="number" class="form-control form-control-lg raz" style="font-size: 18px; width: 747px;" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Введіть вік">
+                                <input type="number" class="form-control form-control-lg raz" style="font-size: 18px; width: 747px;" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Введіть вік"
+                                       name="age" value="${requestScope.profile.getAge()}">
                                 <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
                               </div>
 
@@ -209,7 +215,8 @@
 
                             <select name="gender" class="selectpicker" data-width="747px"  style="font-size: 18px;" aria-label="Default select example"
                                         title="Виберіть стать">
-                                    <c:forEach var="gender" items="${requestScope.genders}">
+                                    <option data-tokens="${requestScope.profileGender}" value="${requestScope.profileGender}" selected>${requestScope.profileGender}</option>
+                                    <c:forEach var="gender" items="${requestScope.otherGenders}">
                                         <option data-tokens="${gender}" value="${gender}">${gender}</option>
                                     </c:forEach>
                                 </select>
@@ -229,9 +236,9 @@
 
                         <div class="block" id="textBlock">
 
-                            <h1 class="description">Додаткове</h1>
+                            <h1 class="description">Текст анкети</h1>
 
-                            <textarea name="text" class="form-control form-control-lg textArea"  style="font-size: 18px; width: 747px;" id="exampleFormControlTextarea1"></textarea>
+                            <textarea name="text" class="form-control form-control-lg textArea"  style="font-size: 18px; width: 747px;" id="exampleFormControlTextarea1">${requestScope.profile.getText()}</textarea>
 
 
                         </div>
@@ -243,10 +250,14 @@
 
                             <h1 class="description">Місто</h1>
 
-                                <select name="city" class="selectpicker" data-width="747px" data-live-search="true"
+                                <select name="location" class="selectpicker" data-width="747px" data-live-search="true"
                                         title="Виберіть місто">
                                     <c:forEach var="city" items="${requestScope.cities}">
                                         <option data-tokens="${city}" value="${city}">${city}</option>
+                                    </c:forEach>
+                                    <option data-tokens="${requestScope.profileLocation}" value="${requestScope.profileLocation}" selected>${requestScope.profileLocation}</option>
+                                    <c:forEach var="location" items="${requestScope.otherLocations}">
+                                        <option data-tokens="${location}" value="${location}">${location}</option>
                                     </c:forEach>
                                 </select>
 
@@ -259,11 +270,14 @@
 
                             <h1 class="description">Інструменти</h1>
 
-                            <select name="city" class="selectpicker" data-width="747px" multiple data-live-search="true"
+                            <select name="instruments" class="selectpicker" data-width="747px" multiple data-live-search="true"
                                         title="Виберіть інструменти">
-                                    <c:forEach var="city" items="${requestScope.cities}">
-                                        <option data-tokens="${city}" value="${city}">${city}</option>
-                                    </c:forEach>
+                                <c:forEach var="instrument" items="${requestScope.profileInstruments}">
+                                    <option data-tokens="${instrument}" value="${instrument}" selected>${instrument}</option>
+                                </c:forEach>
+                                <c:forEach var="instrument" items="${requestScope.otherInstruments}">
+                                    <option data-tokens="${instrument}" value="${instrument}">${instrument}</option>
+                                </c:forEach><br>
                                 </select>
                               
                               
@@ -274,11 +288,14 @@
 
                             <h1 class="description">Мої спеціальності</h1>
 
-                            <select name="city" id="specialty" class="selectpicker" data-width="747px" multiple data-live-search="true"
+                            <select name="specialities" id="specialty" class="selectpicker" data-width="747px" multiple data-live-search="true"
                                         title="Виберіть спеціальності">
-                                    <c:forEach var="city" items="${requestScope.cities}">
-                                        <option data-tokens="${city}" value="${city}">${city}</option>
-                                    </c:forEach>
+                                <c:forEach var="speciality" items="${requestScope.profileSpecialities}">
+                                    <option data-tokens="${speciality}" value="${speciality}" selected>${speciality}</option>
+                                </c:forEach>
+                                <c:forEach var="speciality" items="${requestScope.otherSpecialities}">
+                                    <option data-tokens="${speciality}" value="${speciality}">${speciality}</option>
+                                </c:forEach><br>
                                 </select>
                               
                               
@@ -289,7 +306,7 @@
 
 
                         <div class="block">
-                        <input id="submitFormBtn" value="ВІДПРАВИТИ АНКЕТУ"  type="submit" class="main-button-submit display-none"></input>
+                        <input id="submitFormBtn" value="ОНОВИТИ АНКЕТУ"  type="submit" class="main-button-submit display-none"></input>
                     </div>
                     </form>
                 </main>  

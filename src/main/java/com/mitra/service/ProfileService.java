@@ -13,10 +13,10 @@ public interface ProfileService {
 
     List<Integer> getAllIds();
 
-    Optional<ProfileDto> getByUserId(int userId);
+    Optional<ProfileDto> find(int id);
 
     Optional<ProfileDto> getById(int id);
 
-    boolean updateProfile(int userId, ProfileDto profileDto);
+    void updateProfile(int userId, ProfileDto profileDto);
 
 }

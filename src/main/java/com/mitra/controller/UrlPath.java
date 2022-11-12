@@ -12,7 +12,7 @@ public enum UrlPath {
     LOGOUT("/logout", ""),
     CREATE_PROFILE("/create_profile", "formCreateGrouped"),
     MY_PROFILE("/me", "my_profile"),
-    UPDATE_PROFILE("/upd_profile", "update_profile"),
+    UPDATE_PROFILE("/upd_profile", "changeInfo"),
     SEARCH("/search", "search"),
     SLIDE_SEARCH("/go", "slide_search");
 

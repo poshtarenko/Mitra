@@ -33,7 +33,7 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserDto user = (UserDto) request.getSession().getAttribute(SessionAttributes.USER.name());
-        Optional<ProfileDto> profileOptional = profileService.getByUserId(user.getId());
+        Optional<ProfileDto> profileOptional = profileService.find(user.getId());
 
         if (!profileOptional.isPresent()){
             throw new RuntimeException("Profile not found");
@@ -101,7 +101,7 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
 
         Part photoPart = request.getPart("photo");
         InputStream photoInputStream = null;
-        if (photoPart != null)
+        if (photoPart != null && photoPart.getSize() > 0)
             photoInputStream = photoPart.getInputStream();
 
 

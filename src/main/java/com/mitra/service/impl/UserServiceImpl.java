@@ -4,6 +4,7 @@ import com.mitra.db.connection.ConnectionManager;
 import com.mitra.db.dao.UserDao;
 import com.mitra.dto.UserDto;
 import com.mitra.dto.mapper.DtoMapper;
+import com.mitra.entity.Profile;
 import com.mitra.entity.Role;
 import com.mitra.entity.User;
 import com.mitra.exception.ValidationException;

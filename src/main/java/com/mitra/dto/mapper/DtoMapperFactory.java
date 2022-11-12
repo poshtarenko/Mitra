@@ -14,13 +14,15 @@ public class DtoMapperFactory {
     private DtoMapper<LocationDto, Location> locationDtoMapper;
     private DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper;
     private DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
+    private DtoMapper<LikeDto, Like> likeDtoMapper;
 
     private DtoMapperFactory() {
         locationDtoMapper = new LocationDtoMapper();
         instrumentDtoMapper = new InstrumentDtoMapper();
         specialityDtoMapper = new SpecialityDtoMapper();
+        likeDtoMapper = new LikeDtoMapper();
         profileDtoMapper = new ProfileDtoMapper(locationDtoMapper, instrumentDtoMapper, specialityDtoMapper,
-                new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService()));
+                likeDtoMapper, new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService()));
         userDtoMapper = new UserDtoMapper(profileDtoMapper);
     }
 
@@ -46,5 +48,9 @@ public class DtoMapperFactory {
 
     public DtoMapper<SpecialityDto, Speciality> getSpecialityDtoMapper() {
         return specialityDtoMapper;
+    }
+
+    public DtoMapper<LikeDto, Like> getLikeDtoMapper() {
+        return likeDtoMapper;
     }
 }

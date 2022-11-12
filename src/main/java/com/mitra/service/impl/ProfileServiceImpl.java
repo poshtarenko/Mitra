@@ -1,10 +1,12 @@
 package com.mitra.service.impl;
 
 import com.mitra.db.connection.ConnectionManager;
+import com.mitra.db.dao.LikeDao;
 import com.mitra.db.dao.ProfileDao;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Profile;
+import com.mitra.entity.Reaction;
 import com.mitra.service.ProfileService;
 
 import java.sql.Connection;
@@ -37,9 +39,9 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Optional<ProfileDto> getByUserId(int userId) {
+    public Optional<ProfileDto> find(int id) {
         try (Connection connection = ConnectionManager.get()) {
-            Optional<Profile> profile = profileDao.find(connection, userId);
+            Optional<Profile> profile = profileDao.find(connection, id);
             return profile.map(profileDtoMapper::mapToDto);
         } catch (SQLException e) {
             // TODO : log
@@ -69,14 +71,12 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public boolean updateProfile(int userId, ProfileDto profileDto) {
+    public void updateProfile(int userId, ProfileDto profileDto) {
         try (Connection connection = ConnectionManager.get()) {
             Profile profile = profileDtoMapper.mapToEntity(profileDto);
             profileDao.update(connection, userId, profile);
-            return true;
         } catch (SQLException e) {
             // TODO : log
-            return false;
         }
     }
 }

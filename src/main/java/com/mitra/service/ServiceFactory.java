@@ -12,6 +12,7 @@ public class ServiceFactory {
 
     private UserService userService;
     private ProfileService profileService;
+    private ProfileLikesService profileLikesService;
     private LocationService locationService;
     private InstrumentService instrumentService;
     private SpecialityService specialityService;
@@ -21,12 +22,13 @@ public class ServiceFactory {
         DtoMapperFactory dtoMapperFactory = DtoMapperFactory.getInstance();
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
 
-        userService = new UserServiceImpl(daoFactory.getUserDao(), dtoMapperFactory.getUserDtoMapper(),
-                validatorFactory.getUserDtoValidator(), EncryptorSHA512.getInstance());
-        profileService = new ProfileServiceImpl(daoFactory.getProfileDao(), dtoMapperFactory.getProfileDtoMapper());
         locationService = new LocationServiceImpl(daoFactory.getLocationDao(), dtoMapperFactory.getLocationDtoMapper());
         instrumentService = new InstrumentServiceImpl(daoFactory.getInstrumentDao(), dtoMapperFactory.getInstrumentDtoMapper());
         specialityService = new SpecialityServiceImpl(daoFactory.getSpecialityDao(), dtoMapperFactory.getSpecialityDtoMapper());
+        profileLikesService = new ProfileLikeServiceImpl(daoFactory.getLikeDao(), dtoMapperFactory.getLikeDtoMapper());
+        userService = new UserServiceImpl(daoFactory.getUserDao(), dtoMapperFactory.getUserDtoMapper(),
+                validatorFactory.getUserDtoValidator(), EncryptorSHA512.getInstance());
+        profileService = new ProfileServiceImpl(daoFactory.getProfileDao(), dtoMapperFactory.getProfileDtoMapper());
     }
 
     public static ServiceFactory getInstance() {

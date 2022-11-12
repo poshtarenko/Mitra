@@ -41,7 +41,7 @@ public class AuthorizationProcessor extends AbstractRequestProcessor {
                 throw new ValidationException("Credentials are invalid");
             }
             request.getSession().setAttribute(SessionAttributes.USER.name(), user.get());
-            redirect(response, UrlPath.SEARCH.get());
+            redirect(response, UrlPath.MY_PROFILE.get());
         } catch (ValidationException e) {
             redirect(response, UrlPath.AUTHORIZATION.get());
         }

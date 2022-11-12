@@ -20,4 +20,5 @@ public class ProfileDto implements Dto {
     InputStream photoContent;
     List<InstrumentDto> instruments;
     List<SpecialityDto> specialities;
+    List<LikeDto> likes;
 }

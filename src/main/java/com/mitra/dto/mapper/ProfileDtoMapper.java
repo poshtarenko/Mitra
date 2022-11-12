@@ -1,14 +1,8 @@
 package com.mitra.dto.mapper;
 
 import com.mitra.cloud.CloudStorageProvider;
-import com.mitra.dto.InstrumentDto;
-import com.mitra.dto.LocationDto;
-import com.mitra.dto.ProfileDto;
-import com.mitra.dto.SpecialityDto;
-import com.mitra.entity.Instrument;
-import com.mitra.entity.Location;
-import com.mitra.entity.Profile;
-import com.mitra.entity.Speciality;
+import com.mitra.dto.*;
+import com.mitra.entity.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,19 +15,24 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
     private final DtoMapper<LocationDto, Location> locationDtoMapper;
     private final DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper;
     private final DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
+    private final DtoMapper<LikeDto, Like> likeDtoMapper;
     private final CloudStorageProvider cloudStorageProvider;
 
     public ProfileDtoMapper(DtoMapper<LocationDto, Location> locationDtoMapper, DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper,
-                            DtoMapper<SpecialityDto, Speciality> specialityDtoMapper, CloudStorageProvider cloudStorageProvider) {
+                            DtoMapper<SpecialityDto, Speciality> specialityDtoMapper, DtoMapper<LikeDto, Like> likeDtoMapper,
+                            CloudStorageProvider cloudStorageProvider) {
         this.locationDtoMapper = locationDtoMapper;
         this.instrumentDtoMapper = instrumentDtoMapper;
         this.specialityDtoMapper = specialityDtoMapper;
+        this.likeDtoMapper = likeDtoMapper;
         this.cloudStorageProvider = cloudStorageProvider;
     }
 
     @Override
     public Profile mapToEntity(ProfileDto dto) {
-        Location location = locationDtoMapper.mapToEntity(dto.getLocation());
+        Location location = null;
+        if (dto.getLocation() != null)
+            location = locationDtoMapper.mapToEntity(dto.getLocation());
 
         List<Instrument> instruments;
         if (dto.getInstruments() != null) {
@@ -54,7 +53,7 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
         String photoPath = dto.getPhotoPath();
         try {
             if (dto.getPhotoContent() != null && dto.getPhotoContent().available() > 0) {
-                if (!"".equals(photoPath))
+                if (photoPath != null && !photoPath.equals(""))
                     cloudStorageProvider.deleteFile(photoPath);
                 photoPath = cloudStorageProvider.setProfilePhoto(dto.getId(), dto.getPhotoContent());
             }
@@ -72,12 +71,15 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
                 .location(location)
                 .instruments(instruments)
                 .specialities(specialities)
+                //.likes(dto.getLikes().stream().map(likeDtoMapper::mapToEntity).collect(Collectors.toList()))
                 .build();
     }
 
     @Override
     public ProfileDto mapToDto(Profile entity) {
-        LocationDto locationDto = locationDtoMapper.mapToDto(entity.getLocation());
+        LocationDto locationDto = null;
+        if (entity.getLocation() != null)
+            locationDto = locationDtoMapper.mapToDto(entity.getLocation());
 
         List<InstrumentDto> instrumentDtos;
         if (entity.getInstruments() != null)
@@ -111,6 +113,7 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
                 .location(locationDto)
                 .instruments(instrumentDtos)
                 .specialities(specialityDtos)
+                //.likes(entity.getLikes().stream().map(likeDtoMapper::mapToDto).collect(Collectors.toList()))
                 .build();
     }
 }
