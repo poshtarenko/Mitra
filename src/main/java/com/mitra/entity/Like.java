@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Like implements Identifiable<Integer> {
     Integer id;
-    Integer senderId;
-    Integer receiverId;
+    Profile sender;
+    Profile receiver;
     Reaction reaction;
 }

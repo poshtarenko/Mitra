@@ -81,7 +81,6 @@ public class ProfileDaoImpl implements ProfileDao {
         if (profile.isPresent()) {
             profile.get().setInstruments(instrumentDao.getProfileInstruments(connection, id));
             profile.get().setSpecialities(specialityDao.getProfileSpecialities(connection, id));
-            profile.get().setLikes(likeDao.getProfileLikes(connection, id));
         }
         return profile;
     }
@@ -92,7 +91,6 @@ public class ProfileDaoImpl implements ProfileDao {
         profiles.forEach(profile -> {
             profile.setInstruments(instrumentDao.getProfileInstruments(connection, profile.getId()));
             profile.setSpecialities(specialityDao.getProfileSpecialities(connection, profile.getId()));
-            profile.setLikes(likeDao.getProfileLikes(connection, profile.getId()));
         });
         return profiles;
     }

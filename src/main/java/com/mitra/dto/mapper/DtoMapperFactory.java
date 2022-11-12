@@ -20,9 +20,9 @@ public class DtoMapperFactory {
         locationDtoMapper = new LocationDtoMapper();
         instrumentDtoMapper = new InstrumentDtoMapper();
         specialityDtoMapper = new SpecialityDtoMapper();
-        likeDtoMapper = new LikeDtoMapper();
         profileDtoMapper = new ProfileDtoMapper(locationDtoMapper, instrumentDtoMapper, specialityDtoMapper,
-                likeDtoMapper, new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService()));
+                new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService()));
+        likeDtoMapper = new LikeDtoMapper(profileDtoMapper);
         userDtoMapper = new UserDtoMapper(profileDtoMapper);
     }
 

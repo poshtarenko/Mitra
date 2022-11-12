@@ -11,6 +11,8 @@ public interface ProfileLikesService {
 
     void makeResponseOnLike(int senderId, int receiverId, Reaction reaction);
 
+    List<LikeDto> getProfileLikes(int profileId);
+
     List<LikeDto> getOwnLikes(int profileId, List<LikeDto> profileLikes);
 
     List<LikeDto> getWaitingResponseLikes(int profileId, List<LikeDto> profileLikes);

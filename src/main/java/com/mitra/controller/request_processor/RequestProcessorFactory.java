@@ -5,6 +5,7 @@ import com.mitra.cloud.GoogleDriveInitializer;
 import com.mitra.controller.UrlPath;
 import com.mitra.controller.request_processor.impl.*;
 import com.mitra.exception.PageDontExistException;
+import com.mitra.service.ServiceFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,8 @@ public class RequestProcessorFactory {
     private static final Map<UrlPath, RequestProcessor> requestProcessorsMap = new HashMap<>();
 
     static {
+        ServiceFactory serviceFactory = ServiceFactory.getInstance();
+
         requestProcessorsMap.put(UrlPath.LANDING_PAGE, new LandingProcessor());
         requestProcessorsMap.put(UrlPath.AUTHORIZATION, new AuthorizationProcessor());
         requestProcessorsMap.put(UrlPath.REGISTRATION, new RegistrationProcessor());
@@ -25,6 +28,7 @@ public class RequestProcessorFactory {
         requestProcessorsMap.put(UrlPath.IMAGES,
                 new ImageProcessor(new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService())));
         requestProcessorsMap.put(UrlPath.MY_PROFILE, new MyProfileProcessor());
+        requestProcessorsMap.put(UrlPath.LIKES, new LikesProcessor(serviceFactory.getProfileLikesService()));
     }
 
     public RequestProcessor getProcessor(UrlPath urlPath) {

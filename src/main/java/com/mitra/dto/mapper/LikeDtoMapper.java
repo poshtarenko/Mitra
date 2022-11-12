@@ -1,15 +1,24 @@
 package com.mitra.dto.mapper;
 
 import com.mitra.dto.LikeDto;
+import com.mitra.dto.ProfileDto;
 import com.mitra.entity.Like;
+import com.mitra.entity.Profile;
 
 public class LikeDtoMapper implements DtoMapper<LikeDto, Like> {
+
+    private final DtoMapper<ProfileDto, Profile> profileDtoMapper;
+
+    public LikeDtoMapper(DtoMapper<ProfileDto, Profile> profileDtoMapper) {
+        this.profileDtoMapper = profileDtoMapper;
+    }
+
     @Override
     public Like mapToEntity(LikeDto dto) {
         return new Like(
                 0,
-                dto.getSenderId(),
-                dto.getReceiverId(),
+                profileDtoMapper.mapToEntity(dto.getSender()),
+                profileDtoMapper.mapToEntity(dto.getReceiver()),
                 dto.getReaction()
         );
     }
@@ -17,8 +26,9 @@ public class LikeDtoMapper implements DtoMapper<LikeDto, Like> {
     @Override
     public LikeDto mapToDto(Like entity) {
         return LikeDto.builder()
-                .senderId(entity.getSenderId())
-                .receiverId(entity.getReceiverId())
+                .sender(profileDtoMapper.mapToDto(entity.getSender()))
+                .receiver(profileDtoMapper.mapToDto(entity.getReceiver()))
+                .reaction(entity.getReaction())
                 .build();
     }
 }

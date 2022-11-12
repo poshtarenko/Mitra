@@ -7,7 +7,7 @@ import lombok.Value;
 @Value
 @Builder
 public class LikeDto implements Dto {
-    Integer senderId;
-    Integer receiverId;
+    ProfileDto sender;
+    ProfileDto receiver;
     Reaction reaction;
 }

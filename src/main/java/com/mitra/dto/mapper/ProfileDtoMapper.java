@@ -15,16 +15,13 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
     private final DtoMapper<LocationDto, Location> locationDtoMapper;
     private final DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper;
     private final DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
-    private final DtoMapper<LikeDto, Like> likeDtoMapper;
     private final CloudStorageProvider cloudStorageProvider;
 
     public ProfileDtoMapper(DtoMapper<LocationDto, Location> locationDtoMapper, DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper,
-                            DtoMapper<SpecialityDto, Speciality> specialityDtoMapper, DtoMapper<LikeDto, Like> likeDtoMapper,
-                            CloudStorageProvider cloudStorageProvider) {
+                            DtoMapper<SpecialityDto, Speciality> specialityDtoMapper, CloudStorageProvider cloudStorageProvider) {
         this.locationDtoMapper = locationDtoMapper;
         this.instrumentDtoMapper = instrumentDtoMapper;
         this.specialityDtoMapper = specialityDtoMapper;
-        this.likeDtoMapper = likeDtoMapper;
         this.cloudStorageProvider = cloudStorageProvider;
     }
 
@@ -71,7 +68,6 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
                 .location(location)
                 .instruments(instruments)
                 .specialities(specialities)
-                //.likes(dto.getLikes().stream().map(likeDtoMapper::mapToEntity).collect(Collectors.toList()))
                 .build();
     }
 
@@ -113,7 +109,6 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
                 .location(locationDto)
                 .instruments(instrumentDtos)
                 .specialities(specialityDtos)
-                //.likes(entity.getLikes().stream().map(likeDtoMapper::mapToDto).collect(Collectors.toList()))
                 .build();
     }
 }

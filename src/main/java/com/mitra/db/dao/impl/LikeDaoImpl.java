@@ -16,11 +16,21 @@ public class LikeDaoImpl implements LikeDao {
     private final RowMapper<Like> likeRowMapper;
     private final QueryExecutor<Integer, Like> queryExecutor;
 
-    //SELECT sender_id, receiver_id, reaction FROM likes WHERE sender_id = ? OR receiver_id = ?;
-    public static final String GET_PROFILE_LIKES = String.format(
-            "SELECT %s, %s, %s FROM %s WHERE %s = ? OR %s = ?",
-            Column.LIKE.SENDER_ID, Column.LIKE.RECEIVER_ID, Column.LIKE.REACTION,
-            Table.LIKE, Column.LIKE.SENDER_ID, Column.LIKE.RECEIVER_ID);
+    //SELECT *
+    //FROM "like"
+    //         JOIN profile_full s ON s.id = "like".sender_id
+    //         JOIN profile_full r ON r.id = "like".receiver_id
+    public static final String GET_ALL_LIKES = String.format(
+            "SELECT * FROM %s " +
+                    "JOIN %s s ON s.%s = %s " +
+                    "JOIN %s r ON r.%s = %s ",
+            Table.LIKE,
+            "profile_full", Column.PROFILE.ID.shortName(), Column.LIKE.SENDER_ID,
+            "profile_full", Column.PROFILE.ID.shortName(), Column.LIKE.RECEIVER_ID);
+
+    public static final String GET_PROFILE_LIKES = GET_ALL_LIKES + String.format(
+            "WHERE %s = ? OR %s = ?",
+            Column.LIKE.SENDER_ID, Column.LIKE.RECEIVER_ID);
 
     public static final String LIKE = String.format(
             "INSERT INTO %s (%s, %s, %s) VALUES (?, ?, 0)",
@@ -51,6 +61,5 @@ public class LikeDaoImpl implements LikeDao {
         queryExecutor.update(connection, MAKE_RESPONSE, Reaction.getCodeByReaction(reaction),
                 senderId, receiverId);
     }
-
 
 }

@@ -10,6 +10,7 @@ import com.mitra.service.ProfileLikesService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,16 +43,28 @@ public class ProfileLikeServiceImpl implements ProfileLikesService {
     }
 
     @Override
+    public List<LikeDto> getProfileLikes(int profileId) {
+        try (Connection connection = ConnectionManager.get()) {
+            return likeDao.getProfileLikes(connection, profileId).stream()
+                    .map(likeDtoMapper::mapToDto)
+                    .collect(Collectors.toList());
+        } catch (SQLException e) {
+            return Collections.emptyList();
+            // TODO : log
+        }
+    }
+
+    @Override
     public List<LikeDto> getOwnLikes(int profileId, List<LikeDto> profileLikes) {
         return profileLikes.stream()
-                .filter(like -> like.getSenderId() == profileId)
+                .filter(like -> like.getSender().getId() == profileId)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<LikeDto> getWaitingResponseLikes(int profileId, List<LikeDto> profileLikes) {
         return profileLikes.stream()
-                .filter(like -> like.getReceiverId() == profileId)
+                .filter(like -> like.getReceiver().getId() == profileId)
                 .collect(Collectors.toList());
     }
 

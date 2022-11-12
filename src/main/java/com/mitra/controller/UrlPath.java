@@ -14,6 +14,7 @@ public enum UrlPath {
     UPDATE_PROFILE("/upd_profile", "changeInfo"),
     SEARCH("/search", "search"),
     SLIDE_SEARCH("/go", "slide_search"),
+    LIKES("/likes", "likes_page"),
     IMAGES("/images", "");
 
     private final String urlPath;

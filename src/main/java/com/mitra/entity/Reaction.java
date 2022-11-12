@@ -3,6 +3,7 @@ package com.mitra.entity;
 import java.util.Arrays;
 
 public enum Reaction {
+    NO(0),
     LIKE(1),
     DISLIKE(2),
     IGNORE(3);
@@ -20,7 +21,9 @@ public enum Reaction {
     }
 
     public static int getCodeByReaction(Reaction reaction){
-        if (reaction == LIKE) {
+        if (reaction == NO) {
+            return 0;
+        }else if (reaction == LIKE) {
             return 1;
         } else if (reaction == DISLIKE) {
             return 2;

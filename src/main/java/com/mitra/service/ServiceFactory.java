@@ -29,6 +29,7 @@ public class ServiceFactory {
         userService = new UserServiceImpl(daoFactory.getUserDao(), dtoMapperFactory.getUserDtoMapper(),
                 validatorFactory.getUserDtoValidator(), EncryptorSHA512.getInstance());
         profileService = new ProfileServiceImpl(daoFactory.getProfileDao(), dtoMapperFactory.getProfileDtoMapper());
+        profileLikesService = new ProfileLikeServiceImpl(daoFactory.getLikeDao(), dtoMapperFactory.getLikeDtoMapper());
     }
 
     public static ServiceFactory getInstance() {
@@ -53,5 +54,9 @@ public class ServiceFactory {
 
     public SpecialityService getSpecialityService() {
         return specialityService;
+    }
+
+    public ProfileLikesService getProfileLikesService() {
+        return profileLikesService;
     }
 }
