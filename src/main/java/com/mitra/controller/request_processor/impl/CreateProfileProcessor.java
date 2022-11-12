@@ -55,7 +55,7 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
 
         profileService.updateProfile(user.getId(), profile);
 
-        redirect(response, UrlPath.SEARCH.get());
+        redirect(response, UrlPath.MY_PROFILE.get());
     }
 
 }

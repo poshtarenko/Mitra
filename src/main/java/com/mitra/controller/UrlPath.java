@@ -5,7 +5,6 @@ import java.util.Optional;
 
 public enum UrlPath {
 
-    IMAGES("/images", ""),
     LANDING_PAGE("", "landing"),
     AUTHORIZATION("/auth", "authorization"),
     REGISTRATION("/register", "registration"),
@@ -14,7 +13,8 @@ public enum UrlPath {
     MY_PROFILE("/me", "my_profile"),
     UPDATE_PROFILE("/upd_profile", "changeInfo"),
     SEARCH("/search", "search"),
-    SLIDE_SEARCH("/go", "slide_search");
+    SLIDE_SEARCH("/go", "slide_search"),
+    IMAGES("/images", "");
 
     private final String urlPath;
     private final String jspFileName;
@@ -38,7 +38,7 @@ public enum UrlPath {
 
     public static Optional<UrlPath> getByPath(String path) {
         return Arrays.stream(UrlPath.values())
-                .filter(urlPath -> urlPath.getPathWithServletPrefix().startsWith(path))
+                .filter(urlPath -> urlPath.getPathWithServletPrefix().contains(path))
                 .findFirst();
     }
 
