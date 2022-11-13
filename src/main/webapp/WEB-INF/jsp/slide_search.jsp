@@ -69,6 +69,7 @@
                 <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/go" method="get">
                     <input type="submit" value="Наступна анкета">
                 </form>
+                <br>
                 <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/likes" method="post">
                     <input type="hidden" name="type" value="LIKE">
                     <input type="hidden" name="id" value="${requestScope.profile.getId()}">

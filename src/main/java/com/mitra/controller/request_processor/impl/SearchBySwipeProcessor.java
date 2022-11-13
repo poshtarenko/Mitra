@@ -27,16 +27,22 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int myId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
+
         Cookie profileIdsCookie = CookieHelper.getCookie(request, CookieNames.PROFILE_IDS.name());
         // update cookie if not exists
         if (profileIdsCookie == null) {
-            profileIdsCookie = updateProfileIdsCookie(response, profileIdsToString(profileService.getAllIds()));
+            List<Integer> allIds = profileService.getAllIds();
+            allIds.remove(Integer.valueOf(myId));
+            profileIdsCookie = updateProfileIdsCookie(response, profileIdsToString(allIds));
         }
 
         String profileIdsCookieValue = profileIdsCookie.getValue();
         // update cookie if value is incorrect
         if (profileIdsCookieValue == null || profileIdsCookieValue.equals("")){
-            profileIdsCookieValue = profileIdsToString(profileService.getAllIds());
+            List<Integer> allIds = profileService.getAllIds();
+            allIds.remove(Integer.valueOf(myId));
+            profileIdsCookieValue = profileIdsToString(allIds);
             updateProfileIdsCookie(response, profileIdsCookieValue);
         }
 
@@ -56,7 +62,6 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
         updateProfileIdsCookie(response, profileIdsCookieValue);
 
         // skip profile if we already liked it or this user liked us
-        int myId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
         if (profileLikeService.getLike(myId, id).isPresent()
                 || profileLikeService.getLike(id, myId).isPresent()) {
             redirect(response, UrlPath.SWIPE_SEARCH.get());
