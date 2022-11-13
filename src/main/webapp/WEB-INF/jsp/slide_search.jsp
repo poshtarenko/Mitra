@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../resources/img/icon.png">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/changeInfoStyle.css">
 
     <!-- FONT AWESOME  -->
@@ -33,32 +34,46 @@
         <%@ include file="sidebar.jsp" %>
 
         <main class="main">
+            <div class="main-content">
+                <br>
+                <h2>Пошук</h2>
+                <c:if test="${not empty requestScope.profile.getPhotoPath()}">
+                    <img width="250" height="250"
+                         src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
+                </c:if>
+                <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                    <img width="250" height="250"
+                         src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
+                </c:if>
+                <h3>
+                    <a href="${pageContext.request.contextPath}/app/profile?id=${requestScope.profile.getId()}">${requestScope.profile.getName()}</a>
+                </h3>
+                <p><b>${requestScope.profile.getLocation().getCity()}, ${requestScope.profile.getAge()}
+                    років, ${requestScope.profile.getGender().name()}</b></p>
+                <c:if test="${not empty requestScope.profile.getInstruments()}">
+                    <p><b>Інструменти :</b>
+                        <c:forEach var="instrument" items="${requestScope.profile.getInstruments()}">
+                            <span>${instrument.getName()} </span>
+                        </c:forEach>
+                    </p>
+                </c:if>
+                <c:if test="${not empty requestScope.profile.getSpecialities()}">
+                    <p><b>Спеціальність :</b>
+                        <c:forEach var="speciality" items="${requestScope.profile.getSpecialities()}">
+                            <span>${speciality.getName()} </span>
+                        </c:forEach>
+                    </p>
+                </c:if>
+                <p>${requestScope.profile.getText()}</p>
 
-            <br><h2>Пошук свайпом</h2>
-            <c:if test="${not empty requestScope.profile.getPhotoPath()}">
-                <img width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
-            </c:if>
-            <c:if test="${empty requestScope.profile.getPhotoPath()}">
-                <img width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
-            </c:if>
-            <h3>${requestScope.profile.getName()}</h3>
-            <p><b>Вік :</b> ${requestScope.profile.getAge()} років</p>
-            <p><b>Місто :</b> ${requestScope.profile.getLocation().getCity()}</p>
-            <p><b>Стать :</b> ${requestScope.profile.getGender().name()}</p>
-            <p><b>Текст анкети :</b> ${requestScope.profile.getText()}</p>
-            <p><b>Інструменти :</b>
-                <c:forEach var="instrument" items="${requestScope.profile.getInstruments()}">
-                    <span>${instrument.getName()}   </span>
-                </c:forEach>
-            </p>
-            <p><b>Спеціальність :</b>
-                <c:forEach var="speciality" items="${requestScope.profile.getSpecialities()}">
-                    <span>${speciality.getName()}   </span>
-                </c:forEach>
-            </p>
-
-            <a href="${pageContext.request.contextPath}/app/go?i=${requestScope.nextProfileId}">Наступна анкета!</a>
-
+                <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/go" method="get">
+                    <input type="submit" value="Наступна анкета">
+                </form>
+                <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/likes" method="post">
+                    <input type="hidden" name="id" value="${requestScope.profile.getId()}">
+                    <input type="submit" value="Давай знайомитись!">
+                </form>
+            </div>
         </main>
     </div>
     <!-- </div> -->

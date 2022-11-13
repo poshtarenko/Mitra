@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../resources/img/icon.png">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/changeInfoStyle.css">
 
     <!-- FONT AWESOME  -->
@@ -34,35 +35,35 @@
 
         <main class="main">
 
-            <br><h2>Всі анкети користувачів :</h2>
+            <div class="main-content">
+                <br><h2>Всі анкети користувачів :</h2>
 
-            <c:forEach var="profile" items="${requestScope.profiles}">
-                <hr>
-                <c:if test="${not empty profile.getPhotoPath()}">
-                    <img width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${profile.getPhotoPath()}"/>
-                </c:if>
-                <c:if test="${empty profile.getPhotoPath()}">
-                    <img width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
-                </c:if>
+                <c:forEach var="profile" items="${requestScope.profiles}">
+                    <hr>
+                    <c:if test="${not empty profile.getPhotoPath()}">
+                        <img width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${profile.getPhotoPath()}"/>
+                    </c:if>
+                    <c:if test="${empty profile.getPhotoPath()}">
+                        <img width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
+                    </c:if>
 
-                <h3>${profile.getName()}</h3>
-                <p><b>Вік :</b> ${profile.getAge()} років</p>
-                <p><b>Місто :</b> ${profile.getLocation().getCity()}</p>
-                <p><b>Стать :</b> ${profile.getGender().name()}</p>
-                <p><b>Текст анкети :</b> ${profile.getText()}</p>
-                <p><b>Інструменти :</b>
-                    <c:forEach var="instrument" items="${profile.getInstruments()}">
-                        <span>${instrument.getName()} </span>
-                    </c:forEach>
-                </p>
-                <p><b>Спеціальність :</b>
-                    <c:forEach var="speciality" items="${profile.getSpecialities()}">
-                        <span>${speciality.getName()} </span>
-                    </c:forEach>
-                </p>
+                    <h3><a href="${pageContext.request.contextPath}/app/profile?id=${profile.getId()}">${profile.getName()}</a></h3>
+                    <p><b>${profile.getLocation().getCity()}, ${profile.getAge()} років, ${profile.getGender().name()}</b></p>
+                    <p><b>Текст анкети :</b> ${profile.getText()}</p>
+                    <p><b>Інструменти :</b>
+                        <c:forEach var="instrument" items="${profile.getInstruments()}">
+                            <span>${instrument.getName()} </span>
+                        </c:forEach>
+                    </p>
+                    <p><b>Спеціальність :</b>
+                        <c:forEach var="speciality" items="${profile.getSpecialities()}">
+                            <span>${speciality.getName()} </span>
+                        </c:forEach>
+                    </p>
+                    <p>${profile.getText()}</p>
 
-            </c:forEach>
-
+                </c:forEach>
+            </div>
         </main>
     </div>
     <!-- </div> -->

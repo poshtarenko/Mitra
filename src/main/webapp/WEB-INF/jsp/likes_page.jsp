@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/changeInfoStyle.css">
-
+    <link rel="shortcut icon" href="../../resources/img/icon.png">
     <!-- FONT AWESOME  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -33,22 +33,41 @@
         <%@ include file="sidebar.jsp" %>
 
         <main class="main">
+            <div class="main-content">
+                <br>
+                <c:if test="${not empty requestScope.mutualLikes}">
+                    <h4>Друзі</h4>
+                    <c:forEach var="like" items="${requestScope.mutualLikes}">
+                        <p>
+                            <a href="${pageContext.request.contextPath}/app/profile?id=${like.getReceiver().getId()}">${like.getReceiver().getName()}</a>
+                        </p>
+                    </c:forEach><br>
+                </c:if>
+                <c:if test="${not empty requestScope.waitingResponseLikes}">
+                    <h4>Очікують моєї відповіді</h4>
+                    <c:forEach var="like" items="${requestScope.waitingResponseLikes}">
+                        <p>
+                            <a href="${pageContext.request.contextPath}/app/profile?id=${like.getSender().getId()}">${like.getSender().getName()}</a>
+                        </p>
+                    </c:forEach><br>
+                </c:if>
 
-            <h4>Взаємні лайки :</h4>
-            <c:forEach var="like" items="${requestScope.mutualLikes}">
-                <p>${like.getReceiver().getName()}</p>
-            </c:forEach>
+                <c:if test="${not empty requestScope.ownLikes}">
+                    <h4>Я очікую на відповідь</h4>
+                    <c:forEach var="like" items="${requestScope.ownLikes}">
+                        <p>
+                            <a href="${pageContext.request.contextPath}/app/profile?id=${like.getReceiver().getId()}">${like.getReceiver().getName()}</a>
+                        </p>
+                    </c:forEach><br>
+                </c:if>
 
-            <h4>Очікують реакції :</h4>
-            <c:forEach var="like" items="${requestScope.waitingResponseLikes}">
-                <p>${like.getReceiver().getName()}</p>
-            </c:forEach>
-
-            <h4>Мої лайки :</h4>
-            <c:forEach var="like" items="${requestScope.ownLikes}">
-                <p>${like.getReceiver().getName()}</p>
-            </c:forEach>
-
+                <c:if test="${empty requestScope.mutualLikes and empty requestScope.waitingResponseLikes and empty requestScope.ownLikes}">
+                    <p>
+                        <a href="${pageContext.request.contextPath}/app/go">Перейдіть до пошуку і спробуйти знайти
+                            товариша :)</a>
+                    </p>
+                </c:if>
+            </div>
         </main>
     </div>
     <!-- </div> -->

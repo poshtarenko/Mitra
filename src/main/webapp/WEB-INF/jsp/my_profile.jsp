@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../resources/img/icon.png">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/changeInfoStyle.css">
 
     <!-- FONT AWESOME  -->
@@ -33,32 +34,30 @@
         <%@ include file="sidebar.jsp" %>
 
         <main class="main">
-
-            <h2>Моя анкета</h2>
-            <a href="${pageContext.request.contextPath}/app/upd_profile">ОНОВИТИ АНКЕТУ</a>
-            <br>
-            <c:if test="${not empty requestScope.profile.getPhotoPath()}">
-                <img width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
-            </c:if>
-            <c:if test="${empty requestScope.profile.getPhotoPath()}">
-                <img width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
-            </c:if>
-            <h3>${requestScope.profile.getName()}</h3>
-            <p><b>Вік :</b> ${requestScope.profile.getAge()} років</p>
-            <p><b>Місто :</b> ${requestScope.profile.getLocation().getCity()}</p>
-            <p><b>Стать :</b> ${requestScope.profile.getGender().name()}</p>
-            <p><b>Текст анкети :</b> ${requestScope.profile.getText()}</p>
-            <p><b>Інструменти :</b>
-                <c:forEach var="instrument" items="${requestScope.profile.getInstruments()}">
-                    <span>${instrument.getName()}   </span>
-                </c:forEach>
-            </p>
-            <p><b>Спеціальність :</b>
-                <c:forEach var="speciality" items="${requestScope.profile.getSpecialities()}">
-                    <span>${speciality.getName()}   </span>
-                </c:forEach>
-            </p>
-
+            <div class="main-content">
+                <h2>Моя анкета</h2>
+                <a href="${pageContext.request.contextPath}/app/upd_profile">ОНОВИТИ АНКЕТУ</a>
+                <br>
+                <c:if test="${not empty requestScope.profile.getPhotoPath()}">
+                    <img class="rounded img-rounded" width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
+                </c:if>
+                <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                    <img class="rounded img-rounded" width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
+                </c:if>
+                <h3>${requestScope.profile.getName()}</h3>
+                <p><b>${requestScope.profile.getLocation().getCity()}, ${requestScope.profile.getAge()} років, ${requestScope.profile.getGender().name()}</b></p>
+                <p><b>Інструменти :</b>
+                    <c:forEach var="instrument" items="${requestScope.profile.getInstruments()}">
+                        <span>${instrument.getName()}   </span>
+                    </c:forEach>
+                </p>
+                <p><b>Спеціальність :</b>
+                    <c:forEach var="speciality" items="${requestScope.profile.getSpecialities()}">
+                        <span>${speciality.getName()}   </span>
+                    </c:forEach>
+                </p>
+                <p>${requestScope.profile.getText()}</p>
+            </div>
         </main>
     </div>
     <!-- </div> -->
