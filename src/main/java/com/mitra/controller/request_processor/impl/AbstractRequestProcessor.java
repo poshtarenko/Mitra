@@ -25,11 +25,6 @@ abstract class AbstractRequestProcessor implements RequestProcessor {
     }
 
     @Override
-    public void processPatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        methodNotAllowed(request, response, HttpMethod.PATCH);
-    }
-
-    @Override
     public void processDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         methodNotAllowed(request, response, HttpMethod.DELETE);
     }

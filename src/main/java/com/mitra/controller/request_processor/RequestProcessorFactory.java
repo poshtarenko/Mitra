@@ -23,11 +23,12 @@ public class RequestProcessorFactory {
         requestProcessorsMap.put(UrlPath.LOGOUT, new LogoutProcessor());
         requestProcessorsMap.put(UrlPath.CREATE_PROFILE, new CreateProfileProcessor());
         requestProcessorsMap.put(UrlPath.UPDATE_PROFILE, new UpdateProfileProcessor());
+        requestProcessorsMap.put(UrlPath.MY_PROFILE, new MyProfileProcessor());
+        requestProcessorsMap.put(UrlPath.PROFILE, new ProfileProcessor());
         requestProcessorsMap.put(UrlPath.SEARCH, new SearchProcessor());
-        requestProcessorsMap.put(UrlPath.SLIDE_SEARCH, new SearchBySwipeProcessor());
+        requestProcessorsMap.put(UrlPath.SWIPE_SEARCH, new SearchBySwipeProcessor());
         requestProcessorsMap.put(UrlPath.IMAGES,
                 new ImageProcessor(new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService())));
-        requestProcessorsMap.put(UrlPath.MY_PROFILE, new MyProfileProcessor());
         requestProcessorsMap.put(UrlPath.LIKES, new LikesProcessor(serviceFactory.getProfileLikesService()));
     }
 

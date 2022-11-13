@@ -7,6 +7,7 @@ import com.mitra.exception.PageDontExistException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 @WebServlet(UrlPath.SERVLET_CONST + "/*")
 @MultipartConfig()
-public class DispatcherServlet extends HttpPatchServlet {
+public class DispatcherServlet extends HttpServlet {
 
     private static final RequestProcessorFactory requestProcessorFactory = new RequestProcessorFactory();
 
@@ -29,12 +30,6 @@ public class DispatcherServlet extends HttpPatchServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         getProcessor(String.valueOf(request.getRequestURI()))
                 .processPost(request, response);
-    }
-
-    @Override
-    public void doPatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getProcessor(String.valueOf(request.getRequestURI()))
-                .processPatch(request, response);
     }
 
     @Override

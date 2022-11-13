@@ -10,10 +10,11 @@ public enum UrlPath {
     REGISTRATION("/register", "registration"),
     LOGOUT("/logout", ""),
     CREATE_PROFILE("/create_profile", "formCreateGrouped"),
+    PROFILE("/profile", "profile"),
     MY_PROFILE("/me", "my_profile"),
     UPDATE_PROFILE("/upd_profile", "changeInfo"),
     SEARCH("/search", "search"),
-    SLIDE_SEARCH("/go", "slide_search"),
+    SWIPE_SEARCH("/go", "slide_search"),
     LIKES("/likes", "likes_page"),
     IMAGES("/images", "");
 

@@ -120,6 +120,6 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
 
         profileService.updateProfile(userId, profileDto);
 
-        redirect(response, UrlPath.UPDATE_PROFILE.get());
+        redirect(response, UrlPath.MY_PROFILE.get());
     }
 }

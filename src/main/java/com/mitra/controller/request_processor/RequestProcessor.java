@@ -12,8 +12,6 @@ public interface RequestProcessor {
 
     void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
-    void processPatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
-
     void processDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
 }

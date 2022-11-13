@@ -1,8 +1,11 @@
 package com.mitra.controller.request_processor.impl;
 
+import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.controller.request_processor.CookieNames;
 import com.mitra.dto.ProfileDto;
+import com.mitra.dto.UserDto;
+import com.mitra.service.ProfileLikeService;
 import com.mitra.service.ProfileService;
 import com.mitra.service.ServiceFactory;
 import com.mitra.util.CookieHelper;
@@ -20,6 +23,7 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
     private static final char delimiter = 'x';
 
     private final ProfileService profileService = ServiceFactory.getInstance().getProfileService();
+    private final ProfileLikeService profileLikeService = ServiceFactory.getInstance().getProfileLikesService();
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,7 +44,8 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
 
         Optional<ProfileDto> profileOptional = profileService.getById(id);
         if (!profileOptional.isPresent()){
-            redirect(response, UrlPath.SLIDE_SEARCH.get());
+            redirect(response, UrlPath.SWIPE_SEARCH.get());
+            return;
         }
 
         request.setAttribute("profile", profileOptional.get());
@@ -50,7 +55,15 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
         profileIdsCookieValue = cutProfileIds(profileIdsCookieValue, id);
         updateProfileIdsCookie(response, profileIdsCookieValue);
 
-        forward(request, response, UrlPath.SLIDE_SEARCH.getJspFileName());
+        // skip profile if we already liked it or this user liked us
+        int myId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
+        if (profileLikeService.getLike(myId, id).isPresent()
+                || profileLikeService.getLike(id, myId).isPresent()) {
+            redirect(response, UrlPath.SWIPE_SEARCH.get());
+            return;
+        }
+
+        forward(request, response, UrlPath.SWIPE_SEARCH.getJspFileName());
     }
 
     private String profileIdsToString(List<Integer> profileIds) {
