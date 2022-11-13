@@ -21,7 +21,6 @@ public class Profile implements Identifiable<Integer> {
     String photoPath;
     List<Instrument> instruments;
     List<Speciality> specialities;
-    List<Like> likes;
     Track previewTrack;
     List<Track> tracks;
 }

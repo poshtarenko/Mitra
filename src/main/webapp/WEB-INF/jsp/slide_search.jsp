@@ -70,6 +70,7 @@
                     <input type="submit" value="Наступна анкета">
                 </form>
                 <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/likes" method="post">
+                    <input type="hidden" name="type" value="LIKE">
                     <input type="hidden" name="id" value="${requestScope.profile.getId()}">
                     <input type="submit" value="Давай знайомитись!">
                 </form>

@@ -87,6 +87,8 @@ const changeStages = function (){
             title.textContent = "Якої ти статі?";
 
             description.textContent = "Вкажи свою стать.";
+
+            changeContent("\"Якої ти статі?\"", "Вкажи свою стать.");
         },400)
     }
     if (stage ===3){
