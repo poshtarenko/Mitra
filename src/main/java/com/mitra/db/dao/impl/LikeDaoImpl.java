@@ -10,16 +10,13 @@ import com.mitra.entity.Reaction;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Optional;
 
 public class LikeDaoImpl implements LikeDao {
 
     private final RowMapper<Like> likeRowMapper;
     private final QueryExecutor<Integer, Like> queryExecutor;
 
-    //SELECT *
-    //FROM "like"
-    //         JOIN profile_full s ON s.id = "like".sender_id
-    //         JOIN profile_full r ON r.id = "like".receiver_id
     public static final String GET_ALL_LIKES = String.format(
             "SELECT * FROM %s " +
                     "JOIN %s s ON s.%s = %s " +
@@ -32,13 +29,17 @@ public class LikeDaoImpl implements LikeDao {
             "WHERE %s = ? OR %s = ?",
             Column.LIKE.SENDER_ID, Column.LIKE.RECEIVER_ID);
 
+    public static final String GET_BY_SENDER_AND_RECEIVER = GET_ALL_LIKES + String.format(
+            "WHERE %s = ? AND %s = ?",
+            Column.LIKE.SENDER_ID, Column.LIKE.RECEIVER_ID);
+
     public static final String LIKE = String.format(
             "INSERT INTO %s (%s, %s, %s) VALUES (?, ?, 0)",
-            Table.LIKE, Column.LIKE.SENDER_ID, Column.LIKE.RECEIVER_ID, Column.LIKE.REACTION);
+            Table.LIKE, Column.LIKE.SENDER_ID.shortName(), Column.LIKE.RECEIVER_ID.shortName(), Column.LIKE.REACTION.shortName());
 
     public static final String MAKE_RESPONSE = String.format(
             "UPDATE %s SET %s = ? WHERE %s = ? AND %s = ?",
-            Table.LIKE, Column.LIKE.REACTION, Column.LIKE.SENDER_ID, Column.LIKE.RECEIVER_ID);
+            Table.LIKE, Column.LIKE.REACTION.shortName(), Column.LIKE.SENDER_ID.shortName(), Column.LIKE.RECEIVER_ID.shortName());
 
 
     public LikeDaoImpl(RowMapper<Like> likeRowMapper) {
@@ -49,6 +50,11 @@ public class LikeDaoImpl implements LikeDao {
     @Override
     public List<Like> getProfileLikes(Connection connection, int profileId) {
         return queryExecutor.findAll(connection, GET_PROFILE_LIKES, profileId, profileId);
+    }
+
+    @Override
+    public Optional<Like> findBySenderAndReceiver(Connection connection, int senderId, int receiverId) {
+        return queryExecutor.find(connection, GET_BY_SENDER_AND_RECEIVER, senderId, receiverId);
     }
 
     @Override
