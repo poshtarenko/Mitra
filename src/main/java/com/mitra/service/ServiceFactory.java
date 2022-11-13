@@ -12,7 +12,7 @@ public class ServiceFactory {
 
     private UserService userService;
     private ProfileService profileService;
-    private ProfileLikesService profileLikesService;
+    private ProfileLikeService profileLikeService;
     private LocationService locationService;
     private InstrumentService instrumentService;
     private SpecialityService specialityService;
@@ -25,11 +25,11 @@ public class ServiceFactory {
         locationService = new LocationServiceImpl(daoFactory.getLocationDao(), dtoMapperFactory.getLocationDtoMapper());
         instrumentService = new InstrumentServiceImpl(daoFactory.getInstrumentDao(), dtoMapperFactory.getInstrumentDtoMapper());
         specialityService = new SpecialityServiceImpl(daoFactory.getSpecialityDao(), dtoMapperFactory.getSpecialityDtoMapper());
-        profileLikesService = new ProfileLikeServiceImpl(daoFactory.getLikeDao(), dtoMapperFactory.getLikeDtoMapper());
+        profileLikeService = new ProfileLikeServiceImpl(daoFactory.getLikeDao(), dtoMapperFactory.getLikeDtoMapper());
         userService = new UserServiceImpl(daoFactory.getUserDao(), dtoMapperFactory.getUserDtoMapper(),
                 validatorFactory.getUserDtoValidator(), EncryptorSHA512.getInstance());
         profileService = new ProfileServiceImpl(daoFactory.getProfileDao(), dtoMapperFactory.getProfileDtoMapper());
-        profileLikesService = new ProfileLikeServiceImpl(daoFactory.getLikeDao(), dtoMapperFactory.getLikeDtoMapper());
+        profileLikeService = new ProfileLikeServiceImpl(daoFactory.getLikeDao(), dtoMapperFactory.getLikeDtoMapper());
     }
 
     public static ServiceFactory getInstance() {
@@ -56,7 +56,7 @@ public class ServiceFactory {
         return specialityService;
     }
 
-    public ProfileLikesService getProfileLikesService() {
-        return profileLikesService;
+    public ProfileLikeService getProfileLikesService() {
+        return profileLikeService;
     }
 }

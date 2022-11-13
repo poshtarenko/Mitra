@@ -6,15 +6,16 @@ import com.mitra.dto.LikeDto;
 import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Like;
 import com.mitra.entity.Reaction;
-import com.mitra.service.ProfileLikesService;
+import com.mitra.service.ProfileLikeService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ProfileLikeServiceImpl implements ProfileLikesService {
+public class ProfileLikeServiceImpl implements ProfileLikeService {
 
     private final LikeDao likeDao;
     private final DtoMapper<LikeDto, Like> likeDtoMapper;
@@ -55,16 +56,16 @@ public class ProfileLikeServiceImpl implements ProfileLikesService {
     }
 
     @Override
-    public List<LikeDto> getOwnLikes(int profileId, List<LikeDto> profileLikes) {
+    public List<LikeDto> getOwnWithoutResponseLikes(int profileId, List<LikeDto> profileLikes) {
         return profileLikes.stream()
-                .filter(like -> like.getSender().getId() == profileId)
+                .filter(like -> like.getSender().getId() == profileId && like.getReaction() != Reaction.LIKE)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<LikeDto> getWaitingResponseLikes(int profileId, List<LikeDto> profileLikes) {
         return profileLikes.stream()
-                .filter(like -> like.getReceiver().getId() == profileId)
+                .filter(like -> like.getReceiver().getId() == profileId && like.getReaction() == Reaction.NO)
                 .collect(Collectors.toList());
     }
 
@@ -75,5 +76,14 @@ public class ProfileLikeServiceImpl implements ProfileLikesService {
                 .collect(Collectors.toList());
     }
 
-
+    @Override
+    public Optional<LikeDto> getLike(int senderId, int receiverId) {
+        try (Connection connection = ConnectionManager.get()) {
+            return likeDao.findBySenderAndReceiver(connection, senderId, receiverId)
+                    .map(likeDtoMapper::mapToDto);
+        } catch (SQLException e) {
+            return Optional.empty();
+            // TODO : log
+        }
+    }
 }
