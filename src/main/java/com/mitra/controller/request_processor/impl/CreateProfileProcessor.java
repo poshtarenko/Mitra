@@ -3,6 +3,7 @@ package com.mitra.controller.request_processor.impl;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.controller.request_processor.util.LocationHelper;
+import com.mitra.controller.request_processor.util.SessionAttrHelper;
 import com.mitra.dto.LocationDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.UserDto;
@@ -54,6 +55,9 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
                 .build();
 
         profileService.updateProfile(user.getId(), profile);
+
+        // update profile field in user session attribute
+        SessionAttrHelper.getUserWithUpdatedProfile(request, profile);
 
         redirect(response, UrlPath.MY_PROFILE.get());
     }

@@ -63,7 +63,7 @@
 
                 <c:if test="${empty requestScope.mutualLikes and empty requestScope.waitingResponseLikes and empty requestScope.ownLikes}">
                     <p>
-                        <a href="${pageContext.request.contextPath}/app/go">Перейдіть до пошуку і спробуйти знайти
+                        <a href="${pageContext.request.contextPath}/app/go">Перейдіть до пошуку і спробуйте знайти
                             товариша :)</a>
                     </p>
                 </c:if>
