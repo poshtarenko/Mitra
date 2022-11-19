@@ -19,7 +19,7 @@ public class MyProfileProcessor extends AbstractRequestProcessor {
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
-        ProfileDto profile = profileService.getById(id)
+        ProfileDto profile = profileService.find(id)
                 .orElseThrow(() -> new ServletException("User without profile must be impossible, but it does not"));
         request.setAttribute("profile", profile);
         forward(request, response, UrlPath.MY_PROFILE.getJspFileName());

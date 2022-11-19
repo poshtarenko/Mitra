@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 public class ProfileProcessor extends AbstractRequestProcessor {
@@ -31,7 +30,7 @@ public class ProfileProcessor extends AbstractRequestProcessor {
         }
         int profileId = Integer.parseInt(idParam);
 
-        Optional<ProfileDto> profile = profileService.getById(profileId);
+        Optional<ProfileDto> profile = profileService.find(profileId);
         if (!profile.isPresent()) {
             redirect(response, UrlPath.MY_PROFILE.get());
             return;

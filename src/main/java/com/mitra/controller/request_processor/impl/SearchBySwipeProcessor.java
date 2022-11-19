@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public class SearchBySwipeProcessor extends AbstractRequestProcessor {
 
-    private static final char delimiter = 'x';
+    private static final char DELIMITER = 'x';
 
     private final ProfileService profileService = ServiceFactory.getInstance().getProfileService();
     private final ProfileLikeService profileLikeService = ServiceFactory.getInstance().getProfileLikesService();
@@ -48,7 +48,7 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
 
         int id = getProfileIdFromString(profileIdsCookieValue);
 
-        Optional<ProfileDto> profileOptional = profileService.getById(id);
+        Optional<ProfileDto> profileOptional = profileService.find(id);
         if (!profileOptional.isPresent()){
             redirect(response, UrlPath.SWIPE_SEARCH.get());
             return;
@@ -71,21 +71,21 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
         forward(request, response, UrlPath.SWIPE_SEARCH.getJspFileName());
     }
 
-    private String profileIdsToString(List<Integer> profileIds) {
+    public String profileIdsToString(List<Integer> profileIds) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Integer profileId : profileIds) {
-            stringBuilder.append(profileId).append(delimiter);
+            stringBuilder.append(profileId).append(DELIMITER);
         }
         return stringBuilder.toString();
     }
 
-    private int getProfileIdFromString(String profileIds) {
+    public int getProfileIdFromString(String profileIds) {
         StringBuilder number = new StringBuilder();
 
         for (int i = 0; i < profileIds.length(); i++) {
             char sym = profileIds.charAt(i);
 
-            if (sym != delimiter)
+            if (sym != DELIMITER)
                 number.append(sym);
             else
                 break;
@@ -94,13 +94,13 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
         return Integer.parseInt(number.toString());
     }
 
-    private String cutProfileIds(String profileIds, int profileId) {
-        String profileIds1 = delimiter + profileIds;
-        String substrToCut = delimiter + String.valueOf(profileId) + delimiter;
-        return profileIds1.replace(substrToCut, String.valueOf(delimiter)).substring(1);
+    public String cutProfileIds(String profileIds, int profileId) {
+        String profileIds1 = DELIMITER + profileIds;
+        String substrToCut = DELIMITER + String.valueOf(profileId) + DELIMITER;
+        return profileIds1.replace(substrToCut, String.valueOf(DELIMITER)).substring(1);
     }
 
-    private Cookie updateProfileIdsCookie(HttpServletResponse response, String value) {
+    public Cookie updateProfileIdsCookie(HttpServletResponse response, String value) {
         Cookie cookie = new Cookie(CookieNames.PROFILE_IDS.name(), value);
         cookie.setMaxAge(8 * 60 * 60); // 8 hours
         response.addCookie(cookie);

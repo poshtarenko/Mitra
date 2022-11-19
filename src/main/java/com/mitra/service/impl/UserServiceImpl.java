@@ -8,6 +8,7 @@ import com.mitra.entity.Profile;
 import com.mitra.entity.Role;
 import com.mitra.entity.User;
 import com.mitra.exception.ValidationException;
+import com.mitra.security.EncryptorSHA512;
 import com.mitra.security.PasswordEncryptor;
 import com.mitra.service.UserService;
 import com.mitra.validator.Validator;

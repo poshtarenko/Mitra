@@ -15,8 +15,6 @@ public interface ProfileService {
 
     Optional<ProfileDto> find(int id);
 
-    Optional<ProfileDto> getById(int id);
-
     void updateProfile(int userId, ProfileDto profileDto);
 
 }

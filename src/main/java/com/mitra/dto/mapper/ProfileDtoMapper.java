@@ -93,10 +93,10 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
         else
             specialityDtos = Collections.emptyList();
 
-        InputStream photoContent = null;
+//        InputStream photoContent = null;
         String photoPath = entity.getPhotoPath();
-        if (photoPath != null && !photoPath.equals(""))
-            photoContent = cloudStorageProvider.getImage(entity.getPhotoPath());
+//        if (photoPath != null && !photoPath.equals(""))
+//            photoContent = cloudStorageProvider.getImage(entity.getPhotoPath());
 
         return ProfileDto.builder()
                 .id(entity.getId())
@@ -105,7 +105,7 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
                 .gender(entity.getGender())
                 .text(entity.getText())
                 .photoPath(photoPath)
-                .photoContent(photoContent)
+//                .photoContent(photoContent)
                 .location(locationDto)
                 .instruments(instrumentDtos)
                 .specialities(specialityDtos)
