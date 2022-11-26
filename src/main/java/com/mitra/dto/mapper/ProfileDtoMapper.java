@@ -15,14 +15,13 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
     private final DtoMapper<LocationDto, Location> locationDtoMapper;
     private final DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper;
     private final DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
-    private final CloudStorageProvider cloudStorageProvider;
 
-    public ProfileDtoMapper(DtoMapper<LocationDto, Location> locationDtoMapper, DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper,
-                            DtoMapper<SpecialityDto, Speciality> specialityDtoMapper, CloudStorageProvider cloudStorageProvider) {
+    public ProfileDtoMapper(DtoMapper<LocationDto, Location> locationDtoMapper,
+                            DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper,
+                            DtoMapper<SpecialityDto, Speciality> specialityDtoMapper) {
         this.locationDtoMapper = locationDtoMapper;
         this.instrumentDtoMapper = instrumentDtoMapper;
         this.specialityDtoMapper = specialityDtoMapper;
-        this.cloudStorageProvider = cloudStorageProvider;
     }
 
     @Override
@@ -47,24 +46,13 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
         } else
             specialities = Collections.emptyList();
 
-        String photoPath = dto.getPhotoPath();
-        try {
-            if (dto.getPhotoContent() != null && dto.getPhotoContent().available() > 0) {
-                if (photoPath != null && !photoPath.equals(""))
-                    cloudStorageProvider.deleteFile(photoPath);
-                photoPath = cloudStorageProvider.setProfilePhoto(dto.getId(), dto.getPhotoContent());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         return Profile.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .age(dto.getAge())
                 .gender(dto.getGender())
                 .text(dto.getText())
-                .photoPath(photoPath)
+                .photoPath(dto.getPhotoPath())
                 .location(location)
                 .instruments(instruments)
                 .specialities(specialities)
@@ -93,19 +81,13 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
         else
             specialityDtos = Collections.emptyList();
 
-//        InputStream photoContent = null;
-        String photoPath = entity.getPhotoPath();
-//        if (photoPath != null && !photoPath.equals(""))
-//            photoContent = cloudStorageProvider.getImage(entity.getPhotoPath());
-
         return ProfileDto.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .age(entity.getAge())
                 .gender(entity.getGender())
                 .text(entity.getText())
-                .photoPath(photoPath)
-//                .photoContent(photoContent)
+                .photoPath(entity.getPhotoPath())
                 .location(locationDto)
                 .instruments(instrumentDtos)
                 .specialities(specialityDtos)

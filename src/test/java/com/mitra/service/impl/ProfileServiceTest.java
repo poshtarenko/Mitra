@@ -85,7 +85,7 @@ class ProfileServiceTest {
     @Test
     @Order(4)
     void getAllIds() {
-        List<Integer> allIds = profileService.getAllIds();
+        List<Integer> allIds = profileService.getAllIDs();
         List<Integer> allIds2 = profileService.findAll().stream()
                 .map(p -> p.getId())
                 .collect(Collectors.toList());

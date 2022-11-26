@@ -1,5 +1,7 @@
 package com.mitra.service;
 
+import com.mitra.cloud.CloudStorageProviderImpl;
+import com.mitra.cloud.GoogleDriveInitializer;
 import com.mitra.db.dao.DaoFactory;
 import com.mitra.dto.mapper.DtoMapperFactory;
 import com.mitra.security.EncryptorSHA512;
@@ -28,7 +30,8 @@ public class ServiceFactory {
         profileLikeService = new ProfileLikeServiceImpl(daoFactory.getLikeDao(), dtoMapperFactory.getLikeDtoMapper());
         userService = new UserServiceImpl(daoFactory.getUserDao(), dtoMapperFactory.getUserDtoMapper(),
                 validatorFactory.getUserDtoValidator(), EncryptorSHA512.getInstance());
-        profileService = new ProfileServiceImpl(daoFactory.getProfileDao(), dtoMapperFactory.getProfileDtoMapper());
+        profileService = new ProfileServiceImpl(daoFactory.getProfileDao(), dtoMapperFactory.getProfileDtoMapper(),
+                new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService()));
         profileLikeService = new ProfileLikeServiceImpl(daoFactory.getLikeDao(), dtoMapperFactory.getLikeDtoMapper());
     }
 

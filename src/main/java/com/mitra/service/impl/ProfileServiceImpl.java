@@ -1,14 +1,15 @@
 package com.mitra.service.impl;
 
+import com.mitra.cloud.CloudStorageProvider;
 import com.mitra.db.connection.ConnectionManager;
-import com.mitra.db.dao.LikeDao;
 import com.mitra.db.dao.ProfileDao;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Profile;
-import com.mitra.entity.Reaction;
 import com.mitra.service.ProfileService;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -20,10 +21,12 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileDao profileDao;
     private final DtoMapper<ProfileDto, Profile> profileDtoMapper;
+    private final CloudStorageProvider cloudStorageProvider;
 
-    public ProfileServiceImpl(ProfileDao profileDao, DtoMapper<ProfileDto, Profile> profileDtoMapper) {
+    public ProfileServiceImpl(ProfileDao profileDao, DtoMapper<ProfileDto, Profile> profileDtoMapper, CloudStorageProvider cloudStorageProvider) {
         this.profileDao = profileDao;
         this.profileDtoMapper = profileDtoMapper;
+        this.cloudStorageProvider = cloudStorageProvider;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public List<Integer> getAllIds() {
+    public List<Integer> getAllIDs() {
         try (Connection connection = ConnectionManager.get()) {
             return profileDao.getAllIds(connection);
         } catch (SQLException e) {
@@ -60,9 +63,23 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void updateProfile(int userId, ProfileDto profileDto) {
+    public void updateProfile(int userId, ProfileDto profileDto, InputStream newPhoto) {
         try (Connection connection = ConnectionManager.get()) {
             Profile profile = profileDtoMapper.mapToEntity(profileDto);
+
+            // update profile photoPath in DB, upload new photo on cloud
+            String photoPath = profile.getPhotoPath();
+            try {
+                if (newPhoto != null && newPhoto.available() > 0) {
+                    if (photoPath != null && !photoPath.equals(""))
+                        cloudStorageProvider.deleteFile(photoPath);
+                    String fileID = cloudStorageProvider.setProfilePhoto(profile.getId(), newPhoto);
+                    profile.setPhotoPath(fileID);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
             profileDao.update(connection, userId, profile);
         } catch (SQLException e) {
             // TODO : log

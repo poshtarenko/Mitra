@@ -32,7 +32,7 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
         Cookie profileIdsCookie = CookieHelper.getCookie(request, CookieNames.PROFILE_IDS.name());
         // update cookie if not exists
         if (profileIdsCookie == null) {
-            List<Integer> allIds = profileService.getAllIds();
+            List<Integer> allIds = profileService.getAllIDs();
             allIds.remove(Integer.valueOf(myId));
             profileIdsCookie = updateProfileIdsCookie(response, profileIdsToString(allIds));
         }
@@ -40,7 +40,7 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
         String profileIdsCookieValue = profileIdsCookie.getValue();
         // update cookie if value is incorrect
         if (profileIdsCookieValue == null || profileIdsCookieValue.equals("")){
-            List<Integer> allIds = profileService.getAllIds();
+            List<Integer> allIds = profileService.getAllIDs();
             allIds.remove(Integer.valueOf(myId));
             profileIdsCookieValue = profileIdsToString(allIds);
             updateProfileIdsCookie(response, profileIdsCookieValue);

@@ -7,6 +7,12 @@ import java.sql.SQLException;
 
 public interface RowMapper<E extends Identifiable> {
 
+    /**
+     * Do mapping from rows in DB to Java-POJO
+     *
+     * @param resultSet resultSet with relevant rows
+     * @return E object
+     */
     E map(ResultSet resultSet) throws SQLException;
 
 }
