@@ -23,18 +23,38 @@ import java.util.List;
 
 public class GoogleDriveInitializer {
 
-    private static final String APPLICATION_NAME = "Mitra";
+    private static final String APPLICATION_NAME;
 
-    private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+    private static final JsonFactory JSON_FACTORY;
 
-    private static final String TOKENS_DIRECTORY_PATH = "tokens";
+    private static final String TOKENS_DIRECTORY_PATH;
 
     /**
      * Global instance of the scopes required by this quickstart.
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
-    private static final List<String> SCOPES = new ArrayList<>(DriveScopes.all());
-    private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+    private static final List<String> SCOPES;
+
+    private static final String CREDENTIALS_FILE_PATH;
+
+    private static final Drive drive;
+
+    static {
+        APPLICATION_NAME  = "Mitra";
+        JSON_FACTORY = GsonFactory.getDefaultInstance();
+        TOKENS_DIRECTORY_PATH = "tokens";
+        SCOPES = new ArrayList<>(DriveScopes.all());
+        CREDENTIALS_FILE_PATH = "/credentials.json";
+
+        try {
+            NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+            drive = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                    .setApplicationName(APPLICATION_NAME)
+                    .build();
+        } catch (GeneralSecurityException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
             throws IOException {
@@ -57,13 +77,6 @@ public class GoogleDriveInitializer {
     }
 
     public static Drive getDriveService() {
-        try {
-            NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            return new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                    .setApplicationName(APPLICATION_NAME)
-                    .build();
-        } catch (GeneralSecurityException | IOException e) {
-            throw new RuntimeException(e);
-        }
+        return drive;
     }
 }
