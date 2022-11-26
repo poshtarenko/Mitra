@@ -1,5 +1,6 @@
 package com.mitra.controller.request_processor.impl;
 
+import com.mitra.cloud.GoogleDriveInitializer;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.dto.ProfileDto;
@@ -18,6 +19,7 @@ public class MyProfileProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        GoogleDriveInitializer.getDriveService();
         int id = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
         ProfileDto profile = profileService.find(id)
                 .orElseThrow(() -> new ServletException("User without profile must be impossible, but it does not"));
