@@ -54,7 +54,7 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
                 .location(locationDto)
                 .build();
 
-        profileService.updateProfile(user.getId(), profile);
+        profileService.updateProfile(user.getId(), profile, null);
 
         // update profile field in user session attribute
         SessionAttrHelper.getUserWithUpdatedProfile(request, profile);

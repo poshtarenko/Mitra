@@ -28,7 +28,7 @@ class ProfileServiceTest {
 
     @AfterAll
     static void tearDown() {
-        profileService.updateProfile(141, profileCopy);
+        profileService.updateProfile(141, profileCopy, null);
     }
 
     @Test
@@ -112,7 +112,7 @@ class ProfileServiceTest {
                 .photoPath(profile.getPhotoPath())
                 .build();
 
-        profileService.updateProfile(141, profileToUpdate);
+        profileService.updateProfile(141, profileToUpdate, null);
 
         profile = profileService.find(id).get();
 

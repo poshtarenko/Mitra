@@ -116,10 +116,9 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
                 .instruments(instruments)
                 .specialities(specialities)
                 .photoPath(request.getParameter("photoPath"))
-                .photoContent(photoInputStream)
                 .build();
 
-        profileService.updateProfile(userId, profileDto);
+        profileService.updateProfile(userId, profileDto, photoInputStream);
 
         // update profile field in user session attribute
         SessionAttrHelper.getUserWithUpdatedProfile(request, profileDto);
