@@ -4,11 +4,38 @@ import java.io.InputStream;
 
 public interface CloudStorageProvider {
 
-    InputStream getImage(String photoPath);
+    /**
+     * Get image from cloud
+     *
+     * @param fileID fileID of image
+     * @return input stream with image
+     */
+    InputStream getImage(String fileID);
 
-    void deleteFile(String filePath);
+    /**
+     * Deletes any file from cloud by ID
+     *
+     * @param fileID fileID of image
+     */
+    void deleteFile(String fileID);
 
-    // returns generated fileId (=photoPath)
+    /**
+     * Get image from cloud
+     *
+     * @param profileId        profile id
+     * @param photoInputStream input stream with image
+     * @return generated fileId
+     */
     String setProfilePhoto(int profileId, InputStream photoInputStream);
+
+
+    /**
+     * Get image from cloud
+     *
+     * @param profileId        profile id
+     * @param musicInputStream input stream with track
+     * @return generated fileId
+     */
+    String addProfileMusic(int profileId, InputStream musicInputStream);
 
 }
