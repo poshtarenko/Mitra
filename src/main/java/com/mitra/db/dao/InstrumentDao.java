@@ -1,6 +1,6 @@
 package com.mitra.db.dao;
 
-import com.mitra.entity.impl.Instrument;
+import com.mitra.entity.Instrument;
 
 import java.sql.Connection;
 import java.util.List;

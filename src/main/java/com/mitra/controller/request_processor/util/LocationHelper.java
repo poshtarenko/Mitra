@@ -5,16 +5,15 @@ import com.mitra.dto.LocationDto;
 public final class LocationHelper {
 
     public static String locationDtoToString(LocationDto locationDto) {
-        StringBuilder stringBuilder = new StringBuilder();
         String delimiter = ", ";
-        stringBuilder.append(locationDto.getCity())
-                .append(delimiter)
-                .append(locationDto.getLocalArea())
-                .append(delimiter)
-                .append(locationDto.getRegion())
-                .append(delimiter)
-                .append(locationDto.getCountry());
-        return stringBuilder.toString();
+        String stringBuilder = locationDto.getCity() +
+                delimiter +
+                locationDto.getLocalArea() +
+                delimiter +
+                locationDto.getRegion() +
+                delimiter +
+                locationDto.getCountry();
+        return stringBuilder;
     }
 
     public static LocationDto stringToLocationDto(String string) {

@@ -20,10 +20,10 @@ public enum Reaction {
                 .orElseThrow(() -> new IllegalArgumentException("Unknown reaction code :" + code));
     }
 
-    public static int getCodeByReaction(Reaction reaction){
+    public static int getCodeByReaction(Reaction reaction) {
         if (reaction == NO) {
             return 0;
-        }else if (reaction == LIKE) {
+        } else if (reaction == LIKE) {
             return 1;
         } else if (reaction == DISLIKE) {
             return 2;

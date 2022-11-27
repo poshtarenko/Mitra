@@ -2,8 +2,8 @@ package com.mitra.db.mapper;
 
 import com.mitra.entity.Gender;
 import com.mitra.entity.Location;
-import com.mitra.entity.impl.LocationImpl;
 import com.mitra.entity.Profile;
+import com.mitra.entity.impl.LocationImpl;
 import com.mitra.entity.impl.ProfileImpl;
 
 import java.sql.ResultSet;

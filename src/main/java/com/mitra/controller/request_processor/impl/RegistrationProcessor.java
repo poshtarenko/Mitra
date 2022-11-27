@@ -7,7 +7,6 @@ import com.mitra.entity.Role;
 import com.mitra.exception.ValidationException;
 import com.mitra.service.ServiceFactory;
 import com.mitra.service.UserService;
-import com.mitra.service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +40,7 @@ public class RegistrationProcessor extends AbstractRequestProcessor {
             userService.register(userDto);
 
             Optional<UserDto> user = userService.tryLogin(userDto);
-            if (!user.isPresent()){
+            if (!user.isPresent()) {
                 throw new ValidationException("Credentials are invalid");
             }
             request.getSession().setAttribute(SessionAttributes.USER.name(), user.get());

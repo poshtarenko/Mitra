@@ -1,11 +1,7 @@
 package com.mitra.entity.dummy;
 
-import com.mitra.entity.Gender;
-import com.mitra.entity.Instrument;
-import com.mitra.entity.Like;
-import com.mitra.entity.Profile;
+import com.mitra.entity.*;
 import com.mitra.entity.impl.LocationImpl;
-import com.mitra.entity.impl.SpecialityImpl;
 import com.mitra.entity.impl.TrackImpl;
 
 import java.util.List;
@@ -64,7 +60,7 @@ public class DummyProfile implements Profile {
     }
 
     @Override
-    public List<SpecialityImpl> getSpecialities() {
+    public List<Speciality> getSpecialities() {
         throw DummyHelper.getUnsupportedOperationExceptionAndLog();
     }
 
@@ -74,7 +70,7 @@ public class DummyProfile implements Profile {
     }
 
     @Override
-    public List<TrackImpl> getTracks() {
+    public List<Track> getTracks() {
         throw DummyHelper.getUnsupportedOperationExceptionAndLog();
     }
 
@@ -99,7 +95,7 @@ public class DummyProfile implements Profile {
     }
 
     @Override
-    public void setLocation(LocationImpl location) {
+    public void setLocation(Location location) {
         throw DummyHelper.getUnsupportedOperationExceptionAndLog();
     }
 
@@ -119,7 +115,7 @@ public class DummyProfile implements Profile {
     }
 
     @Override
-    public void setSpecialities(List<SpecialityImpl> specialities) {
+    public void setSpecialities(List<Speciality> specialities) {
         throw DummyHelper.getUnsupportedOperationExceptionAndLog();
     }
 
@@ -129,12 +125,12 @@ public class DummyProfile implements Profile {
     }
 
     @Override
-    public void setTracks(List<TrackImpl> tracks) {
+    public void setTracks(List<Track> tracks) {
         throw DummyHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
-    public void setPreviewTrack(TrackImpl previewTrack) {
+    public void setPreviewTrack(Track previewTrack) {
         throw DummyHelper.getUnsupportedOperationExceptionAndLog();
     }
 }

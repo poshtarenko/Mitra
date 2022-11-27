@@ -40,7 +40,7 @@ public class GoogleDriveInitializer {
     private static final Drive drive;
 
     static {
-        APPLICATION_NAME  = "Mitra";
+        APPLICATION_NAME = "Mitra";
         JSON_FACTORY = GsonFactory.getDefaultInstance();
         TOKENS_DIRECTORY_PATH = "tokens";
         SCOPES = new ArrayList<>(DriveScopes.all());

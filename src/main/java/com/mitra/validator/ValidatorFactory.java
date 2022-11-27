@@ -4,7 +4,7 @@ public class ValidatorFactory {
 
     private static final ValidatorFactory INSTANCE = new ValidatorFactory();
 
-    private UserDtoValidator userDtoValidator;
+    private final UserDtoValidator userDtoValidator;
 
     private ValidatorFactory() {
         userDtoValidator = new UserDtoValidator();

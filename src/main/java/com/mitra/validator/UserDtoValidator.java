@@ -13,7 +13,7 @@ public class UserDtoValidator implements Validator<UserDto> {
                 && passwordIsValid(dto.getPassword());
     }
 
-    private boolean emailIsValid(String email){
+    private boolean emailIsValid(String email) {
         Pattern emailPattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
         Matcher emailMatcher = emailPattern.matcher(email);
 
@@ -22,7 +22,7 @@ public class UserDtoValidator implements Validator<UserDto> {
         // TODO : check if there are the same email in the database
     }
 
-    private boolean passwordIsValid(String password){
+    private boolean passwordIsValid(String password) {
         return password.length() >= 6;
     }
 }

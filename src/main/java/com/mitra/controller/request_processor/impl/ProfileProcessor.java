@@ -41,7 +41,7 @@ public class ProfileProcessor extends AbstractRequestProcessor {
         Optional<LikeDto> myPossibleLike = profileLikeService.getLike(myId, profileId);
         Optional<LikeDto> anotherPossibleLike = profileLikeService.getLike(profileId, myId);
 
-        if (myPossibleLike.isPresent()){
+        if (myPossibleLike.isPresent()) {
             LikeDto myLike = myPossibleLike.get();
             if (myLike.getReaction() == Reaction.NO || myLike.getReaction() == Reaction.IGNORE)
                 request.setAttribute("waitingForResponse", "+");

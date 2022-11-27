@@ -1,18 +1,17 @@
 package com.mitra.db.mapper;
 
 import com.mitra.entity.*;
-import com.mitra.entity.impl.*;
 
 public class RowMapperFactory {
 
     private static final RowMapperFactory INSTANCE = new RowMapperFactory();
 
-    private RowMapper<User> userRowMapper;
-    private RowMapper<Profile> profileRowMapper;
-    private RowMapper<Location> locationRowMapper;
-    private RowMapper<Instrument> instrumentRowMapper;
-    private RowMapper<Speciality> specialityRowMapper;
-    private RowMapper<Like> likeRowMapper;
+    private final RowMapper<User> userRowMapper;
+    private final RowMapper<Profile> profileRowMapper;
+    private final RowMapper<Location> locationRowMapper;
+    private final RowMapper<Instrument> instrumentRowMapper;
+    private final RowMapper<Speciality> specialityRowMapper;
+    private final RowMapper<Like> likeRowMapper;
 
     private RowMapperFactory() {
         userRowMapper = new UserRowMapper();

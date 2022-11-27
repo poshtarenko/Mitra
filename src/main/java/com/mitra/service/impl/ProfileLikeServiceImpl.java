@@ -4,7 +4,7 @@ import com.mitra.db.connection.ConnectionManager;
 import com.mitra.db.dao.LikeDao;
 import com.mitra.dto.LikeDto;
 import com.mitra.dto.mapper.DtoMapper;
-import com.mitra.entity.impl.Like;
+import com.mitra.entity.Like;
 import com.mitra.entity.Reaction;
 import com.mitra.service.ProfileLikeService;
 

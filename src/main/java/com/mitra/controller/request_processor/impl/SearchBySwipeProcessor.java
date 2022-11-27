@@ -39,7 +39,7 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
 
         String profileIdsCookieValue = profileIdsCookie.getValue();
         // update cookie if value is incorrect
-        if (profileIdsCookieValue == null || profileIdsCookieValue.equals("")){
+        if (profileIdsCookieValue == null || profileIdsCookieValue.equals("")) {
             List<Integer> allIds = profileService.getAllIDs();
             allIds.remove(Integer.valueOf(myId));
             profileIdsCookieValue = profileIdsToString(allIds);
@@ -49,7 +49,7 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
         int id = getProfileIdFromString(profileIdsCookieValue);
 
         Optional<ProfileDto> profileOptional = profileService.find(id);
-        if (!profileOptional.isPresent()){
+        if (!profileOptional.isPresent()) {
             redirect(response, UrlPath.SWIPE_SEARCH.get());
             return;
         }

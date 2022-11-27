@@ -3,7 +3,6 @@ package com.mitra.filter;
 import com.mitra.controller.XSSSafeRequestWrapper;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 

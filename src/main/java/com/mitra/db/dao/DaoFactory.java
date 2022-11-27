@@ -5,12 +5,12 @@ import com.mitra.db.mapper.RowMapperFactory;
 
 public class DaoFactory {
 
-    private UserDao userDao;
-    private ProfileDao profileDao;
-    private LocationDao locationDao;
-    private InstrumentDao instrumentDao;
-    private SpecialityDao specialityDao;
-    private LikeDao likeDao;
+    private final UserDao userDao;
+    private final ProfileDao profileDao;
+    private final LocationDao locationDao;
+    private final InstrumentDao instrumentDao;
+    private final SpecialityDao specialityDao;
+    private final LikeDao likeDao;
 
     private static final DaoFactory INSTANCE = new DaoFactory();
 
@@ -22,7 +22,7 @@ public class DaoFactory {
         instrumentDao = new InstrumentDaoImpl(rowMapperFactory.getInstrumentRowMapper());
         specialityDao = new SpecialityDaoImpl(rowMapperFactory.getSpecialityRowMapper());
         profileDao = new ProfileDaoImpl(rowMapperFactory.getProfileRowMapper(), instrumentDao, specialityDao, likeDao);
-        userDao = new UserDaoImpl(profileDao, locationDao, RowMapperFactory.getInstance().getUserRowMapper());
+        userDao = new UserDaoImpl(profileDao, locationDao, rowMapperFactory.getUserRowMapper());
     }
 
     public static DaoFactory getInstance() {

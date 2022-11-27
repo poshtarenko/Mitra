@@ -1,6 +1,6 @@
 package com.mitra.db.dao;
 
-import com.mitra.entity.impl.Like;
+import com.mitra.entity.Like;
 import com.mitra.entity.Reaction;
 
 import java.sql.Connection;

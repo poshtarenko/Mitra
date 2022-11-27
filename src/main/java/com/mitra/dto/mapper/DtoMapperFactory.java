@@ -2,18 +2,17 @@ package com.mitra.dto.mapper;
 
 import com.mitra.dto.*;
 import com.mitra.entity.*;
-import com.mitra.entity.impl.*;
 
 public class DtoMapperFactory {
 
     private static final DtoMapperFactory INSTANCE = new DtoMapperFactory();
 
-    private DtoMapper<UserDto, User> userDtoMapper;
-    private DtoMapper<ProfileDto, Profile> profileDtoMapper;
-    private DtoMapper<LocationDto, Location> locationDtoMapper;
-    private DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper;
-    private DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
-    private DtoMapper<LikeDto, Like> likeDtoMapper;
+    private final DtoMapper<UserDto, User> userDtoMapper;
+    private final DtoMapper<ProfileDto, Profile> profileDtoMapper;
+    private final DtoMapper<LocationDto, Location> locationDtoMapper;
+    private final DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper;
+    private final DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
+    private final DtoMapper<LikeDto, Like> likeDtoMapper;
 
     private DtoMapperFactory() {
         locationDtoMapper = new LocationDtoMapper();

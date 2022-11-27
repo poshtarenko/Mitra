@@ -12,12 +12,12 @@ public class ServiceFactory {
 
     private static final ServiceFactory INSTANCE = new ServiceFactory();
 
-    private UserService userService;
-    private ProfileService profileService;
+    private final UserService userService;
+    private final ProfileService profileService;
     private ProfileLikeService profileLikeService;
-    private LocationService locationService;
-    private InstrumentService instrumentService;
-    private SpecialityService specialityService;
+    private final LocationService locationService;
+    private final InstrumentService instrumentService;
+    private final SpecialityService specialityService;
 
     private ServiceFactory() {
         DaoFactory daoFactory = DaoFactory.getInstance();

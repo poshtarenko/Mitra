@@ -4,7 +4,6 @@ import com.mitra.dto.ProfileDto;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Profile;
 import com.mitra.entity.User;
-import com.mitra.entity.impl.ProfileImpl;
 import com.mitra.entity.impl.UserImpl;
 
 public class UserDtoMapper implements DtoMapper<UserDto, User> {

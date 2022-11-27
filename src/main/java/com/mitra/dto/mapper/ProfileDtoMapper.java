@@ -1,11 +1,14 @@
 package com.mitra.dto.mapper;
 
-import com.mitra.dto.*;
+import com.mitra.dto.InstrumentDto;
+import com.mitra.dto.LocationDto;
+import com.mitra.dto.ProfileDto;
+import com.mitra.dto.SpecialityDto;
 import com.mitra.entity.Instrument;
 import com.mitra.entity.Location;
 import com.mitra.entity.Profile;
 import com.mitra.entity.Speciality;
-import com.mitra.entity.impl.*;
+import com.mitra.entity.impl.ProfileImpl;
 
 import java.util.Collections;
 import java.util.List;

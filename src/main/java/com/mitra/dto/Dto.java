@@ -2,8 +2,8 @@ package com.mitra.dto;
 
 public interface Dto {
     /*
-    *
-    * Interface which marks DTO classes
-    *
-    * */
+     *
+     * Interface which marks DTO classes
+     *
+     * */
 }

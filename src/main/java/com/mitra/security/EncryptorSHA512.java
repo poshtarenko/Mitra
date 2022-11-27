@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class EncryptorSHA512 implements PasswordEncryptor{
+public class EncryptorSHA512 implements PasswordEncryptor {
 
     private static final EncryptorSHA512 INSTANCE = new EncryptorSHA512();
 

@@ -1,6 +1,6 @@
 package com.mitra.exception;
 
-public class DaoException extends RuntimeException{
+public class DaoException extends RuntimeException {
 
     public DaoException() {
     }

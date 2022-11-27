@@ -37,7 +37,7 @@ public class AuthorizationProcessor extends AbstractRequestProcessor {
 
         try {
             Optional<UserDto> user = userService.tryLogin(userDto);
-            if (!user.isPresent()){
+            if (!user.isPresent()) {
                 throw new ValidationException("Credentials are invalid");
             }
             request.getSession().setAttribute(SessionAttributes.USER.name(), user.get());

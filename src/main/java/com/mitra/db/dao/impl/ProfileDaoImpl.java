@@ -33,14 +33,14 @@ public class ProfileDaoImpl implements ProfileDao {
     }
 
     public static final String FIND_ALL_SQL = String.format(
-            "SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s " +
+            "SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s " +
                     "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s ",
             Column.PROFILE.ID, Column.PROFILE.NAME, Column.PROFILE.AGE, Column.GENDER.GENDER, Column.PROFILE.TEXT, Column.PROFILE.PHOTO_PATH,
-            Column.CITY.NAME, Column.LOCAL_AREA.NAME, Column.REGION.NAME, Column.COUNTRY.NAME,
+            Column.CITY.ID, Column.CITY.NAME, Column.LOCAL_AREA.NAME, Column.REGION.NAME, Column.COUNTRY.NAME,
             Table.PROFILE,
             Table.GENDER, Column.PROFILE.GENDER_ID, Column.GENDER.ID,
             Table.CITY, Column.PROFILE.CITY_ID, Column.CITY.ID,

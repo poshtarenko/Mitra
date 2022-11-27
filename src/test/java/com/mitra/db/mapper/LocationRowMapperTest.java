@@ -1,5 +1,6 @@
 package com.mitra.db.mapper;
 
+import com.mitra.entity.Location;
 import com.mitra.entity.impl.LocationImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -11,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LocationRowMapperTest {
 
-    RowMapper<LocationImpl> locationRowMapper;
+    RowMapper<Location> locationRowMapper;
 
     static String city = "Odesa";
     static String localArea = "Prymorsky rayon";
@@ -22,7 +23,7 @@ class LocationRowMapperTest {
     void map() {
         locationRowMapper = RowMapperFactory.getInstance().getLocationRowMapper();
 
-        LocationImpl location = null;
+        Location location = null;
         try (ResultSet rs = Mockito.mock(ResultSet.class)) {
             Mockito.when(rs.getString(1)).thenReturn(city);
             Mockito.when(rs.getString(2)).thenReturn(localArea);

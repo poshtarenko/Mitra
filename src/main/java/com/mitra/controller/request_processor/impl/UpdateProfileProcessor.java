@@ -36,7 +36,7 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
         UserDto user = (UserDto) request.getSession().getAttribute(SessionAttributes.USER.name());
         Optional<ProfileDto> profileOptional = profileService.find(user.getId());
 
-        if (!profileOptional.isPresent()){
+        if (!profileOptional.isPresent()) {
             throw new RuntimeException("Profile not found");
         }
         ProfileDto profile = profileOptional.get();

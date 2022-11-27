@@ -8,10 +8,10 @@ import com.mitra.db.dao.QueryExecutor;
 import com.mitra.db.dao.UserDao;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Gender;
-import com.mitra.entity.impl.LocationImpl;
+import com.mitra.entity.Location;
 import com.mitra.entity.Profile;
+import com.mitra.entity.User;
 import com.mitra.entity.impl.ProfileImpl;
-import com.mitra.entity.impl.UserImpl;
 import com.mitra.exception.DaoException;
 
 import java.sql.Connection;
@@ -22,9 +22,9 @@ public class UserDaoImpl implements UserDao {
 
     private final ProfileDao profileDao;
     private final LocationDao locationDao;
-    private final QueryExecutor<Integer, UserImpl> queryExecutor;
+    private final QueryExecutor<Integer, User> queryExecutor;
 
-    public UserDaoImpl(ProfileDao profileDao, LocationDao locationDao, RowMapper<UserImpl> userRowMapper) {
+    public UserDaoImpl(ProfileDao profileDao, LocationDao locationDao, RowMapper<User> userRowMapper) {
         this.profileDao = profileDao;
         this.locationDao = locationDao;
         this.queryExecutor = new QueryExecutor<>(userRowMapper);
@@ -55,11 +55,11 @@ public class UserDaoImpl implements UserDao {
             Table.USER, Column.USER.ID);
 
     @Override
-    public Optional<UserImpl> find(Connection connection, Integer id) throws DaoException {
-        Optional<UserImpl> optionalUser = queryExecutor.find(connection, FIND_SQL, id);
+    public Optional<User> find(Connection connection, Integer id) throws DaoException {
+        Optional<User> optionalUser = queryExecutor.find(connection, FIND_SQL, id);
 
-        if (optionalUser.isPresent()){
-            ProfileImpl profile = profileDao.find(connection, id)
+        if (optionalUser.isPresent()) {
+            Profile profile = profileDao.find(connection, id)
                     .orElseThrow(() -> new DaoException("User without profile must be impossible"));
             optionalUser.get().setProfile(profile);
         }
@@ -68,8 +68,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<UserImpl> find(Connection connection, String email, String password) throws DaoException {
-        Optional<UserImpl> user = queryExecutor.find(connection, FIND_BY_EMAIL_AND_PASSWORD,
+    public Optional<User> find(Connection connection, String email, String password) throws DaoException {
+        Optional<User> user = queryExecutor.find(connection, FIND_BY_EMAIL_AND_PASSWORD,
                 email, password);
         if (user.isPresent())
             user.get().setProfile(profileDao.find(connection, user.get().getId())
@@ -78,17 +78,17 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<UserImpl> findAll(Connection connection) throws DaoException {
+    public List<User> findAll(Connection connection) throws DaoException {
         return queryExecutor.findAll(connection, FIND_ALL_SQL);
     }
 
     @Override
-    public Integer save(Connection connection, UserImpl entity) throws DaoException {
+    public Integer save(Connection connection, User entity) throws DaoException {
         Integer userId = queryExecutor.save(connection, SAVE_SQL,
                 entity.getEmail(), entity.getPassword(), entity.getRole().name());
 
         // By default, user has an empty profile with location at Kyiv (city.id = 1)
-        LocationImpl userLocation = locationDao.find(connection, 1)
+        Location userLocation = locationDao.find(connection, 1)
                 .orElseThrow(() -> new DaoException("There must be any city with id = 1"));
 
         Profile emptyUserProfile = ProfileImpl.builder()
@@ -107,7 +107,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void update(Connection connection, Integer id, UserImpl entity) throws DaoException {
+    public void update(Connection connection, Integer id, User entity) throws DaoException {
         queryExecutor.update(connection, UPDATE_SQL,
                 entity.getEmail(), entity.getPassword(), entity.getRole().name(), id);
     }

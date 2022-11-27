@@ -1,7 +1,6 @@
 package com.mitra.service;
 
 import com.mitra.dto.ProfileDto;
-import com.mitra.exception.DaoException;
 
 import java.io.InputStream;
 import java.util.List;

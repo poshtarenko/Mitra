@@ -4,7 +4,6 @@ import com.mitra.entity.Gender;
 import lombok.Builder;
 import lombok.Value;
 
-import java.io.InputStream;
 import java.util.List;
 
 @Value
