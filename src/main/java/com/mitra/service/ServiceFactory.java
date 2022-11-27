@@ -14,7 +14,8 @@ public class ServiceFactory {
 
     private final UserService userService;
     private final ProfileService profileService;
-    private ProfileLikeService profileLikeService;
+    private final TrackService trackService;
+    private final ProfileLikeService profileLikeService;
     private final LocationService locationService;
     private final InstrumentService instrumentService;
     private final SpecialityService specialityService;
@@ -23,6 +24,7 @@ public class ServiceFactory {
         DaoFactory daoFactory = DaoFactory.getInstance();
         DtoMapperFactory dtoMapperFactory = DtoMapperFactory.getInstance();
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
+        CloudStorageProviderImpl cloudStorageProvider = new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService());
 
         locationService = new LocationServiceImpl(daoFactory.getLocationDao(), dtoMapperFactory.getLocationDtoMapper());
         instrumentService = new InstrumentServiceImpl(daoFactory.getInstrumentDao(), dtoMapperFactory.getInstrumentDtoMapper());
@@ -30,9 +32,10 @@ public class ServiceFactory {
         profileLikeService = new ProfileLikeServiceImpl(daoFactory.getLikeDao(), dtoMapperFactory.getLikeDtoMapper());
         userService = new UserServiceImpl(daoFactory.getUserDao(), dtoMapperFactory.getUserDtoMapper(),
                 validatorFactory.getUserDtoValidator(), EncryptorSHA512.getInstance());
+        trackService = new TrackServiceImpl(dtoMapperFactory.getTrackDtoMapper(), daoFactory.getProfileDao(),
+                daoFactory.getTrackDao(), cloudStorageProvider);
         profileService = new ProfileServiceImpl(daoFactory.getProfileDao(), dtoMapperFactory.getProfileDtoMapper(),
-                new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService()));
-        profileLikeService = new ProfileLikeServiceImpl(daoFactory.getLikeDao(), dtoMapperFactory.getLikeDtoMapper());
+                cloudStorageProvider);
     }
 
     public static ServiceFactory getInstance() {
@@ -59,7 +62,11 @@ public class ServiceFactory {
         return specialityService;
     }
 
-    public ProfileLikeService getProfileLikesService() {
+    public ProfileLikeService getProfileLikeService() {
         return profileLikeService;
+    }
+
+    public TrackService getTrackService() {
+        return trackService;
     }
 }

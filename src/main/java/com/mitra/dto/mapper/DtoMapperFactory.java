@@ -9,6 +9,7 @@ public class DtoMapperFactory {
 
     private final DtoMapper<UserDto, User> userDtoMapper;
     private final DtoMapper<ProfileDto, Profile> profileDtoMapper;
+    private final DtoMapper<TrackDto, Track> trackDtoMapper;
     private final DtoMapper<LocationDto, Location> locationDtoMapper;
     private final DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper;
     private final DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
@@ -19,6 +20,7 @@ public class DtoMapperFactory {
         instrumentDtoMapper = new InstrumentDtoMapper();
         specialityDtoMapper = new SpecialityDtoMapper();
         profileDtoMapper = new ProfileDtoMapper(locationDtoMapper, instrumentDtoMapper, specialityDtoMapper);
+        trackDtoMapper = new TrackDtoMapper(profileDtoMapper);
         likeDtoMapper = new LikeDtoMapper(profileDtoMapper);
         userDtoMapper = new UserDtoMapper(profileDtoMapper);
     }
@@ -49,5 +51,9 @@ public class DtoMapperFactory {
 
     public DtoMapper<LikeDto, Like> getLikeDtoMapper() {
         return likeDtoMapper;
+    }
+
+    public DtoMapper<TrackDto, Track> getTrackDtoMapper() {
+        return trackDtoMapper;
     }
 }
