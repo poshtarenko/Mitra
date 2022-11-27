@@ -2,10 +2,11 @@ package com.mitra.dto.mapper;
 
 import com.mitra.dto.LikeDto;
 import com.mitra.dto.ProfileDto;
+import com.mitra.entity.Like;
 import com.mitra.entity.Profile;
 import com.mitra.entity.impl.LikeImpl;
 
-public class LikeDtoMapper implements DtoMapper<LikeDto, LikeImpl> {
+public class LikeDtoMapper implements DtoMapper<LikeDto, Like> {
 
     private final DtoMapper<ProfileDto, Profile> profileDtoMapper;
 
@@ -14,7 +15,7 @@ public class LikeDtoMapper implements DtoMapper<LikeDto, LikeImpl> {
     }
 
     @Override
-    public LikeImpl mapToEntity(LikeDto dto) {
+    public Like mapToEntity(LikeDto dto) {
         return new LikeImpl(
                 0,
                 profileDtoMapper.mapToEntity(dto.getSender()),
@@ -24,7 +25,7 @@ public class LikeDtoMapper implements DtoMapper<LikeDto, LikeImpl> {
     }
 
     @Override
-    public LikeDto mapToDto(LikeImpl entity) {
+    public LikeDto mapToDto(Like entity) {
         return LikeDto.builder()
                 .sender(profileDtoMapper.mapToDto(entity.getSender()))
                 .receiver(profileDtoMapper.mapToDto(entity.getReceiver()))

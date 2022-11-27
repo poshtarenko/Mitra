@@ -2,7 +2,9 @@ package com.mitra.dto.mapper;
 
 import com.mitra.dto.*;
 import com.mitra.entity.Instrument;
+import com.mitra.entity.Location;
 import com.mitra.entity.Profile;
+import com.mitra.entity.Speciality;
 import com.mitra.entity.impl.*;
 
 import java.util.Collections;
@@ -11,13 +13,13 @@ import java.util.stream.Collectors;
 
 public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
 
-    private final DtoMapper<LocationDto, LocationImpl> locationDtoMapper;
+    private final DtoMapper<LocationDto, Location> locationDtoMapper;
     private final DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper;
-    private final DtoMapper<SpecialityDto, SpecialityImpl> specialityDtoMapper;
+    private final DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
 
-    public ProfileDtoMapper(DtoMapper<LocationDto, LocationImpl> locationDtoMapper,
+    public ProfileDtoMapper(DtoMapper<LocationDto, Location> locationDtoMapper,
                             DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper,
-                            DtoMapper<SpecialityDto, SpecialityImpl> specialityDtoMapper) {
+                            DtoMapper<SpecialityDto, Speciality> specialityDtoMapper) {
         this.locationDtoMapper = locationDtoMapper;
         this.instrumentDtoMapper = instrumentDtoMapper;
         this.specialityDtoMapper = specialityDtoMapper;
@@ -25,7 +27,7 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
 
     @Override
     public Profile mapToEntity(ProfileDto dto) {
-        LocationImpl location = null;
+        Location location = null;
         if (dto.getLocation() != null)
             location = locationDtoMapper.mapToEntity(dto.getLocation());
 
@@ -37,7 +39,7 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
         } else
             instruments = Collections.emptyList();
 
-        List<SpecialityImpl> specialities;
+        List<Speciality> specialities;
         if (dto.getInstruments() != null) {
             specialities = dto.getSpecialities().stream()
                     .map(specialityDtoMapper::mapToEntity)

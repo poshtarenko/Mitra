@@ -1,6 +1,6 @@
 package com.mitra.entity;
 
-public interface Track {
+public interface Track extends Identifiable<Integer> {
     String getName();
 
     String getAuthor();

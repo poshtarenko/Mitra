@@ -1,6 +1,6 @@
 package com.mitra.entity;
 
-public interface Location {
+public interface Location extends Identifiable<Integer> {
     String getCity();
 
     String getLocalArea();

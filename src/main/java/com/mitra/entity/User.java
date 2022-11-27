@@ -1,6 +1,6 @@
 package com.mitra.entity;
 
-public interface User {
+public interface User extends Identifiable<Integer> {
     String getEmail();
 
     String getPassword();

@@ -1,6 +1,6 @@
 package com.mitra.entity;
 
-public interface Like {
+public interface Like extends Identifiable<Integer> {
     Profile getSender();
 
     Profile getReceiver();

@@ -1,6 +1,6 @@
 package com.mitra.db.mapper;
 
-import com.mitra.entity.impl.Instrument;
+import com.mitra.entity.Instrument;
 import com.mitra.entity.impl.InstrumentImpl;
 
 import java.sql.ResultSet;

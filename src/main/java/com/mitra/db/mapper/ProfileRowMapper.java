@@ -1,6 +1,7 @@
 package com.mitra.db.mapper;
 
 import com.mitra.entity.Gender;
+import com.mitra.entity.Location;
 import com.mitra.entity.impl.LocationImpl;
 import com.mitra.entity.Profile;
 import com.mitra.entity.impl.ProfileImpl;
@@ -12,7 +13,7 @@ public class ProfileRowMapper implements RowMapper<Profile> {
 
     @Override
     public Profile map(ResultSet resultSet) throws SQLException {
-        LocationImpl location = LocationImpl.builder()
+        Location location = LocationImpl.builder()
                 .id(resultSet.getInt(7))
                 .city(resultSet.getString(8))
                 .localArea(resultSet.getString(9))

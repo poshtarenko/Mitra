@@ -1,18 +1,18 @@
 package com.mitra.dto.mapper;
 
 import com.mitra.dto.*;
-import com.mitra.entity.Profile;
+import com.mitra.entity.*;
 import com.mitra.entity.impl.*;
 
 public class DtoMapperFactory {
 
     private static final DtoMapperFactory INSTANCE = new DtoMapperFactory();
 
-    private DtoMapper<UserDto, UserImpl> userDtoMapper;
+    private DtoMapper<UserDto, User> userDtoMapper;
     private DtoMapper<ProfileDto, Profile> profileDtoMapper;
-    private DtoMapper<LocationDto, LocationImpl> locationDtoMapper;
+    private DtoMapper<LocationDto, Location> locationDtoMapper;
     private DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper;
-    private DtoMapper<SpecialityDto, SpecialityImpl> specialityDtoMapper;
+    private DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
     private DtoMapper<LikeDto, Like> likeDtoMapper;
 
     private DtoMapperFactory() {
@@ -28,7 +28,7 @@ public class DtoMapperFactory {
         return INSTANCE;
     }
 
-    public DtoMapper<UserDto, UserImpl> getUserDtoMapper() {
+    public DtoMapper<UserDto, User> getUserDtoMapper() {
         return userDtoMapper;
     }
 
@@ -36,7 +36,7 @@ public class DtoMapperFactory {
         return profileDtoMapper;
     }
 
-    public DtoMapper<LocationDto, LocationImpl> getLocationDtoMapper() {
+    public DtoMapper<LocationDto, Location> getLocationDtoMapper() {
         return locationDtoMapper;
     }
 
@@ -44,7 +44,7 @@ public class DtoMapperFactory {
         return instrumentDtoMapper;
     }
 
-    public DtoMapper<SpecialityDto, SpecialityImpl> getSpecialityDtoMapper() {
+    public DtoMapper<SpecialityDto, Speciality> getSpecialityDtoMapper() {
         return specialityDtoMapper;
     }
 

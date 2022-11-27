@@ -3,10 +3,11 @@ package com.mitra.dto.mapper;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Profile;
+import com.mitra.entity.User;
 import com.mitra.entity.impl.ProfileImpl;
 import com.mitra.entity.impl.UserImpl;
 
-public class UserDtoMapper implements DtoMapper<UserDto, UserImpl> {
+public class UserDtoMapper implements DtoMapper<UserDto, User> {
 
     private final DtoMapper<ProfileDto, Profile> profileDtoMapper;
 
@@ -15,8 +16,8 @@ public class UserDtoMapper implements DtoMapper<UserDto, UserImpl> {
     }
 
     @Override
-    public UserImpl mapToEntity(UserDto dto) {
-        ProfileImpl profile = null;
+    public User mapToEntity(UserDto dto) {
+        Profile profile = null;
         if (dto.getProfile() != null)
             profile = profileDtoMapper.mapToEntity(dto.getProfile());
 
@@ -30,7 +31,7 @@ public class UserDtoMapper implements DtoMapper<UserDto, UserImpl> {
     }
 
     @Override
-    public UserDto mapToDto(UserImpl entity) {
+    public UserDto mapToDto(User entity) {
         ProfileDto profile = null;
         if (entity.getProfile() != null)
             profile = profileDtoMapper.mapToDto(entity.getProfile());

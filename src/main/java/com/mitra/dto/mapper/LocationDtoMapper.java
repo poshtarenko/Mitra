@@ -1,11 +1,12 @@
 package com.mitra.dto.mapper;
 
 import com.mitra.dto.LocationDto;
+import com.mitra.entity.Location;
 import com.mitra.entity.impl.LocationImpl;
 
-public class LocationDtoMapper implements DtoMapper<LocationDto, LocationImpl> {
+public class LocationDtoMapper implements DtoMapper<LocationDto, Location> {
     @Override
-    public LocationImpl mapToEntity(LocationDto dto) {
+    public Location mapToEntity(LocationDto dto) {
         return LocationImpl.builder()
                 .city(dto.getCity())
                 .localArea(dto.getLocalArea())
@@ -15,7 +16,7 @@ public class LocationDtoMapper implements DtoMapper<LocationDto, LocationImpl> {
     }
 
     @Override
-    public LocationDto mapToDto(LocationImpl entity) {
+    public LocationDto mapToDto(Location entity) {
         return LocationDto.builder()
                 .city(entity.getCity())
                 .localArea(entity.getLocalArea())
