@@ -7,6 +7,7 @@ public class DaoFactory {
 
     private final UserDao userDao;
     private final ProfileDao profileDao;
+    private final TrackDao trackDao;
     private final LocationDao locationDao;
     private final InstrumentDao instrumentDao;
     private final SpecialityDao specialityDao;
@@ -18,10 +19,11 @@ public class DaoFactory {
         RowMapperFactory rowMapperFactory = RowMapperFactory.getInstance();
 
         likeDao = new LikeDaoImpl(rowMapperFactory.getLikeRowMapper());
+        trackDao = new TrackDaoImpl(rowMapperFactory.getMusicRowMapper());
         locationDao = new LocationDaoImpl(rowMapperFactory.getLocationRowMapper());
         instrumentDao = new InstrumentDaoImpl(rowMapperFactory.getInstrumentRowMapper());
         specialityDao = new SpecialityDaoImpl(rowMapperFactory.getSpecialityRowMapper());
-        profileDao = new ProfileDaoImpl(rowMapperFactory.getProfileRowMapper(), instrumentDao, specialityDao, likeDao);
+        profileDao = new ProfileDaoImpl(rowMapperFactory.getProfileRowMapper(), instrumentDao, specialityDao, trackDao);
         userDao = new UserDaoImpl(profileDao, locationDao, rowMapperFactory.getUserRowMapper());
     }
 
@@ -51,5 +53,9 @@ public class DaoFactory {
 
     public LikeDao getLikeDao() {
         return likeDao;
+    }
+
+    public TrackDao getTrackDao() {
+        return trackDao;
     }
 }

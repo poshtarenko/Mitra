@@ -1,5 +1,6 @@
-package com.mitra.db.mapper;
+package com.mitra.db.mapper.impl;
 
+import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Role;
 import com.mitra.entity.User;
 import com.mitra.entity.impl.UserImpl;

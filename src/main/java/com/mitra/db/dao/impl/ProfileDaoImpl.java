@@ -21,19 +21,20 @@ public class ProfileDaoImpl implements ProfileDao {
     private final QueryExecutor<Integer, Profile> queryExecutor;
     private final InstrumentDao instrumentDao;
     private final SpecialityDao specialityDao;
-    private final LikeDao likeDao;
+    private final TrackDao trackDao;
 
     public ProfileDaoImpl(RowMapper<Profile> profileRowMapper, InstrumentDao instrumentDao,
-                          SpecialityDao specialityDao, LikeDao likeDao) {
+                          SpecialityDao specialityDao, TrackDao trackDao) {
         this.profileRowMapper = profileRowMapper;
         this.instrumentDao = instrumentDao;
         this.specialityDao = specialityDao;
-        this.likeDao = likeDao;
         this.queryExecutor = new QueryExecutor<>(profileRowMapper);
+        this.trackDao = trackDao;
     }
 
     public static final String FIND_ALL_SQL = String.format(
-            "SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s " +
+            "SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s " +
+                    "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s " +
@@ -41,12 +42,14 @@ public class ProfileDaoImpl implements ProfileDao {
                     "JOIN %s ON %s = %s ",
             Column.PROFILE.ID, Column.PROFILE.NAME, Column.PROFILE.AGE, Column.GENDER.GENDER, Column.PROFILE.TEXT, Column.PROFILE.PHOTO_PATH,
             Column.CITY.ID, Column.CITY.NAME, Column.LOCAL_AREA.NAME, Column.REGION.NAME, Column.COUNTRY.NAME,
+            Column.MUSIC.ID, Column.MUSIC.NAME, Column.MUSIC.AUTHOR, Column.MUSIC.FILE_PATH,
             Table.PROFILE,
             Table.GENDER, Column.PROFILE.GENDER_ID, Column.GENDER.ID,
             Table.CITY, Column.PROFILE.CITY_ID, Column.CITY.ID,
             Table.LOCAL_AREA, Column.CITY.LOCAL_AREA_ID, Column.LOCAL_AREA.ID,
             Table.REGION, Column.LOCAL_AREA.REGION_ID, Column.REGION.ID,
-            Table.COUNTRY, Column.REGION.COUNTRY_ID, Column.COUNTRY.ID);
+            Table.COUNTRY, Column.REGION.COUNTRY_ID, Column.COUNTRY.ID,
+            Table.MUSIC, Column.MUSIC.PROFILE_ID, Column.PROFILE.ID);
 
     public static final String FIND_SQL = FIND_ALL_SQL + String.format(" WHERE %s = ?", Column.PROFILE.ID);
 
@@ -67,6 +70,10 @@ public class ProfileDaoImpl implements ProfileDao {
             Column.CITY.ID, Table.CITY, Column.CITY.NAME,
             Column.PROFILE.ID.shortName());
 
+    public static final String UPDATE_PROFILE_PREVIEW_TRACK = String.format(
+            "UPDATE %s SET %s = ? WHERE %s = ?",
+            Table.PROFILE, Column.PROFILE.PREVIEW_MUSIC_ID.shortName(), Column.PROFILE.ID.shortName());
+
     public static final String DELETE_SQL = String.format(
             "DELETE FROM %s WHERE %s = ?",
             Table.PROFILE, Column.PROFILE.ID);
@@ -79,6 +86,7 @@ public class ProfileDaoImpl implements ProfileDao {
     public Optional<Profile> find(Connection connection, Integer id) throws DaoException {
         Optional<Profile> profile = queryExecutor.find(connection, FIND_SQL, id);
         if (profile.isPresent()) {
+            profile.get().setTracks(trackDao.getProfileMusic(connection, id));
             profile.get().setInstruments(instrumentDao.getProfileInstruments(connection, id));
             profile.get().setSpecialities(specialityDao.getProfileSpecialities(connection, id));
         }
@@ -89,6 +97,7 @@ public class ProfileDaoImpl implements ProfileDao {
     public List<Profile> findAll(Connection connection) throws DaoException {
         List<Profile> profiles = queryExecutor.findAll(connection, FIND_ALL_SQL);
         profiles.forEach(profile -> {
+            profile.setTracks(trackDao.getProfileMusic(connection, profile.getId()));
             profile.setInstruments(instrumentDao.getProfileInstruments(connection, profile.getId()));
             profile.setSpecialities(specialityDao.getProfileSpecialities(connection, profile.getId()));
         });
@@ -106,6 +115,11 @@ public class ProfileDaoImpl implements ProfileDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    public void setPreviewTrack(Connection connection, int profileId, int trackId) throws DaoException {
+        queryExecutor.update(connection, UPDATE_PROFILE_PREVIEW_TRACK, trackId, profileId);
     }
 
     @Override
