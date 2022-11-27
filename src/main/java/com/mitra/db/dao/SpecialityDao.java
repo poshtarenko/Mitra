@@ -1,11 +1,11 @@
 package com.mitra.db.dao;
 
-import com.mitra.entity.Speciality;
+import com.mitra.entity.impl.SpecialityImpl;
 
 import java.sql.Connection;
 import java.util.List;
 
-public interface SpecialityDao extends Dao<Integer, Speciality> {
+public interface SpecialityDao extends Dao<Integer, SpecialityImpl> {
 
     /**
      * Get list of all profile specialities
@@ -14,7 +14,7 @@ public interface SpecialityDao extends Dao<Integer, Speciality> {
      * @param profileId  profileId
      * @return list of specialities which profile have
      */
-    List<Speciality> getProfileSpecialities(Connection connection, int profileId);
+    List<SpecialityImpl> getProfileSpecialities(Connection connection, int profileId);
 
     /**
      * Updates profile specialities list to new
@@ -23,7 +23,7 @@ public interface SpecialityDao extends Dao<Integer, Speciality> {
      * @param profileId   profileId
      * @param specialities list of specialities
      */
-    void setProfileSpecialities(Connection connection, int profileId, List<Speciality> specialities);
+    void setProfileSpecialities(Connection connection, int profileId, List<SpecialityImpl> specialities);
 
     /**
      * Deletes all profile specialities

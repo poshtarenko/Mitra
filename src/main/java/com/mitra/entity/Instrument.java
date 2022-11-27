@@ -1,11 +1,7 @@
 package com.mitra.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+public interface Instrument extends Identifiable<Integer> {
+    String getName();
 
-@Data
-@AllArgsConstructor
-public class Instrument implements Identifiable<Integer> {
-    Integer id;
-    String name;
+    void setName(String name);
 }

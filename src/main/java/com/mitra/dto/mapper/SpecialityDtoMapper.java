@@ -1,18 +1,16 @@
 package com.mitra.dto.mapper;
 
-import com.mitra.dto.InstrumentDto;
 import com.mitra.dto.SpecialityDto;
-import com.mitra.entity.Instrument;
-import com.mitra.entity.Speciality;
+import com.mitra.entity.impl.SpecialityImpl;
 
-public class SpecialityDtoMapper implements DtoMapper<SpecialityDto, Speciality> {
+public class SpecialityDtoMapper implements DtoMapper<SpecialityDto, SpecialityImpl> {
     @Override
-    public Speciality mapToEntity(SpecialityDto dto) {
-        return new Speciality(dto.getId(), dto.getName());
+    public SpecialityImpl mapToEntity(SpecialityDto dto) {
+        return new SpecialityImpl(dto.getId(), dto.getName());
     }
 
     @Override
-    public SpecialityDto mapToDto(Speciality entity) {
+    public SpecialityDto mapToDto(SpecialityImpl entity) {
         return SpecialityDto.builder()
                 .id(entity.getId())
                 .name(entity.getName())

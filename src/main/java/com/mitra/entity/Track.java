@@ -1,17 +1,19 @@
 package com.mitra.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public interface Track {
+    String getName();
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class Track implements Identifiable<Integer> {
-    Integer id;
-    String name;
-    String author;
-    String filePath;
+    String getAuthor();
+
+    String getFilePath();
+
+    Profile getOwner();
+
+    void setName(String name);
+
+    void setAuthor(String author);
+
+    void setFilePath(String filePath);
+
+    void setOwner(Profile owner);
 }

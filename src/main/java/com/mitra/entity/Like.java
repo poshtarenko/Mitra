@@ -1,13 +1,15 @@
 package com.mitra.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+public interface Like {
+    Profile getSender();
 
-@Data
-@AllArgsConstructor
-public class Like implements Identifiable<Integer> {
-    Integer id;
-    Profile sender;
-    Profile receiver;
-    Reaction reaction;
+    Profile getReceiver();
+
+    Reaction getReaction();
+
+    void setSender(Profile sender);
+
+    void setReceiver(Profile receiver);
+
+    void setReaction(Reaction reaction);
 }

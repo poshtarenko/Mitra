@@ -5,7 +5,7 @@ import com.mitra.db.Table;
 import com.mitra.db.dao.QueryExecutor;
 import com.mitra.db.dao.SpecialityDao;
 import com.mitra.db.mapper.RowMapper;
-import com.mitra.entity.Speciality;
+import com.mitra.entity.impl.SpecialityImpl;
 import com.mitra.exception.DaoException;
 
 import java.sql.Connection;
@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 
 public class SpecialityDaoImpl implements SpecialityDao {
 
-    private final RowMapper<Speciality> specialityRowMapper;
-    private final QueryExecutor<Integer, Speciality> queryExecutor;
+    private final RowMapper<SpecialityImpl> specialityRowMapper;
+    private final QueryExecutor<Integer, SpecialityImpl> queryExecutor;
 
-    public SpecialityDaoImpl(RowMapper<Speciality> specialityRowMapper) {
+    public SpecialityDaoImpl(RowMapper<SpecialityImpl> specialityRowMapper) {
         this.specialityRowMapper = specialityRowMapper;
         this.queryExecutor = new QueryExecutor<>(specialityRowMapper);
     }
@@ -50,22 +50,22 @@ public class SpecialityDaoImpl implements SpecialityDao {
     public static final String DELETE_SQL = null;
 
     @Override
-    public Optional<Speciality> find(Connection connection, Integer id) throws DaoException {
+    public Optional<SpecialityImpl> find(Connection connection, Integer id) throws DaoException {
         return queryExecutor.find(connection, FIND_SQL, id);
     }
 
     @Override
-    public List<Speciality> findAll(Connection connection) throws DaoException {
+    public List<SpecialityImpl> findAll(Connection connection) throws DaoException {
         return queryExecutor.findAll(connection, FIND_ALL_SQL);
     }
 
     @Override
-    public Integer save(Connection connection, Speciality entity) throws DaoException {
+    public Integer save(Connection connection, SpecialityImpl entity) throws DaoException {
         return queryExecutor.save(connection, SAVE_SQL);
     }
 
     @Override
-    public void update(Connection connection, Integer id, Speciality entity) throws DaoException {
+    public void update(Connection connection, Integer id, SpecialityImpl entity) throws DaoException {
         queryExecutor.update(connection, UPDATE_SQL, id);
     }
 
@@ -75,19 +75,19 @@ public class SpecialityDaoImpl implements SpecialityDao {
     }
 
     @Override
-    public List<Speciality> getProfileSpecialities(Connection connection, int profileId) {
+    public List<SpecialityImpl> getProfileSpecialities(Connection connection, int profileId) {
         return queryExecutor.findAll(connection, FIND_ALL_SPECIALITIES_BY_PROFILE_ID, profileId);
     }
 
     @Override
-    public void setProfileSpecialities(Connection connection, int profileId, List<Speciality> specialities) {
+    public void setProfileSpecialities(Connection connection, int profileId, List<SpecialityImpl> specialities) {
         deleteAllProfileSpecialities(connection, profileId);
 
         if (specialities.size() > 0) {
             String SQL = SET_SPECIALITIES_TO_PROFILE.replace("#L",
                     specialities.stream().map(v -> "?").collect(Collectors.joining(", ")));
 
-            List<String> specialityNames = specialities.stream().map(Speciality::getName).collect(Collectors.toList());
+            List<String> specialityNames = specialities.stream().map(SpecialityImpl::getName).collect(Collectors.toList());
             queryExecutor.update(connection, SQL, profileId, specialityNames);
         }
     }

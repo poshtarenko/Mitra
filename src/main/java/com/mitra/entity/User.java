@@ -1,23 +1,19 @@
 package com.mitra.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+public interface User {
+    String getEmail();
 
-@Data
-@Builder
-@AllArgsConstructor
-public class User implements Identifiable<Integer> {
-    private Integer id;
-    private String email;
-    private String password;
-    private Role role;
-    private Profile profile;
+    String getPassword();
 
-    public User(int id, String email, String password, Role role) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
+    Role getRole();
+
+    Profile getProfile();
+
+    void setEmail(String email);
+
+    void setPassword(String password);
+
+    void setRole(Role role);
+
+    void setProfile(Profile profile);
 }

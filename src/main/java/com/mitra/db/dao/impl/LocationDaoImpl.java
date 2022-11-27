@@ -5,7 +5,7 @@ import com.mitra.db.Table;
 import com.mitra.db.dao.LocationDao;
 import com.mitra.db.dao.QueryExecutor;
 import com.mitra.db.mapper.RowMapper;
-import com.mitra.entity.Location;
+import com.mitra.entity.impl.LocationImpl;
 import com.mitra.exception.DaoException;
 
 import java.sql.Connection;
@@ -14,10 +14,10 @@ import java.util.Optional;
 
 public class LocationDaoImpl implements LocationDao {
 
-    private final RowMapper<Location> locationRowMapper;
-    private final QueryExecutor<Integer, Location> queryExecutor;
+    private final RowMapper<LocationImpl> locationRowMapper;
+    private final QueryExecutor<Integer, LocationImpl> queryExecutor;
 
-    public LocationDaoImpl(RowMapper<Location> locationRowMapper) {
+    public LocationDaoImpl(RowMapper<LocationImpl> locationRowMapper) {
         this.locationRowMapper = locationRowMapper;
         this.queryExecutor = new QueryExecutor<>(locationRowMapper);
     }
@@ -43,28 +43,28 @@ public class LocationDaoImpl implements LocationDao {
     public static final String DELETE_SQL = null;
 
     @Override
-    public Optional<Location> find(Connection connection, Integer id) throws DaoException {
+    public Optional<LocationImpl> find(Connection connection, Integer id) throws DaoException {
         return queryExecutor.find(connection, FIND_SQL, id);
     }
 
     @Override
-    public Optional<Location> findByCity(Connection connection, String city) throws DaoException {
+    public Optional<LocationImpl> findByCity(Connection connection, String city) throws DaoException {
         return queryExecutor.find(connection, FIND_BY_CITY_SQL, city);
     }
 
     @Override
-    public List<Location> findAll(Connection connection) throws DaoException {
+    public List<LocationImpl> findAll(Connection connection) throws DaoException {
         return queryExecutor.findAll(connection, FIND_ALL_SQL);
     }
 
     @Override
-    public Integer save(Connection connection, Location entity) throws DaoException {
+    public Integer save(Connection connection, LocationImpl entity) throws DaoException {
         return queryExecutor.save(connection, SAVE_SQL,
                 entity.getCity(), entity.getLocalArea());
     }
 
     @Override
-    public void update(Connection connection, Integer id, Location entity) throws DaoException {
+    public void update(Connection connection, Integer id, LocationImpl entity) throws DaoException {
         queryExecutor.update(connection, UPDATE_SQL,
                 entity.getCity(), entity.getLocalArea(), id);
     }

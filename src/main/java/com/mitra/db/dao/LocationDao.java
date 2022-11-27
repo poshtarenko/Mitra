@@ -1,12 +1,12 @@
 package com.mitra.db.dao;
 
-import com.mitra.entity.Location;
+import com.mitra.entity.impl.LocationImpl;
 import com.mitra.exception.DaoException;
 
 import java.sql.Connection;
 import java.util.Optional;
 
-public interface LocationDao extends Dao<Integer, Location> {
+public interface LocationDao extends Dao<Integer, LocationImpl> {
 
     /**
      * Find Location in DB by city
@@ -15,6 +15,6 @@ public interface LocationDao extends Dao<Integer, Location> {
      * @param city       city name
      * @return Optional of City
      */
-    Optional<Location> findByCity(Connection connection, String city) throws DaoException;
+    Optional<LocationImpl> findByCity(Connection connection, String city) throws DaoException;
 
 }

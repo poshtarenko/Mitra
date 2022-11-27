@@ -5,7 +5,7 @@ import com.mitra.db.Table;
 import com.mitra.db.dao.LikeDao;
 import com.mitra.db.dao.QueryExecutor;
 import com.mitra.db.mapper.RowMapper;
-import com.mitra.entity.Like;
+import com.mitra.entity.impl.Like;
 import com.mitra.entity.Reaction;
 
 import java.sql.Connection;

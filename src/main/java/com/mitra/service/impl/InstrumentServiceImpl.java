@@ -4,7 +4,7 @@ import com.mitra.db.connection.ConnectionManager;
 import com.mitra.db.dao.InstrumentDao;
 import com.mitra.dto.InstrumentDto;
 import com.mitra.dto.mapper.DtoMapper;
-import com.mitra.entity.Instrument;
+import com.mitra.entity.impl.Instrument;
 import com.mitra.service.InstrumentService;
 
 import java.sql.Connection;

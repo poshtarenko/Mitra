@@ -4,7 +4,7 @@ import com.mitra.db.connection.ConnectionManager;
 import com.mitra.db.dao.LocationDao;
 import com.mitra.dto.LocationDto;
 import com.mitra.dto.mapper.DtoMapper;
-import com.mitra.entity.Location;
+import com.mitra.entity.impl.LocationImpl;
 import com.mitra.service.LocationService;
 
 import java.sql.Connection;
@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 public class LocationServiceImpl implements LocationService {
 
     private final LocationDao locationDao;
-    private final DtoMapper<LocationDto, Location> locationDtoMapper;
+    private final DtoMapper<LocationDto, LocationImpl> locationDtoMapper;
 
-    public LocationServiceImpl(LocationDao locationDao, DtoMapper<LocationDto, Location> locationDtoMapper) {
+    public LocationServiceImpl(LocationDao locationDao, DtoMapper<LocationDto, LocationImpl> locationDtoMapper) {
         this.locationDao = locationDao;
         this.locationDtoMapper = locationDtoMapper;
     }

@@ -5,7 +5,8 @@ import com.mitra.db.Table;
 import com.mitra.db.dao.QueryExecutor;
 import com.mitra.db.dao.InstrumentDao;
 import com.mitra.db.mapper.RowMapper;
-import com.mitra.entity.Instrument;
+import com.mitra.entity.impl.Instrument;
+import com.mitra.entity.impl.InstrumentImpl;
 import com.mitra.exception.DaoException;
 
 import java.sql.Connection;
@@ -88,7 +89,7 @@ public class InstrumentDaoImpl implements InstrumentDao {
             String SQL = SET_INSTRUMENTS_TO_PROFILE.replace("#L",
                     instruments.stream().map(v -> "?").collect(Collectors.joining(", ")));
 
-            List<String> instrumentNames = instruments.stream().map(Instrument::getName).collect(Collectors.toList());
+            List<String> instrumentNames = instruments.stream().map(InstrumentImpl::getName).collect(Collectors.toList());
             queryExecutor.update(connection, SQL, profileId, instrumentNames);
         }
     }

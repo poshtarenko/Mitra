@@ -1,24 +1,23 @@
 package com.mitra.dto.mapper;
 
-import com.mitra.cloud.CloudStorageProvider;
 import com.mitra.dto.*;
-import com.mitra.entity.*;
+import com.mitra.entity.Instrument;
+import com.mitra.entity.Profile;
+import com.mitra.entity.impl.*;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
 
-    private final DtoMapper<LocationDto, Location> locationDtoMapper;
+    private final DtoMapper<LocationDto, LocationImpl> locationDtoMapper;
     private final DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper;
-    private final DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
+    private final DtoMapper<SpecialityDto, SpecialityImpl> specialityDtoMapper;
 
-    public ProfileDtoMapper(DtoMapper<LocationDto, Location> locationDtoMapper,
+    public ProfileDtoMapper(DtoMapper<LocationDto, LocationImpl> locationDtoMapper,
                             DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper,
-                            DtoMapper<SpecialityDto, Speciality> specialityDtoMapper) {
+                            DtoMapper<SpecialityDto, SpecialityImpl> specialityDtoMapper) {
         this.locationDtoMapper = locationDtoMapper;
         this.instrumentDtoMapper = instrumentDtoMapper;
         this.specialityDtoMapper = specialityDtoMapper;
@@ -26,7 +25,7 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
 
     @Override
     public Profile mapToEntity(ProfileDto dto) {
-        Location location = null;
+        LocationImpl location = null;
         if (dto.getLocation() != null)
             location = locationDtoMapper.mapToEntity(dto.getLocation());
 
@@ -38,7 +37,7 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
         } else
             instruments = Collections.emptyList();
 
-        List<Speciality> specialities;
+        List<SpecialityImpl> specialities;
         if (dto.getInstruments() != null) {
             specialities = dto.getSpecialities().stream()
                     .map(specialityDtoMapper::mapToEntity)
@@ -46,7 +45,7 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
         } else
             specialities = Collections.emptyList();
 
-        return Profile.builder()
+        return ProfileImpl.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .age(dto.getAge())

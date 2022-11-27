@@ -1,16 +1,17 @@
 package com.mitra.db.mapper;
 
-import com.mitra.entity.*;
+import com.mitra.entity.Profile;
+import com.mitra.entity.impl.*;
 
 public class RowMapperFactory {
 
     private static final RowMapperFactory INSTANCE = new RowMapperFactory();
 
-    private RowMapper<User> userRowMapper;
+    private RowMapper<UserImpl> userRowMapper;
     private RowMapper<Profile> profileRowMapper;
-    private RowMapper<Location> locationRowMapper;
+    private RowMapper<LocationImpl> locationRowMapper;
     private RowMapper<Instrument> instrumentRowMapper;
-    private RowMapper<Speciality> specialityRowMapper;
+    private RowMapper<SpecialityImpl> specialityRowMapper;
     private RowMapper<Like> likeRowMapper;
 
     private RowMapperFactory() {
@@ -26,7 +27,7 @@ public class RowMapperFactory {
         return INSTANCE;
     }
 
-    public RowMapper<User> getUserRowMapper() {
+    public RowMapper<UserImpl> getUserRowMapper() {
         return userRowMapper;
     }
 
@@ -34,7 +35,7 @@ public class RowMapperFactory {
         return profileRowMapper;
     }
 
-    public RowMapper<Location> getLocationRowMapper() {
+    public RowMapper<LocationImpl> getLocationRowMapper() {
         return locationRowMapper;
     }
 
@@ -42,7 +43,7 @@ public class RowMapperFactory {
         return instrumentRowMapper;
     }
 
-    public RowMapper<Speciality> getSpecialityRowMapper() {
+    public RowMapper<SpecialityImpl> getSpecialityRowMapper() {
         return specialityRowMapper;
     }
 

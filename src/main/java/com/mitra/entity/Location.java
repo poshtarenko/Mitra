@@ -1,17 +1,19 @@
 package com.mitra.entity;
 
-import com.mitra.entity.Identifiable;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+public interface Location {
+    String getCity();
 
-@Data
-@AllArgsConstructor
-@Builder
-public class Location implements Identifiable<Integer> {
-    Integer id; // city.id
-    String city;
-    String localArea;
-    String region;
-    String country;
+    String getLocalArea();
+
+    String getRegion();
+
+    String getCountry();
+
+    void setCity(String city);
+
+    void setLocalArea(String localArea);
+
+    void setRegion(String region);
+
+    void setCountry(String country);
 }

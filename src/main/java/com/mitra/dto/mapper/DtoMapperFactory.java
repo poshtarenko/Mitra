@@ -1,19 +1,18 @@
 package com.mitra.dto.mapper;
 
-import com.mitra.cloud.CloudStorageProviderImpl;
-import com.mitra.cloud.GoogleDriveInitializer;
 import com.mitra.dto.*;
-import com.mitra.entity.*;
+import com.mitra.entity.Profile;
+import com.mitra.entity.impl.*;
 
 public class DtoMapperFactory {
 
     private static final DtoMapperFactory INSTANCE = new DtoMapperFactory();
 
-    private DtoMapper<UserDto, User> userDtoMapper;
+    private DtoMapper<UserDto, UserImpl> userDtoMapper;
     private DtoMapper<ProfileDto, Profile> profileDtoMapper;
-    private DtoMapper<LocationDto, Location> locationDtoMapper;
+    private DtoMapper<LocationDto, LocationImpl> locationDtoMapper;
     private DtoMapper<InstrumentDto, Instrument> instrumentDtoMapper;
-    private DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
+    private DtoMapper<SpecialityDto, SpecialityImpl> specialityDtoMapper;
     private DtoMapper<LikeDto, Like> likeDtoMapper;
 
     private DtoMapperFactory() {
@@ -29,7 +28,7 @@ public class DtoMapperFactory {
         return INSTANCE;
     }
 
-    public DtoMapper<UserDto, User> getUserDtoMapper() {
+    public DtoMapper<UserDto, UserImpl> getUserDtoMapper() {
         return userDtoMapper;
     }
 
@@ -37,7 +36,7 @@ public class DtoMapperFactory {
         return profileDtoMapper;
     }
 
-    public DtoMapper<LocationDto, Location> getLocationDtoMapper() {
+    public DtoMapper<LocationDto, LocationImpl> getLocationDtoMapper() {
         return locationDtoMapper;
     }
 
@@ -45,7 +44,7 @@ public class DtoMapperFactory {
         return instrumentDtoMapper;
     }
 
-    public DtoMapper<SpecialityDto, Speciality> getSpecialityDtoMapper() {
+    public DtoMapper<SpecialityDto, SpecialityImpl> getSpecialityDtoMapper() {
         return specialityDtoMapper;
     }
 

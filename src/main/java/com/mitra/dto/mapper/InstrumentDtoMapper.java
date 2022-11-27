@@ -1,16 +1,16 @@
 package com.mitra.dto.mapper;
 
 import com.mitra.dto.InstrumentDto;
-import com.mitra.entity.Instrument;
+import com.mitra.entity.impl.InstrumentImpl;
 
-public class InstrumentDtoMapper implements DtoMapper<InstrumentDto, Instrument> {
+public class InstrumentDtoMapper implements DtoMapper<InstrumentDto, InstrumentImpl> {
     @Override
-    public Instrument mapToEntity(InstrumentDto dto) {
-        return new Instrument(dto.getId(), dto.getName());
+    public InstrumentImpl mapToEntity(InstrumentDto dto) {
+        return new InstrumentImpl(dto.getId(), dto.getName());
     }
 
     @Override
-    public InstrumentDto mapToDto(Instrument entity) {
+    public InstrumentDto mapToDto(InstrumentImpl entity) {
         return InstrumentDto.builder()
                 .id(entity.getId())
                 .name(entity.getName())
