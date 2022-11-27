@@ -14,9 +14,11 @@ public enum UrlPath {
     MY_PROFILE("/me", "my_profile"),
     UPDATE_PROFILE("/upd_profile", "changeInfo"),
     SEARCH("/search", "search"),
+    MUSIC("/music", "my_music"),
     SWIPE_SEARCH("/go", "slide_search"),
     LIKES("/likes", "likes_page"),
-    IMAGES("/images", "");
+    IMAGES("/images", ""),
+    AUDIO("/audio", "");
 
     private final String urlPath;
     private final String jspFileName;
