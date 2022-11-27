@@ -15,7 +15,7 @@ import java.util.Collections;
 public class CloudStorageProviderImpl implements CloudStorageProvider {
 
     private static final String PROFILE_PHOTOS_FOLDER_ID = "1LFvuo2nIQibFxSV9n2JqmeKPmdjJNc6W";
-    private static final String PROFILE_MUSIC_FOLDER_ID = "EMPTY NOW";
+    private static final String PROFILE_MUSIC_FOLDER_ID = "1vtbG-MyTsyCTbNmplowBZD7Driswt9Ff";
 
     private final Drive cloudService;
 
@@ -25,7 +25,7 @@ public class CloudStorageProviderImpl implements CloudStorageProvider {
 
     @Override
     @SneakyThrows
-    public InputStream getImage(String fileID) {
+    public InputStream getFile(String fileID) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         cloudService.files().get(fileID)
                 .executeMediaAndDownloadTo(out);
@@ -48,30 +48,28 @@ public class CloudStorageProviderImpl implements CloudStorageProvider {
         fileMetadata.setParents(Collections.singletonList(PROFILE_PHOTOS_FOLDER_ID));
 
         try {
-            File file = cloudService.files().create(fileMetadata, new InputStreamContent("image/jpeg", photoInputStream))
+            File file = cloudService.files()
+                    .create(fileMetadata, new InputStreamContent("image/jpeg", photoInputStream))
                     .setFields("id")
                     .execute();
             return file.getId();
-        } catch (GoogleJsonResponseException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public String addProfileMusic(int profileId, InputStream musicInputStream) {
+    public String addProfileMusic(int profileId, InputStream trackInputStream) {
         File fileMetadata = new File();
-        fileMetadata.setName(profileId + ".mp3");
+        fileMetadata.setName(String.valueOf(profileId));
         fileMetadata.setParents(Collections.singletonList(PROFILE_MUSIC_FOLDER_ID));
 
         try {
-            File file = cloudService.files().create(fileMetadata, new InputStreamContent("MUSICc MUSTt BEc HERREE", musicInputStream))
+            File file = cloudService.files()
+                    .create(fileMetadata, new InputStreamContent("audio/mpeg", trackInputStream))
                     .setFields("id")
                     .execute();
             return file.getId();
-        } catch (GoogleJsonResponseException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

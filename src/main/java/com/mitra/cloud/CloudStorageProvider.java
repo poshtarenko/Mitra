@@ -10,7 +10,7 @@ public interface CloudStorageProvider {
      * @param fileID fileID of image
      * @return input stream with image
      */
-    InputStream getImage(String fileID);
+    InputStream getFile(String fileID);
 
     /**
      * Deletes any file from cloud by ID
@@ -33,9 +33,9 @@ public interface CloudStorageProvider {
      * Get image from cloud
      *
      * @param profileId        profile id
-     * @param musicInputStream input stream with track
+     * @param trackInputStream input stream with track
      * @return generated fileId
      */
-    String addProfileMusic(int profileId, InputStream musicInputStream);
+    String addProfileMusic(int profileId, InputStream trackInputStream);
 
 }

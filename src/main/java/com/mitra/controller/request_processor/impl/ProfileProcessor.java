@@ -19,7 +19,7 @@ import java.util.Optional;
 public class ProfileProcessor extends AbstractRequestProcessor {
 
     private final ProfileService profileService = ServiceFactory.getInstance().getProfileService();
-    private final ProfileLikeService profileLikeService = ServiceFactory.getInstance().getProfileLikesService();
+    private final ProfileLikeService profileLikeService = ServiceFactory.getInstance().getProfileLikeService();
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

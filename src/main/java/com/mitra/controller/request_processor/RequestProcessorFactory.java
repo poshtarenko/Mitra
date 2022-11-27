@@ -16,6 +16,8 @@ public class RequestProcessorFactory {
 
     static {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
+        CloudStorageProviderImpl cloudStorageProvider =
+                new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService());
 
         requestProcessorsMap.put(UrlPath.LANDING_PAGE, new LandingProcessor());
         requestProcessorsMap.put(UrlPath.AUTHORIZATION, new AuthorizationProcessor());
@@ -28,8 +30,10 @@ public class RequestProcessorFactory {
         requestProcessorsMap.put(UrlPath.SEARCH, new SearchProcessor());
         requestProcessorsMap.put(UrlPath.SWIPE_SEARCH, new SearchBySwipeProcessor());
         requestProcessorsMap.put(UrlPath.IMAGES,
-                new ImageProcessor(new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService())));
-        requestProcessorsMap.put(UrlPath.LIKES, new LikesProcessor(serviceFactory.getProfileLikesService()));
+                new ImageProcessor(cloudStorageProvider));
+        requestProcessorsMap.put(UrlPath.LIKES, new LikesProcessor(serviceFactory.getProfileLikeService()));
+        requestProcessorsMap.put(UrlPath.MUSIC, new MyMusicProcessor());
+        requestProcessorsMap.put(UrlPath.AUDIO, new AudioProcessor(cloudStorageProvider));
     }
 
     public RequestProcessor getProcessor(UrlPath urlPath) {

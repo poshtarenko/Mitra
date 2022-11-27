@@ -20,7 +20,7 @@ public class ImageProcessor extends AbstractRequestProcessor {
     @Override
     public void processGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String imagePath = req.getParameter("path");
-        InputStream image = cloudStorageProvider.getImage(imagePath);
+        InputStream image = cloudStorageProvider.getFile(imagePath);
 
         resp.setContentType("application/octet-stream");
         writeImage(image, resp);
