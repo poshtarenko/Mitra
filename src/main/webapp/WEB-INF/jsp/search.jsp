@@ -36,33 +36,115 @@
         <main class="main">
 
             <div class="main-content">
-                <br><h2>Всі анкети користувачів :</h2>
+                <br>
+                <form action="${pageContext.request.contextPath}/app/search" method="get">
+                    <label for="name">Ім'я</label>
+                    <input type="text" name="name" id="name">
 
-                <c:forEach var="profile" items="${requestScope.profiles}">
+                    <label for="gender">Стать</label>
+                    <select name="gender" id="gender">
+                        <option value="" selected></option>
+                        <option value="MALE">MALE</option>
+                        <option value="FEMALE">FEMALE</option>
+                    </select><br>
+
+                    <label for="minAge">Мін. вік</label>
+                    <input type="number" name="minAge" id="minAge">
+
+                    <label for="maxAge">Макс. вік</label>
+                    <input type="number" name="maxAge" id="maxAge"><br>
+
+
+                    <label for="city">Місто</label>
+                    <select name="city" id="city">
+                        <option value="" selected></option>
+                        <c:forEach var="city" items="${requestScope.cities}">
+                            <option value="${city}">${city}</option>
+                        </c:forEach>
+                    </select><br>
+
+                    <label for="localArea">Місцевість</label>
+                    <select name="localArea" id="localArea">
+                        <option value="" selected></option>
+                        <c:forEach var="localArea" items="${requestScope.localAreas}">
+                            <option value="${localArea}">${localArea}</option>
+                        </c:forEach>
+                    </select>
+
+                    <label for="region">Область</label>
+                    <select name="region" id="region">
+                        <option value="" selected></option>
+                        <c:forEach var="region" items="${requestScope.regions}">
+                            <option value="${region}">${region}</option>
+                        </c:forEach>
+                    </select><br>
+
+                    <label for="instruments">Інструменти</label>
+                    <select name="instruments" id="instruments" multiple>
+                        <c:forEach var="instrument" items="${requestScope.instruments}">
+                            <option value="${instrument}">${instrument}</option>
+                        </c:forEach>
+                    </select>
+
+                    <label for="specialities">Спеціальності</label>
+                    <select name="specialities" id="specialities" multiple>
+                        <c:forEach var="speciality" items="${requestScope.specialities}">
+                            <option value="${speciality}">${speciality}</option>
+                        </c:forEach>
+                    </select><br>
+
+                    <input type="submit" value="Пошук" style="width: 120px; text-align: center; font-weight: bold">
+
                     <hr>
-                    <c:if test="${not empty profile.getPhotoPath()}">
-                        <img width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${profile.getPhotoPath()}"/>
-                    </c:if>
-                    <c:if test="${empty profile.getPhotoPath()}">
-                        <img width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
+
+                    <c:if test="${empty requestScope.profiles}">
+                        <h4>Нічого не знайдено :(</h4>
                     </c:if>
 
-                    <h3><a href="${pageContext.request.contextPath}/app/profile?id=${profile.getId()}">${profile.getName()}</a></h3>
-                    <p><b>${profile.getLocation().getCity()}, ${profile.getAge()} років, ${profile.getGender().name()}</b></p>
-                    <p><b>Текст анкети :</b> ${profile.getText()}</p>
-                    <p><b>Інструменти :</b>
-                        <c:forEach var="instrument" items="${profile.getInstruments()}">
-                            <span>${instrument.getName()} </span>
+                    <div style="display: inline-flex">
+                        <c:forEach var="page" items="${requestScope.pages}">
+                            <input style="width: 32px; text-align: center" type="submit" name="page" value="${page}">
                         </c:forEach>
-                    </p>
-                    <p><b>Спеціальність :</b>
-                        <c:forEach var="speciality" items="${profile.getSpecialities()}">
-                            <span>${speciality.getName()} </span>
-                        </c:forEach>
-                    </p>
-                    <p>${profile.getText()}</p>
+                    </div>
+                    <br><br>
 
-                </c:forEach>
+                    <c:forEach var="profile" items="${requestScope.profiles}">
+                        <c:if test="${not empty profile.getPhotoPath()}">
+                            <img width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${profile.getPhotoPath()}"/>
+                        </c:if>
+                        <c:if test="${empty profile.getPhotoPath()}">
+                            <img width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
+                        </c:if>
+
+                        <h3><a href="${pageContext.request.contextPath}/app/profile?id=${profile.getId()}">${profile.getName()}</a></h3>
+                        <p><b>${profile.getLocation().getCity()}, ${profile.getAge()} років, ${profile.getGender().name()}</b></p>
+                        <c:if test="${not empty profile.getInstruments()}">
+                            <p><b>Інструменти :</b>
+                                <c:forEach var="instrument" items="${profile.getInstruments()}">
+                                    <span>${instrument.getName()} </span>
+                                </c:forEach>
+                            </p>
+                        </c:if>
+                        <c:if test="${not empty profile.getSpecialities()}">
+                            <p><b>Спеціальність :</b>
+                                <c:forEach var="speciality" items="${profile.getSpecialities()}">
+                                    <span>${speciality.getName()} </span>
+                                </c:forEach>
+                            </p>
+                        </c:if>
+                        <p>${profile.getText()}</p>
+                        <hr>
+                    </c:forEach>
+
+                    <div style="display: inline-flex">
+                        <c:forEach var="page" items="${requestScope.pages}">
+                            <input style="width: 27px; text-align: center" type="submit" name="page" value="${page}">
+                        </c:forEach>
+                    </div>
+                </form>
+                <br>
+                <br>
+
             </div>
         </main>
     </div>

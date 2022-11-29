@@ -1,5 +1,6 @@
 package com.mitra.service.impl;
 
+import com.mitra.db.filter.ProfileFilter;
 import com.mitra.dto.ProfileDto;
 import com.mitra.entity.Gender;
 import com.mitra.service.ProfileService;
@@ -47,7 +48,7 @@ class ProfileServiceTest {
     @Test
     @Order(2)
     void findAll() {
-        List<ProfileDto> allProfiles = profileService.findAll();
+        List<ProfileDto> allProfiles = profileService.findAll(new ProfileFilter(), 0, 0);
         Optional<ProfileDto> profileOptional = allProfiles.stream()
                 .filter(p -> p.getId().equals(profile.getId()))
                 .findFirst();
@@ -86,7 +87,7 @@ class ProfileServiceTest {
     @Order(4)
     void getAllIds() {
         List<Integer> allIds = profileService.getAllIDs();
-        List<Integer> allIds2 = profileService.findAll().stream()
+        List<Integer> allIds2 = profileService.findAll(new ProfileFilter(), 0, 0).stream()
                 .map(p -> p.getId())
                 .collect(Collectors.toList());
 

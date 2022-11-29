@@ -3,6 +3,8 @@ package com.mitra.db.dao.impl;
 import com.mitra.db.Column;
 import com.mitra.db.Table;
 import com.mitra.db.dao.*;
+import com.mitra.db.dao.impl.util.ProfileDaoQueryConstructor;
+import com.mitra.db.filter.ProfileFilter;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Profile;
 import com.mitra.exception.DaoException;
@@ -39,7 +41,7 @@ public class ProfileDaoImpl implements ProfileDao {
                     "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s " +
-                    "JOIN %s ON %s = %s ",
+                    "LEFT JOIN %s ON %s = %s ",
             Column.PROFILE.ID, Column.PROFILE.NAME, Column.PROFILE.AGE, Column.GENDER.GENDER, Column.PROFILE.TEXT, Column.PROFILE.PHOTO_PATH,
             Column.CITY.ID, Column.CITY.NAME, Column.LOCAL_AREA.NAME, Column.REGION.NAME, Column.COUNTRY.NAME,
             Column.MUSIC.ID, Column.MUSIC.NAME, Column.MUSIC.AUTHOR, Column.MUSIC.FILE_PATH,
@@ -49,7 +51,24 @@ public class ProfileDaoImpl implements ProfileDao {
             Table.LOCAL_AREA, Column.CITY.LOCAL_AREA_ID, Column.LOCAL_AREA.ID,
             Table.REGION, Column.LOCAL_AREA.REGION_ID, Column.REGION.ID,
             Table.COUNTRY, Column.REGION.COUNTRY_ID, Column.COUNTRY.ID,
-            Table.MUSIC, Column.MUSIC.PROFILE_ID, Column.PROFILE.ID);
+            Table.MUSIC, Column.MUSIC.ID, Column.PROFILE.PREVIEW_MUSIC_ID);
+
+    public static final String GET_COUNT_SQL = String.format(
+            "SELECT %s FROM %s " +
+                    "JOIN %s ON %s = %s " +
+                    "JOIN %s ON %s = %s " +
+                    "JOIN %s ON %s = %s " +
+                    "JOIN %s ON %s = %s " +
+                    "JOIN %s ON %s = %s " +
+                    "LEFT JOIN %s ON %s = %s ",
+            "COUNT(" + Column.PROFILE.ID + ")",
+            Table.PROFILE,
+            Table.GENDER, Column.PROFILE.GENDER_ID, Column.GENDER.ID,
+            Table.CITY, Column.PROFILE.CITY_ID, Column.CITY.ID,
+            Table.LOCAL_AREA, Column.CITY.LOCAL_AREA_ID, Column.LOCAL_AREA.ID,
+            Table.REGION, Column.LOCAL_AREA.REGION_ID, Column.REGION.ID,
+            Table.COUNTRY, Column.REGION.COUNTRY_ID, Column.COUNTRY.ID,
+            Table.MUSIC, Column.MUSIC.ID, Column.PROFILE.PREVIEW_MUSIC_ID);
 
     public static final String FIND_SQL = FIND_ALL_SQL + String.format(" WHERE %s = ?", Column.PROFILE.ID);
 
@@ -85,23 +104,48 @@ public class ProfileDaoImpl implements ProfileDao {
     @Override
     public Optional<Profile> find(Connection connection, Integer id) throws DaoException {
         Optional<Profile> profile = queryExecutor.find(connection, FIND_SQL, id);
-        if (profile.isPresent()) {
-            profile.get().setTracks(trackDao.getProfileMusic(connection, id));
-            profile.get().setInstruments(instrumentDao.getProfileInstruments(connection, id));
-            profile.get().setSpecialities(specialityDao.getProfileSpecialities(connection, id));
-        }
+        profile.ifPresent(value -> fillProfile(connection, value));
         return profile;
     }
 
     @Override
     public List<Profile> findAll(Connection connection) throws DaoException {
         List<Profile> profiles = queryExecutor.findAll(connection, FIND_ALL_SQL);
-        profiles.forEach(profile -> {
-            profile.setTracks(trackDao.getProfileMusic(connection, profile.getId()));
-            profile.setInstruments(instrumentDao.getProfileInstruments(connection, profile.getId()));
-            profile.setSpecialities(specialityDao.getProfileSpecialities(connection, profile.getId()));
-        });
+        profiles.forEach(profile -> fillProfile(connection, profile));
         return profiles;
+    }
+
+    @Override
+    public List<Profile> findAll(Connection connection, ProfileFilter profileFilter, int limit, int offset) throws DaoException {
+        StringBuilder SQL = ProfileDaoQueryConstructor.constructQuery(profileFilter);
+
+        if (limit != 0)
+            SQL.append("LIMIT ").append(limit).append(" ");
+        if (offset != 0)
+            SQL.append("OFFSET ").append(offset).append(" ");
+
+        List<Profile> profiles = queryExecutor.findAll(connection, SQL.toString());
+        profiles.forEach(profile -> fillProfile(connection, profile));
+        return profiles;
+    }
+
+    @Override
+    public int getCount(Connection connection, ProfileFilter profileFilter) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_COUNT_SQL)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                return resultSet.getInt(1);
+            else
+                throw new DaoException("Get count query returns nothing");
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    private void fillProfile(Connection connection, Profile profile) {
+        profile.setTracks(trackDao.getProfileMusic(connection, profile.getId()));
+        profile.setInstruments(instrumentDao.getProfileInstruments(connection, profile.getId()));
+        profile.setSpecialities(specialityDao.getProfileSpecialities(connection, profile.getId()));
     }
 
     @Override

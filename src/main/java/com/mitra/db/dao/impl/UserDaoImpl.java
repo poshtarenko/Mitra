@@ -71,9 +71,8 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> find(Connection connection, String email, String password) throws DaoException {
         Optional<User> user = queryExecutor.find(connection, FIND_BY_EMAIL_AND_PASSWORD,
                 email, password);
-        if (user.isPresent())
-            user.get().setProfile(profileDao.find(connection, user.get().getId())
-                    .orElseThrow(() -> new RuntimeException("User without profile must be impossible")));
+        user.ifPresent(value -> value.setProfile(profileDao.find(connection, value.getId())
+                .orElseThrow(() -> new RuntimeException("User without profile must be impossible"))));
         return user;
     }
 

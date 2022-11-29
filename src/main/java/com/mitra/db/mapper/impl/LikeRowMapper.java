@@ -13,10 +13,11 @@ public class LikeRowMapper implements RowMapper<Like> {
     @Override
     public Like map(ResultSet resultSet) throws SQLException {
         Location senderLocation = LocationImpl.builder()
-                .city(resultSet.getString(10))
-                .localArea(resultSet.getString(11))
-                .region(resultSet.getString(12))
-                .country(resultSet.getString(13))
+                .id(resultSet.getInt(10))
+                .city(resultSet.getString(11))
+                .localArea(resultSet.getString(12))
+                .region(resultSet.getString(13))
+                .country(resultSet.getString(14))
                 .build();
 
         Profile sender = ProfileImpl.builder()
@@ -30,19 +31,20 @@ public class LikeRowMapper implements RowMapper<Like> {
                 .build();
 
         Location receiverLocation = LocationImpl.builder()
-                .city(resultSet.getString(20))
-                .localArea(resultSet.getString(21))
-                .region(resultSet.getString(22))
-                .country(resultSet.getString(23))
+                .id(resultSet.getInt(20))
+                .city(resultSet.getString(21))
+                .localArea(resultSet.getString(22))
+                .region(resultSet.getString(23))
+                .country(resultSet.getString(24))
                 .build();
 
         Profile receiver = ProfileImpl.builder()
-                .id(resultSet.getInt(14))
-                .name(resultSet.getString(15))
-                .age(resultSet.getInt(16))
-                .gender(Gender.valueOf(resultSet.getString(17)))
-                .text(resultSet.getString(18))
-                .photoPath(resultSet.getString(19))
+                .id(resultSet.getInt(15))
+                .name(resultSet.getString(16))
+                .age(resultSet.getInt(17))
+                .gender(Gender.valueOf(resultSet.getString(18)))
+                .text(resultSet.getString(19))
+                .photoPath(resultSet.getString(20))
                 .location(receiverLocation)
                 .build();
 

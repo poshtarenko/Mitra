@@ -1,8 +1,11 @@
 package com.mitra.service;
 
+import com.mitra.db.filter.ProfileFilter;
 import com.mitra.dto.ProfileDto;
+import com.mitra.exception.DaoException;
 
 import java.io.InputStream;
+import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,9 +14,21 @@ public interface ProfileService {
     /**
      * Get all user profiles from DB
      *
+     * @param profileFilter filter (name, minAge, maxAge etc)
+     * @param limit         max count of profiles
+     * @param offset        offset
      * @return list of profileDTOs
      */
-    List<ProfileDto> findAll();
+    List<ProfileDto> findAll(ProfileFilter profileFilter, int limit, int offset);
+
+    /**
+     * Get count of profiles matching filter
+     *
+     * @param profileFilter Filter
+     * @return count of profiles matching filter
+     * @throws DaoException if something bad
+     */
+    int getCount(ProfileFilter profileFilter) throws DaoException;
 
     /**
      * Get all user IDs from DB

@@ -25,6 +25,16 @@
         <li class="link">
             <a href="${pageContext.request.contextPath}/app/go" class="linkInner">
                 <div class="icon-space">
+                    <i class="fa-sharp fa-solid fa-fire"></i>
+                </div>
+
+                Погнали!
+            </a>
+        </li>
+
+        <li class="link">
+            <a href="${pageContext.request.contextPath}/app/search" class="linkInner">
+                <div class="icon-space">
                     <i class="fa-solid fa-magnifying-glass fa"></i>
                 </div>
 

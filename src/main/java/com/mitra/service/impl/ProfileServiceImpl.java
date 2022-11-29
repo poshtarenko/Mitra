@@ -3,9 +3,11 @@ package com.mitra.service.impl;
 import com.mitra.cloud.CloudStorageProvider;
 import com.mitra.db.connection.ConnectionManager;
 import com.mitra.db.dao.ProfileDao;
+import com.mitra.db.filter.ProfileFilter;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Profile;
+import com.mitra.exception.DaoException;
 import com.mitra.service.ProfileService;
 
 import java.io.IOException;
@@ -30,14 +32,24 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public List<ProfileDto> findAll() {
+    public List<ProfileDto> findAll(ProfileFilter profileFilter, int limit, int offset) {
         try (Connection connection = ConnectionManager.get()) {
-            return profileDao.findAll(connection).stream()
+            return profileDao.findAll(connection, profileFilter, limit, offset).stream()
                     .map(profileDtoMapper::mapToDto)
                     .collect(Collectors.toList());
         } catch (SQLException e) {
             // TODO : log
             return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public int getCount(ProfileFilter profileFilter) throws DaoException {
+        try (Connection connection = ConnectionManager.get()) {
+            return profileDao.getCount(connection, profileFilter);
+        } catch (SQLException e) {
+            // TODO : log
+            return 0;
         }
     }
 
