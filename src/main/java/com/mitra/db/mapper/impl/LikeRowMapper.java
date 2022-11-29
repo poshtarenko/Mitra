@@ -31,11 +31,11 @@ public class LikeRowMapper implements RowMapper<Like> {
                 .build();
 
         Location receiverLocation = LocationImpl.builder()
-                .id(resultSet.getInt(20))
-                .city(resultSet.getString(21))
-                .localArea(resultSet.getString(22))
-                .region(resultSet.getString(23))
-                .country(resultSet.getString(24))
+                .id(resultSet.getInt(21))
+                .city(resultSet.getString(22))
+                .localArea(resultSet.getString(23))
+                .region(resultSet.getString(24))
+                .country(resultSet.getString(25))
                 .build();
 
         Profile receiver = ProfileImpl.builder()
