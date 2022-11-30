@@ -6,10 +6,7 @@ import com.mitra.db.filter.ProfileFilter;
 import com.mitra.entity.Gender;
 import com.mitra.entity.Instrument;
 import com.mitra.entity.Speciality;
-import com.mitra.entity.impl.InstrumentImpl;
-import com.mitra.entity.impl.SpecialityImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public final class ProfileDaoQueryConstructor {
@@ -33,8 +30,32 @@ public final class ProfileDaoQueryConstructor {
             Table.COUNTRY, Column.REGION.COUNTRY_ID, Column.COUNTRY.ID,
             Table.MUSIC, Column.MUSIC.ID, Column.PROFILE.PREVIEW_MUSIC_ID);
 
-    public static StringBuilder constructQuery(ProfileFilter profileFilter) {
-        StringBuilder SQL = new StringBuilder(baseFindSQL);
+    private static final String baseCountSQL = String.format(
+            "SELECT COUNT(%s) FROM %s " +
+                    "JOIN %s ON %s = %s " +
+                    "JOIN %s ON %s = %s " +
+                    "JOIN %s ON %s = %s " +
+                    "JOIN %s ON %s = %s " +
+                    "JOIN %s ON %s = %s " +
+                    "LEFT JOIN %s ON %s = %s ",
+            Column.PROFILE.ID, Table.PROFILE,
+            Table.GENDER, Column.PROFILE.GENDER_ID, Column.GENDER.ID,
+            Table.CITY, Column.PROFILE.CITY_ID, Column.CITY.ID,
+            Table.LOCAL_AREA, Column.CITY.LOCAL_AREA_ID, Column.LOCAL_AREA.ID,
+            Table.REGION, Column.LOCAL_AREA.REGION_ID, Column.REGION.ID,
+            Table.COUNTRY, Column.REGION.COUNTRY_ID, Column.COUNTRY.ID,
+            Table.MUSIC, Column.MUSIC.ID, Column.PROFILE.PREVIEW_MUSIC_ID);
+
+    public static StringBuilder constructSelectQuery(ProfileFilter profileFilter) {
+        return constructQuery(profileFilter, baseFindSQL);
+    }
+
+    public static StringBuilder constructCountQuery(ProfileFilter profileFilter) {
+        return constructQuery(profileFilter, baseCountSQL);
+    }
+
+    private static StringBuilder constructQuery(ProfileFilter profileFilter, String initialSQL) {
+        StringBuilder SQL = new StringBuilder(initialSQL);
         boolean whereClauseProvided = false;
 
         String name = profileFilter.getName();

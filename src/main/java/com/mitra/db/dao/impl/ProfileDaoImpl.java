@@ -53,23 +53,6 @@ public class ProfileDaoImpl implements ProfileDao {
             Table.COUNTRY, Column.REGION.COUNTRY_ID, Column.COUNTRY.ID,
             Table.MUSIC, Column.MUSIC.ID, Column.PROFILE.PREVIEW_MUSIC_ID);
 
-    public static final String GET_COUNT_SQL = String.format(
-            "SELECT %s FROM %s " +
-                    "JOIN %s ON %s = %s " +
-                    "JOIN %s ON %s = %s " +
-                    "JOIN %s ON %s = %s " +
-                    "JOIN %s ON %s = %s " +
-                    "JOIN %s ON %s = %s " +
-                    "LEFT JOIN %s ON %s = %s ",
-            "COUNT(" + Column.PROFILE.ID + ")",
-            Table.PROFILE,
-            Table.GENDER, Column.PROFILE.GENDER_ID, Column.GENDER.ID,
-            Table.CITY, Column.PROFILE.CITY_ID, Column.CITY.ID,
-            Table.LOCAL_AREA, Column.CITY.LOCAL_AREA_ID, Column.LOCAL_AREA.ID,
-            Table.REGION, Column.LOCAL_AREA.REGION_ID, Column.REGION.ID,
-            Table.COUNTRY, Column.REGION.COUNTRY_ID, Column.COUNTRY.ID,
-            Table.MUSIC, Column.MUSIC.ID, Column.PROFILE.PREVIEW_MUSIC_ID);
-
     public static final String FIND_SQL = FIND_ALL_SQL + String.format(" WHERE %s = ?", Column.PROFILE.ID);
 
     public static final String SAVE_SQL = String.format(
@@ -117,7 +100,7 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public List<Profile> findAll(Connection connection, ProfileFilter profileFilter, int limit, int offset) throws DaoException {
-        StringBuilder SQL = ProfileDaoQueryConstructor.constructQuery(profileFilter);
+        StringBuilder SQL = ProfileDaoQueryConstructor.constructSelectQuery(profileFilter);
 
         if (limit != 0)
             SQL.append("LIMIT ").append(limit).append(" ");
@@ -131,7 +114,8 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public int getCount(Connection connection, ProfileFilter profileFilter) throws DaoException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_COUNT_SQL)) {
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement(ProfileDaoQueryConstructor.constructCountQuery(profileFilter).toString())) {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
                 return resultSet.getInt(1);
