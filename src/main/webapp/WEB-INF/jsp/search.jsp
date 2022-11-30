@@ -28,36 +28,34 @@
 
 <!-- <div class="transition-2 isActive"></div> -->
 <div class="asideAndContent">
-
     <div class="asideAndContentInner">
-
         <%@ include file="sidebar.jsp" %>
-
         <main class="main">
 
             <div class="main-content">
                 <br>
                 <form action="${pageContext.request.contextPath}/app/search" method="get">
                     <label for="name">Ім'я</label>
-                    <input type="text" name="name" id="name">
+                    <input type="text" name="name" id="name" value="${requestScope.selectedName}">
 
                     <label for="gender">Стать</label>
                     <select name="gender" id="gender">
-                        <option value="" selected></option>
-                        <option value="MALE">MALE</option>
-                        <option value="FEMALE">FEMALE</option>
+                        <option value="${requestScope.selectedGender}" selected></option>
+                        <c:forEach var="speciality" items="${requestScope.genders}">
+                            <option value="${speciality}">${speciality}</option>
+                        </c:forEach>
                     </select><br>
 
                     <label for="minAge">Мін. вік</label>
-                    <input type="number" name="minAge" id="minAge">
+                    <input type="number" name="minAge" id="minAge" value="${requestScope.selectedMinAge}">
 
                     <label for="maxAge">Макс. вік</label>
-                    <input type="number" name="maxAge" id="maxAge"><br>
+                    <input type="number" name="maxAge" id="maxAge" value="${requestScope.selectedMaxAge}"><br>
 
 
                     <label for="city">Місто</label>
                     <select name="city" id="city">
-                        <option value="" selected></option>
+                        <option value="${requestScope.selectedCity}" selected>${requestScope.selectedCity}</option>
                         <c:forEach var="city" items="${requestScope.cities}">
                             <option value="${city}">${city}</option>
                         </c:forEach>
@@ -65,7 +63,7 @@
 
                     <label for="localArea">Місцевість</label>
                     <select name="localArea" id="localArea">
-                        <option value="" selected></option>
+                        <option value="${requestScope.selectedLocalArea}" selected>${requestScope.selectedLocalArea}</option>
                         <c:forEach var="localArea" items="${requestScope.localAreas}">
                             <option value="${localArea}">${localArea}</option>
                         </c:forEach>
@@ -73,7 +71,7 @@
 
                     <label for="region">Область</label>
                     <select name="region" id="region">
-                        <option value="" selected></option>
+                        <option value="${requestScope.selectedRegion}" selected>${requestScope.selectedRegion}</option>
                         <c:forEach var="region" items="${requestScope.regions}">
                             <option value="${region}">${region}</option>
                         </c:forEach>
@@ -81,6 +79,9 @@
 
                     <label for="instruments">Інструменти</label>
                     <select name="instruments" id="instruments" multiple>
+                        <c:forEach var="instrument" items="${requestScope.selectedInstruments}">
+                            <option value="${instrument}" selected>${instrument}</option>
+                        </c:forEach>
                         <c:forEach var="instrument" items="${requestScope.instruments}">
                             <option value="${instrument}">${instrument}</option>
                         </c:forEach>
@@ -88,6 +89,9 @@
 
                     <label for="specialities">Спеціальності</label>
                     <select name="specialities" id="specialities" multiple>
+                        <c:forEach var="speciality" items="${requestScope.selectedSpecialities}">
+                            <option value="${speciality}" selected>${speciality}</option>
+                        </c:forEach>
                         <c:forEach var="speciality" items="${requestScope.specialities}">
                             <option value="${speciality}">${speciality}</option>
                         </c:forEach>
