@@ -3,7 +3,7 @@ package com.mitra.db.dao.impl;
 import com.mitra.db.Column;
 import com.mitra.db.Table;
 import com.mitra.db.dao.InstrumentDao;
-import com.mitra.db.dao.QueryExecutor;
+import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Instrument;
 import com.mitra.exception.DaoException;
@@ -52,17 +52,17 @@ public class InstrumentDaoImpl implements InstrumentDao {
 
     @Override
     public Optional<Instrument> find(Connection connection, Integer id) throws DaoException {
-        return queryExecutor.find(connection, FIND_SQL, id);
+        return queryExecutor.selectOne(connection, FIND_SQL, id);
     }
 
     @Override
     public List<Instrument> findAll(Connection connection) throws DaoException {
-        return queryExecutor.findAll(connection, FIND_ALL_SQL);
+        return queryExecutor.selectMany(connection, FIND_ALL_SQL);
     }
 
     @Override
     public Integer save(Connection connection, Instrument entity) throws DaoException {
-        return queryExecutor.save(connection, SAVE_SQL);
+        return queryExecutor.insert(connection, SAVE_SQL);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class InstrumentDaoImpl implements InstrumentDao {
 
     @Override
     public List<Instrument> getProfileInstruments(Connection connection, int profileId) {
-        return queryExecutor.findAll(connection, FIND_ALL_INSTRUMENTS_BY_PROFILE_ID, profileId);
+        return queryExecutor.selectMany(connection, FIND_ALL_INSTRUMENTS_BY_PROFILE_ID, profileId);
     }
 
     @Override

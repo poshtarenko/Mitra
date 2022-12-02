@@ -3,7 +3,7 @@ package com.mitra.db.dao.impl;
 import com.mitra.db.Column;
 import com.mitra.db.Table;
 import com.mitra.db.dao.LikeDao;
-import com.mitra.db.dao.QueryExecutor;
+import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Like;
 import com.mitra.entity.Reaction;
@@ -49,17 +49,17 @@ public class LikeDaoImpl implements LikeDao {
 
     @Override
     public List<Like> getProfileLikes(Connection connection, int profileId) {
-        return queryExecutor.findAll(connection, GET_PROFILE_LIKES, profileId, profileId);
+        return queryExecutor.selectMany(connection, GET_PROFILE_LIKES, profileId, profileId);
     }
 
     @Override
     public Optional<Like> findBySenderAndReceiver(Connection connection, int senderId, int receiverId) {
-        return queryExecutor.find(connection, GET_BY_SENDER_AND_RECEIVER, senderId, receiverId);
+        return queryExecutor.selectOne(connection, GET_BY_SENDER_AND_RECEIVER, senderId, receiverId);
     }
 
     @Override
     public void like(Connection connection, int senderId, int receiverId) {
-        queryExecutor.save(connection, LIKE, senderId, receiverId);
+        queryExecutor.insert(connection, LIKE, senderId, receiverId);
     }
 
     @Override

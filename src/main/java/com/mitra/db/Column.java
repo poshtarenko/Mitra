@@ -214,4 +214,37 @@ public enum Column {
         }
     }
 
+    public enum CHAT {
+        ID,
+        PROFILE1_ID,
+        PROFILE2_ID;
+
+        @Override
+        public String toString() {
+            return Table.CHAT + "." + shortName();
+        }
+
+        public String shortName() {
+            return name().toLowerCase();
+        }
+    }
+
+    public enum MESSAGE {
+        ID,
+        SENDER_ID,
+        MESSAGE,
+        TIME,
+        IS_READ,
+        CHAT_ID;
+
+        @Override
+        public String toString() {
+            return Table.MESSAGE + "." + shortName();
+        }
+
+        public String shortName() {
+            return name().toLowerCase();
+        }
+    }
+
 }

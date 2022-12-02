@@ -5,7 +5,7 @@ import com.mitra.entity.Identifiable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public interface RowMapper<E extends Identifiable> {
+public interface RowMapper<E> {
 
     /**
      * Do mapping from rows in DB to Java-POJO

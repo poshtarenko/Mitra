@@ -3,7 +3,7 @@ package com.mitra.db.dao.impl;
 import com.mitra.db.Column;
 import com.mitra.db.Table;
 import com.mitra.db.dao.LocationDao;
-import com.mitra.db.dao.QueryExecutor;
+import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Location;
 import com.mitra.exception.DaoException;
@@ -44,22 +44,22 @@ public class LocationDaoImpl implements LocationDao {
 
     @Override
     public Optional<Location> find(Connection connection, Integer id) throws DaoException {
-        return queryExecutor.find(connection, FIND_SQL, id);
+        return queryExecutor.selectOne(connection, FIND_SQL, id);
     }
 
     @Override
     public Optional<Location> findByCity(Connection connection, String city) throws DaoException {
-        return queryExecutor.find(connection, FIND_BY_CITY_SQL, city);
+        return queryExecutor.selectOne(connection, FIND_BY_CITY_SQL, city);
     }
 
     @Override
     public List<Location> findAll(Connection connection) throws DaoException {
-        return queryExecutor.findAll(connection, FIND_ALL_SQL);
+        return queryExecutor.selectMany(connection, FIND_ALL_SQL);
     }
 
     @Override
     public Integer save(Connection connection, Location entity) throws DaoException {
-        return queryExecutor.save(connection, SAVE_SQL,
+        return queryExecutor.insert(connection, SAVE_SQL,
                 entity.getCity(), entity.getLocalArea());
     }
 

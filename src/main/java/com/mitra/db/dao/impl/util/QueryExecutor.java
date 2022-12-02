@@ -1,4 +1,4 @@
-package com.mitra.db.dao;
+package com.mitra.db.dao.impl.util;
 
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Identifiable;
@@ -17,7 +17,7 @@ public class QueryExecutor<K extends Number, E extends Identifiable<K>> {
         this.rowMapper = rowMapper;
     }
 
-    public Optional<E> find(Connection connection, String sql, Object... params) {
+    public Optional<E> selectOne(Connection connection, String sql, Object... params) {
         try (PreparedStatement preparedStatement = fillPreparedStatement(connection, sql, params)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -30,7 +30,7 @@ public class QueryExecutor<K extends Number, E extends Identifiable<K>> {
         }
     }
 
-    public List<E> findAll(Connection connection, String sql, Object... params) {
+    public List<E> selectMany(Connection connection, String sql, Object... params) {
         try (PreparedStatement preparedStatement = fillPreparedStatement(connection, sql, params)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -45,7 +45,7 @@ public class QueryExecutor<K extends Number, E extends Identifiable<K>> {
         }
     }
 
-    public K save(Connection connection, String sql, Object... params) {
+    public K insert(Connection connection, String sql, Object... params) {
         try (PreparedStatement preparedStatement = fillPreparedStatement(connection, sql, Statement.RETURN_GENERATED_KEYS, params)) {
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();

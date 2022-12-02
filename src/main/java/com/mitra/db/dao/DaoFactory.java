@@ -12,12 +12,16 @@ public class DaoFactory {
     private final InstrumentDao instrumentDao;
     private final SpecialityDao specialityDao;
     private final LikeDao likeDao;
+    private final ChatDao chatDao;
+    private final MessageDao messageDao;
 
     private static final DaoFactory INSTANCE = new DaoFactory();
 
     private DaoFactory() {
         RowMapperFactory rowMapperFactory = RowMapperFactory.getInstance();
 
+        chatDao = new ChatDaoImpl(rowMapperFactory.getChatRowMapper());
+        messageDao = new MessageDaoImpl(rowMapperFactory.getMessageRowMapper());
         likeDao = new LikeDaoImpl(rowMapperFactory.getLikeRowMapper());
         trackDao = new TrackDaoImpl(rowMapperFactory.getMusicRowMapper());
         locationDao = new LocationDaoImpl(rowMapperFactory.getLocationRowMapper());
@@ -57,5 +61,13 @@ public class DaoFactory {
 
     public TrackDao getTrackDao() {
         return trackDao;
+    }
+
+    public ChatDao getChatDao() {
+        return chatDao;
+    }
+
+    public MessageDao getMessageDao() {
+        return messageDao;
     }
 }

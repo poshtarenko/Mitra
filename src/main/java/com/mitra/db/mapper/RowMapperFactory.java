@@ -14,6 +14,8 @@ public class RowMapperFactory {
     private final RowMapper<Instrument> instrumentRowMapper;
     private final RowMapper<Speciality> specialityRowMapper;
     private final RowMapper<Like> likeRowMapper;
+    private final RowMapper<Chat> chatRowMapper;
+    private final RowMapper<Message> messageRowMapper;
 
     private RowMapperFactory() {
         userRowMapper = new UserRowMapper();
@@ -23,6 +25,8 @@ public class RowMapperFactory {
         instrumentRowMapper = new InstrumentRowMapper();
         specialityRowMapper = new SpecialityRowMapper();
         likeRowMapper = new LikeRowMapper();
+        chatRowMapper = new ChatRowMapper();
+        messageRowMapper = new MessageRowMapper();
     }
 
     public static RowMapperFactory getInstance() {
@@ -55,5 +59,13 @@ public class RowMapperFactory {
 
     public RowMapper<Track> getMusicRowMapper() {
         return musicRowMapper;
+    }
+
+    public RowMapper<Chat> getChatRowMapper() {
+        return chatRowMapper;
+    }
+
+    public RowMapper<Message> getMessageRowMapper() {
+        return messageRowMapper;
     }
 }

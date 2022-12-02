@@ -3,6 +3,7 @@ package com.mitra.db.dao.impl;
 import com.mitra.db.Column;
 import com.mitra.db.Table;
 import com.mitra.db.dao.*;
+import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.*;
 import com.mitra.exception.DaoException;
@@ -47,23 +48,23 @@ public class TrackDaoImpl implements TrackDao {
 
     @Override
     public Optional<Track> find(Connection connection, Integer id) throws DaoException {
-        return queryExecutor.find(connection, FIND_SQL, id);
+        return queryExecutor.selectOne(connection, FIND_SQL, id);
     }
 
 
     @Override
     public List<Track> findAll(Connection connection) throws DaoException {
-        return queryExecutor.findAll(connection, FIND_ALL_SQL);
+        return queryExecutor.selectMany(connection, FIND_ALL_SQL);
     }
 
     @Override
     public List<Track> getProfileMusic(Connection connection, int profileId) {
-        return queryExecutor.findAll(connection, FIND_PROFILE_MUSIC_SQL, profileId);
+        return queryExecutor.selectMany(connection, FIND_PROFILE_MUSIC_SQL, profileId);
     }
 
     @Override
     public Integer save(Connection connection, Track entity) throws DaoException {
-        return queryExecutor.save(connection, SAVE_SQL,
+        return queryExecutor.insert(connection, SAVE_SQL,
                 entity.getName(), entity.getAuthor(), entity.getFilePath(), entity.getOwner().getId());
     }
 

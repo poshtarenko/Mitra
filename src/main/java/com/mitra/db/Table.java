@@ -15,7 +15,9 @@ public enum Table {
     CITY,
     LOCAL_AREA,
     REGION,
-    COUNTRY;
+    COUNTRY,
+    CHAT,
+    MESSAGE;
 
     @Override
     public String toString() {

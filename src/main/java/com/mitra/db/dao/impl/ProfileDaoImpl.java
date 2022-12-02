@@ -4,6 +4,7 @@ import com.mitra.db.Column;
 import com.mitra.db.Table;
 import com.mitra.db.dao.*;
 import com.mitra.db.dao.impl.util.ProfileDaoQueryConstructor;
+import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.filter.ProfileFilter;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Profile;
@@ -86,14 +87,14 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public Optional<Profile> find(Connection connection, Integer id) throws DaoException {
-        Optional<Profile> profile = queryExecutor.find(connection, FIND_SQL, id);
+        Optional<Profile> profile = queryExecutor.selectOne(connection, FIND_SQL, id);
         profile.ifPresent(value -> fillProfile(connection, value));
         return profile;
     }
 
     @Override
     public List<Profile> findAll(Connection connection) throws DaoException {
-        List<Profile> profiles = queryExecutor.findAll(connection, FIND_ALL_SQL);
+        List<Profile> profiles = queryExecutor.selectMany(connection, FIND_ALL_SQL);
         profiles.forEach(profile -> fillProfile(connection, profile));
         return profiles;
     }
@@ -107,7 +108,7 @@ public class ProfileDaoImpl implements ProfileDao {
         if (offset != 0)
             SQL.append("OFFSET ").append(offset).append(" ");
 
-        List<Profile> profiles = queryExecutor.findAll(connection, SQL.toString());
+        List<Profile> profiles = queryExecutor.selectMany(connection, SQL.toString());
         profiles.forEach(profile -> fillProfile(connection, profile));
         return profiles;
     }
@@ -152,7 +153,7 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public Integer save(Connection connection, Profile entity) throws DaoException {
-        return queryExecutor.save(connection, SAVE_SQL,
+        return queryExecutor.insert(connection, SAVE_SQL,
                 entity.getId(), entity.getName(), entity.getAge(), entity.getGender().name(),
                 entity.getText(), entity.getPhotoPath(), entity.getLocation().getCity());
     }

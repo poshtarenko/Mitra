@@ -4,7 +4,7 @@ import com.mitra.db.Column;
 import com.mitra.db.Table;
 import com.mitra.db.dao.LocationDao;
 import com.mitra.db.dao.ProfileDao;
-import com.mitra.db.dao.QueryExecutor;
+import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.dao.UserDao;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Gender;
@@ -56,7 +56,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> find(Connection connection, Integer id) throws DaoException {
-        Optional<User> optionalUser = queryExecutor.find(connection, FIND_SQL, id);
+        Optional<User> optionalUser = queryExecutor.selectOne(connection, FIND_SQL, id);
 
         if (optionalUser.isPresent()) {
             Profile profile = profileDao.find(connection, id)
@@ -69,7 +69,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> find(Connection connection, String email, String password) throws DaoException {
-        Optional<User> user = queryExecutor.find(connection, FIND_BY_EMAIL_AND_PASSWORD,
+        Optional<User> user = queryExecutor.selectOne(connection, FIND_BY_EMAIL_AND_PASSWORD,
                 email, password);
         user.ifPresent(value -> value.setProfile(profileDao.find(connection, value.getId())
                 .orElseThrow(() -> new RuntimeException("User without profile must be impossible"))));
@@ -78,12 +78,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> findAll(Connection connection) throws DaoException {
-        return queryExecutor.findAll(connection, FIND_ALL_SQL);
+        return queryExecutor.selectMany(connection, FIND_ALL_SQL);
     }
 
     @Override
     public Integer save(Connection connection, User entity) throws DaoException {
-        Integer userId = queryExecutor.save(connection, SAVE_SQL,
+        Integer userId = queryExecutor.insert(connection, SAVE_SQL,
                 entity.getEmail(), entity.getPassword(), entity.getRole().name());
 
         // By default, user has an empty profile with location at Kyiv (city.id = 1)

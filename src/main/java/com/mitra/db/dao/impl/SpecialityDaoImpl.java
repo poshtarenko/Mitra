@@ -2,7 +2,7 @@ package com.mitra.db.dao.impl;
 
 import com.mitra.db.Column;
 import com.mitra.db.Table;
-import com.mitra.db.dao.QueryExecutor;
+import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.dao.SpecialityDao;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Speciality;
@@ -51,17 +51,17 @@ public class SpecialityDaoImpl implements SpecialityDao {
 
     @Override
     public Optional<Speciality> find(Connection connection, Integer id) throws DaoException {
-        return queryExecutor.find(connection, FIND_SQL, id);
+        return queryExecutor.selectOne(connection, FIND_SQL, id);
     }
 
     @Override
     public List<Speciality> findAll(Connection connection) throws DaoException {
-        return queryExecutor.findAll(connection, FIND_ALL_SQL);
+        return queryExecutor.selectMany(connection, FIND_ALL_SQL);
     }
 
     @Override
     public Integer save(Connection connection, Speciality entity) throws DaoException {
-        return queryExecutor.save(connection, SAVE_SQL);
+        return queryExecutor.insert(connection, SAVE_SQL);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class SpecialityDaoImpl implements SpecialityDao {
 
     @Override
     public List<Speciality> getProfileSpecialities(Connection connection, int profileId) {
-        return queryExecutor.findAll(connection, FIND_ALL_SPECIALITIES_BY_PROFILE_ID, profileId);
+        return queryExecutor.selectMany(connection, FIND_ALL_SPECIALITIES_BY_PROFILE_ID, profileId);
     }
 
     @Override
