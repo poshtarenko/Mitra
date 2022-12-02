@@ -12,9 +12,6 @@ public class SpecialityDtoMapper implements DtoMapper<SpecialityDto, Speciality>
 
     @Override
     public SpecialityDto mapToDto(Speciality entity) {
-        return SpecialityDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .build();
+        return new SpecialityDto(entity.getId(), entity.getName());
     }
 }

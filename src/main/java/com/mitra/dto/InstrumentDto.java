@@ -1,10 +1,10 @@
 package com.mitra.dto;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Value;
 
 @Value
-@Builder
+@AllArgsConstructor
 public class InstrumentDto implements Dto {
     Integer id;
     String name;

@@ -19,6 +19,8 @@ public class ServiceFactory {
     private final LocationService locationService;
     private final InstrumentService instrumentService;
     private final SpecialityService specialityService;
+    private final ChatService chatService;
+    private final MessageService messageService;
 
     private ServiceFactory() {
         DaoFactory daoFactory = DaoFactory.getInstance();
@@ -26,6 +28,8 @@ public class ServiceFactory {
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
         CloudStorageProviderImpl cloudStorageProvider = new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService());
 
+        chatService = new ChatServiceImpl(daoFactory.getChatDao(), dtoMapperFactory.getChatDtoMapper());
+        messageService = new MessageServiceImpl(daoFactory.getMessageDao(), dtoMapperFactory.getMessageDtoMapper());
         locationService = new LocationServiceImpl(daoFactory.getLocationDao(), dtoMapperFactory.getLocationDtoMapper());
         instrumentService = new InstrumentServiceImpl(daoFactory.getInstrumentDao(), dtoMapperFactory.getInstrumentDtoMapper());
         specialityService = new SpecialityServiceImpl(daoFactory.getSpecialityDao(), dtoMapperFactory.getSpecialityDtoMapper());
@@ -68,5 +72,13 @@ public class ServiceFactory {
 
     public TrackService getTrackService() {
         return trackService;
+    }
+
+    public ChatService getChatService() {
+        return chatService;
+    }
+
+    public MessageService getMessageService() {
+        return messageService;
     }
 }

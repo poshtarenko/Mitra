@@ -12,9 +12,6 @@ public class InstrumentDtoMapper implements DtoMapper<InstrumentDto, Instrument>
 
     @Override
     public InstrumentDto mapToDto(Instrument entity) {
-        return InstrumentDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .build();
+        return new InstrumentDto(entity.getId(), entity.getName());
     }
 }
