@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -25,4 +26,18 @@ public class ProfileImpl implements Profile {
     List<Like> likes;
     List<Track> tracks;
     Track previewTrack;
+    List<Chat> chats;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !getClass().isAssignableFrom(Profile.class)) return false;
+        Profile profile = (Profile) o;
+        return id.equals(profile.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

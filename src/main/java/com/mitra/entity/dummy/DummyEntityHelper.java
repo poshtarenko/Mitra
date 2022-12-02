@@ -1,6 +1,6 @@
 package com.mitra.entity.dummy;
 
-public final class DummyHelper {
+public final class DummyEntityHelper {
 
     public static RuntimeException getUnsupportedOperationExceptionAndLog() {
         // TODO : log

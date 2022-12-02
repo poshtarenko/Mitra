@@ -5,6 +5,7 @@ import com.mitra.entity.impl.LocationImpl;
 import com.mitra.entity.impl.TrackImpl;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DummyProfile implements Profile {
 
@@ -26,111 +27,124 @@ public class DummyProfile implements Profile {
 
     @Override
     public String getName() {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public Integer getAge() {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public Gender getGender() {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public LocationImpl getLocation() {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public String getText() {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public String getPhotoPath() {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public List<Instrument> getInstruments() {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public List<Speciality> getSpecialities() {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public List<Like> getLikes() {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public List<Track> getTracks() {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public TrackImpl getPreviewTrack() {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public void setName(String name) {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public void setAge(Integer age) {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public void setGender(Gender gender) {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public void setLocation(Location location) {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public void setText(String text) {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public void setPhotoPath(String photoPath) {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public void setInstruments(List<Instrument> instruments) {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public void setSpecialities(List<Speciality> specialities) {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public void setLikes(List<Like> likes) {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public void setTracks(List<Track> tracks) {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }
 
     @Override
     public void setPreviewTrack(Track previewTrack) {
-        throw DummyHelper.getUnsupportedOperationExceptionAndLog();
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !getClass().isAssignableFrom(Profile.class)) return false;
+        Profile profile = (Profile) o;
+        return id.equals(profile.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
