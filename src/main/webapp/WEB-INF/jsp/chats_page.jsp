@@ -37,6 +37,7 @@
                 <br>
                 <c:if test="${not empty requestScope.chats}">
                     <h4>Чати</h4>
+                    <br>
                     <c:forEach var="chat" items="${requestScope.chats}">
                         <div style="display: inline-flex">
                             <c:if test="${not empty chat.getSecondProfile().getPhotoPath()}">
@@ -51,6 +52,7 @@
                                     ${chat.getSecondProfile().getName()}
                             </a>
                         </div>
+                        <br>
                     </c:forEach><br>
                 </c:if><br>
                 <c:if test="${empty requestScope.chats}">
