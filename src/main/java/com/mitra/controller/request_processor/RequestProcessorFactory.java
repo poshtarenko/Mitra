@@ -19,21 +19,39 @@ public class RequestProcessorFactory {
         CloudStorageProviderImpl cloudStorageProvider =
                 new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService());
 
-        requestProcessorsMap.put(UrlPath.LANDING_PAGE, new LandingProcessor());
-        requestProcessorsMap.put(UrlPath.AUTHORIZATION, new AuthorizationProcessor());
-        requestProcessorsMap.put(UrlPath.REGISTRATION, new RegistrationProcessor());
-        requestProcessorsMap.put(UrlPath.LOGOUT, new LogoutProcessor());
-        requestProcessorsMap.put(UrlPath.CREATE_PROFILE, new CreateProfileProcessor());
-        requestProcessorsMap.put(UrlPath.UPDATE_PROFILE, new UpdateProfileProcessor());
-        requestProcessorsMap.put(UrlPath.MY_PROFILE, new MyProfileProcessor());
-        requestProcessorsMap.put(UrlPath.PROFILE, new ProfileProcessor());
-        requestProcessorsMap.put(UrlPath.SEARCH, new SearchProcessor());
-        requestProcessorsMap.put(UrlPath.SWIPE_SEARCH, new SearchBySwipeProcessor());
+        requestProcessorsMap.put(UrlPath.LANDING_PAGE,
+                new LandingProcessor());
+        requestProcessorsMap.put(UrlPath.AUTHORIZATION,
+                new AuthorizationProcessor(serviceFactory.getUserService()));
+        requestProcessorsMap.put(UrlPath.REGISTRATION,
+                new RegistrationProcessor(serviceFactory.getUserService()));
+        requestProcessorsMap.put(UrlPath.LOGOUT,
+                new LogoutProcessor());
+        requestProcessorsMap.put(UrlPath.CREATE_PROFILE,
+                new CreateProfileProcessor(serviceFactory.getLocationService(), serviceFactory.getProfileService()));
+        requestProcessorsMap.put(UrlPath.UPDATE_PROFILE,
+                new UpdateProfileProcessor(serviceFactory.getProfileService(), serviceFactory.getLocationService(),
+                        serviceFactory.getInstrumentService(), serviceFactory.getSpecialityService()));
+        requestProcessorsMap.put(UrlPath.MY_PROFILE,
+                new MyProfileProcessor(serviceFactory.getProfileService()));
+        requestProcessorsMap.put(UrlPath.PROFILE,
+                new ProfileProcessor(serviceFactory.getProfileService(), serviceFactory.getProfileLikeService(),
+                        serviceFactory.getChatService()));
+        requestProcessorsMap.put(UrlPath.CHATS,
+                new ChatsProcessor(serviceFactory.getChatService()));
+        requestProcessorsMap.put(UrlPath.SEARCH,
+                new SearchProcessor(serviceFactory.getLocationService(), serviceFactory.getInstrumentService(),
+                        serviceFactory.getSpecialityService(), serviceFactory.getProfileService()));
+        requestProcessorsMap.put(UrlPath.SWIPE_SEARCH,
+                new SearchBySwipeProcessor(serviceFactory.getProfileService(), serviceFactory.getProfileLikeService()));
         requestProcessorsMap.put(UrlPath.IMAGES,
                 new ImageProcessor(cloudStorageProvider));
-        requestProcessorsMap.put(UrlPath.LIKES, new LikesProcessor(serviceFactory.getProfileLikeService()));
-        requestProcessorsMap.put(UrlPath.MUSIC, new MyMusicProcessor());
-        requestProcessorsMap.put(UrlPath.AUDIO, new AudioProcessor(cloudStorageProvider));
+        requestProcessorsMap.put(UrlPath.LIKES,
+                new LikesProcessor(serviceFactory.getProfileLikeService()));
+        requestProcessorsMap.put(UrlPath.MUSIC,
+                new MyMusicProcessor(serviceFactory.getTrackService()));
+        requestProcessorsMap.put(UrlPath.AUDIO,
+                new AudioProcessor(cloudStorageProvider));
     }
 
     public RequestProcessor getProcessor(UrlPath urlPath) {

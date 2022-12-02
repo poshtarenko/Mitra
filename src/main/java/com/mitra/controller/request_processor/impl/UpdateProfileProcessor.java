@@ -25,11 +25,18 @@ import java.util.stream.Collectors;
 
 public class UpdateProfileProcessor extends AbstractRequestProcessor {
 
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private final ProfileService profileService = serviceFactory.getProfileService();
-    private final LocationService locationService = serviceFactory.getLocationService();
-    private final InstrumentService instrumentService = serviceFactory.getInstrumentService();
-    private final SpecialityService specialityService = serviceFactory.getSpecialityService();
+    private final ProfileService profileService;
+    private final LocationService locationService;
+    private final InstrumentService instrumentService;
+    private final SpecialityService specialityService;
+
+    public UpdateProfileProcessor(ProfileService profileService, LocationService locationService,
+                                  InstrumentService instrumentService, SpecialityService specialityService) {
+        this.profileService = profileService;
+        this.locationService = locationService;
+        this.instrumentService = instrumentService;
+        this.specialityService = specialityService;
+    }
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -89,14 +96,14 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
         List<InstrumentDto> instruments;
         if (request.getParameterValues("instruments") != null)
             instruments = Arrays.stream(request.getParameterValues("instruments"))
-                    .map(val -> InstrumentDto.builder().id(0).name(val).build())
+                    .map(val -> new InstrumentDto(0, val))
                     .collect(Collectors.toList());
         else instruments = Collections.emptyList();
 
         List<SpecialityDto> specialities;
         if (request.getParameterValues("specialities") != null)
             specialities = Arrays.stream(request.getParameterValues("specialities"))
-                    .map(val -> SpecialityDto.builder().id(0).name(val).build())
+                    .map(val -> new SpecialityDto(0, val))
                     .collect(Collectors.toList());
         else specialities = Collections.emptyList();
 

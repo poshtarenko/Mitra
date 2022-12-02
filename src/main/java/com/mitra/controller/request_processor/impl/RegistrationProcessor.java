@@ -16,8 +16,11 @@ import java.util.Optional;
 
 public class RegistrationProcessor extends AbstractRequestProcessor {
 
-    private static final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private static final UserService userService = serviceFactory.getUserService();
+    private final UserService userService;
+
+    public RegistrationProcessor(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

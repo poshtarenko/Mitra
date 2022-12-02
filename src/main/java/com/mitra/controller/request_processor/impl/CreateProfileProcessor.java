@@ -10,7 +10,6 @@ import com.mitra.dto.UserDto;
 import com.mitra.entity.Gender;
 import com.mitra.service.LocationService;
 import com.mitra.service.ProfileService;
-import com.mitra.service.ServiceFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,10 +20,13 @@ import java.util.stream.Collectors;
 
 public class CreateProfileProcessor extends AbstractRequestProcessor {
 
-    private static final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private final LocationService locationService;
+    private final ProfileService profileService;
 
-    private static final LocationService locationService = serviceFactory.getLocationService();
-    private static final ProfileService profileService = serviceFactory.getProfileService();
+    public CreateProfileProcessor(LocationService locationService, ProfileService profileService) {
+        this.locationService = locationService;
+        this.profileService = profileService;
+    }
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

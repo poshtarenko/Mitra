@@ -22,8 +22,13 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
 
     private static final char DELIMITER = 'x';
 
-    private final ProfileService profileService = ServiceFactory.getInstance().getProfileService();
-    private final ProfileLikeService profileLikeService = ServiceFactory.getInstance().getProfileLikeService();
+    private final ProfileService profileService;
+    private final ProfileLikeService profileLikeService;
+
+    public SearchBySwipeProcessor(ProfileService profileService, ProfileLikeService profileLikeService) {
+        this.profileService = profileService;
+        this.profileLikeService = profileLikeService;
+    }
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

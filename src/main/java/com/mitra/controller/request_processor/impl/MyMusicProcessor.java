@@ -2,10 +2,8 @@ package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
-import com.mitra.dto.ProfileDto;
 import com.mitra.dto.TrackDto;
 import com.mitra.dto.UserDto;
-import com.mitra.service.ServiceFactory;
 import com.mitra.service.TrackService;
 
 import javax.servlet.ServletException;
@@ -17,7 +15,11 @@ import java.util.List;
 
 public class MyMusicProcessor extends AbstractRequestProcessor {
 
-    private final TrackService trackService = ServiceFactory.getInstance().getTrackService();
+    private final TrackService trackService;
+
+    public MyMusicProcessor(TrackService trackService) {
+        this.trackService = trackService;
+    }
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

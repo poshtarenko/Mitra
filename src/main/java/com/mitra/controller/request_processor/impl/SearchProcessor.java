@@ -1,15 +1,12 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.UrlPath;
-import com.mitra.controller.request_processor.util.LocationHelper;
 import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.db.filter.ProfileFilter;
 import com.mitra.dto.InstrumentDto;
 import com.mitra.dto.LocationDto;
 import com.mitra.dto.SpecialityDto;
 import com.mitra.entity.Gender;
-import com.mitra.entity.Instrument;
-import com.mitra.entity.Speciality;
 import com.mitra.entity.impl.InstrumentImpl;
 import com.mitra.entity.impl.SpecialityImpl;
 import com.mitra.service.*;
@@ -18,17 +15,26 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SearchProcessor extends AbstractRequestProcessor {
 
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private final LocationService locationService = serviceFactory.getLocationService();
-    private final InstrumentService instrumentService = serviceFactory.getInstrumentService();
-    private final SpecialityService specialityService = serviceFactory.getSpecialityService();
-    private final ProfileService profileService = serviceFactory.getProfileService();
+    private final LocationService locationService;
+    private final InstrumentService instrumentService;
+    private final SpecialityService specialityService;
+    private final ProfileService profileService;
 
+    public SearchProcessor(LocationService locationService, InstrumentService instrumentService,
+                           SpecialityService specialityService, ProfileService profileService) {
+        this.locationService = locationService;
+        this.instrumentService = instrumentService;
+        this.specialityService = specialityService;
+        this.profileService = profileService;
+    }
 
     private static final int PAGE_SIZE = 5;
 

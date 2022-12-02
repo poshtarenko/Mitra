@@ -5,7 +5,6 @@ import com.mitra.controller.UrlPath;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Role;
 import com.mitra.exception.ValidationException;
-import com.mitra.service.ServiceFactory;
 import com.mitra.service.UserService;
 
 import javax.servlet.ServletException;
@@ -16,8 +15,11 @@ import java.util.Optional;
 
 public class AuthorizationProcessor extends AbstractRequestProcessor {
 
-    private static final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private static final UserService userService = serviceFactory.getUserService();
+    private final UserService userService;
+
+    public AuthorizationProcessor(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
