@@ -5,7 +5,6 @@ import com.mitra.controller.UrlPath;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Role;
 import com.mitra.exception.ValidationException;
-import com.mitra.service.ServiceFactory;
 import com.mitra.service.UserService;
 
 import javax.servlet.ServletException;

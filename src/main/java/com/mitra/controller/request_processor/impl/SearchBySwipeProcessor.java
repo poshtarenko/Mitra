@@ -7,7 +7,6 @@ import com.mitra.dto.ProfileDto;
 import com.mitra.dto.UserDto;
 import com.mitra.service.ProfileLikeService;
 import com.mitra.service.ProfileService;
-import com.mitra.service.ServiceFactory;
 import com.mitra.util.CookieHelper;
 
 import javax.servlet.ServletException;

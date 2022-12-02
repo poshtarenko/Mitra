@@ -9,7 +9,10 @@ import com.mitra.dto.ProfileDto;
 import com.mitra.dto.SpecialityDto;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Gender;
-import com.mitra.service.*;
+import com.mitra.service.InstrumentService;
+import com.mitra.service.LocationService;
+import com.mitra.service.ProfileService;
+import com.mitra.service.SpecialityService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
