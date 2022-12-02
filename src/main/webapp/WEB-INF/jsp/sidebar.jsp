@@ -43,12 +43,12 @@
         </li>
 
         <li class="link">
-            <a class="linkInner">
+            <a href="${pageContext.request.contextPath}/app/chats" class="linkInner">
                 <div class="icon-space">
                     <i class="fa-solid fa-comment-dots fa"></i>
                 </div>
 
-                Чат
+                Чати
             </a>
         </li>
 
@@ -60,17 +60,6 @@
                 </div>
 
                 Лайки
-            </a>
-        </li>
-
-        <li class="link">
-            <a class="linkInner">
-                <div class="icon-space">
-                    <i class="fa-solid fa-star fa"></i>
-
-                </div>
-
-                Обрані
             </a>
         </li>
 

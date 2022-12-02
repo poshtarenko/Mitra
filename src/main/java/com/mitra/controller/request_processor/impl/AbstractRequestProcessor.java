@@ -1,6 +1,5 @@
 package com.mitra.controller.request_processor.impl;
 
-import com.mitra.controller.HttpMethod;
 import com.mitra.controller.request_processor.RequestProcessor;
 import com.mitra.util.PropertiesUtil;
 
@@ -15,21 +14,21 @@ abstract class AbstractRequestProcessor implements RequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        methodNotAllowed(request, response, HttpMethod.GET);
+        methodNotAllowed(request, response, "GET");
     }
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        methodNotAllowed(request, response, HttpMethod.POST);
+        methodNotAllowed(request, response, "POST");
     }
 
     @Override
     public void processDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        methodNotAllowed(request, response, HttpMethod.DELETE);
+        methodNotAllowed(request, response, "DELETE");
     }
 
-    private void methodNotAllowed(HttpServletRequest request, HttpServletResponse response, HttpMethod method) throws IOException {
-        String msg = "Method" + method.name().toUpperCase() + "is not supported";
+    private void methodNotAllowed(HttpServletRequest request, HttpServletResponse response, String method) throws IOException {
+        String msg = "Method" + method + "is not supported";
         response.sendError(400, msg);
     }
 

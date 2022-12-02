@@ -56,25 +56,6 @@
                 </p>
                 <p>${requestScope.profile.getText()}</p>
 
-<%--                if (myPossibleLike.isPresent()){--%>
-<%--                LikeDto myLike = myPossibleLike.get();--%>
-<%--                if (myLike.getReaction() == Reaction.NO || myLike.getReaction() == Reaction.IGNORE)--%>
-<%--                request.setAttribute("waitingForResponse", "+");--%>
-<%--                if (myLike.getReaction() == Reaction.LIKE)--%>
-<%--                request.setAttribute("alreadyMutualLikes", "+");--%>
-<%--                if (myLike.getReaction() == Reaction.DISLIKE)--%>
-<%--                request.setAttribute("userRejectedUs", "+");--%>
-<%--                } else if (anotherPossibleLike.isPresent()) {--%>
-<%--                LikeDto anotherLike = anotherPossibleLike.get();--%>
-<%--                if (anotherLike.getReaction() == Reaction.NO || anotherLike.getReaction() == Reaction.IGNORE)--%>
-<%--                request.setAttribute("enableToResponse", "+");--%>
-<%--                if (anotherLike.getReaction() == Reaction.LIKE)--%>
-<%--                request.setAttribute("alreadyMutualLikes", "+");--%>
-<%--                if (anotherLike.getReaction() == Reaction.DISLIKE)--%>
-<%--                request.setAttribute("weRejectedUser", "+");--%>
-<%--                } else {--%>
-<%--                request.setAttribute("enableToLike", "+");--%>
-<%--                }--%>
                 <c:if test="${not empty requestScope.enableToLike}">
                     <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/likes" method="post">
                         <input type="hidden" name="type" value="LIKE">
@@ -87,6 +68,20 @@
                 </c:if>
                 <c:if test="${not empty requestScope.alreadyMutualLikes}">
                     <p>Ми дружимо!</p>
+                    <c:if test="${not empty requestScope.chatId}">
+                        <form action="${pageContext.request.contextPath}/app/chat" method="get">
+                            <input type="hidden" name="c" value="${requestScope.chatId}">
+                            <input type="submit" value="Перейти до чату">
+                        </form>
+                        <br>
+                    </c:if>
+                    <c:if test="${empty requestScope.chatId}">
+                        <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/chats" method="post">
+                            <input type="hidden" name="profileId" value="${requestScope.profile.getId()}">
+                            <input type="submit" value="Почати чат">
+                        </form>
+                        <br>
+                    </c:if>
                 </c:if>
                 <c:if test="${not empty requestScope.userRejectedUs}">
                     <p>Користувач відмовив нам</p>

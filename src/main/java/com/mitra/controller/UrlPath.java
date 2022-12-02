@@ -17,6 +17,8 @@ public enum UrlPath {
     MUSIC("/music", "my_music"),
     SWIPE_SEARCH("/go", "slide_search"),
     LIKES("/likes", "likes_page"),
+    CHAT("/chat", "chat_page"),
+    CHATS("/chats", "chats_page"),
     IMAGES("/images", ""),
     AUDIO("/audio", "");
 

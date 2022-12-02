@@ -1,5 +1,6 @@
 package com.mitra.controller.request_processor.impl;
 
+import com.mitra.service.ServiceFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,9 @@ class SearchBySwipeProcessorTest {
 
     @BeforeAll
     static void setUp() {
-        searchBySwipeProcessor = new SearchBySwipeProcessor();
+        ServiceFactory serviceFactory = ServiceFactory.getInstance();
+        searchBySwipeProcessor =
+                new SearchBySwipeProcessor(serviceFactory.getProfileService(), serviceFactory.getProfileLikeService());
 
         profileIds = new ArrayList<>();
         profileIds.add(12);

@@ -2,7 +2,7 @@ package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
-import com.mitra.controller.request_processor.CookieNames;
+import com.mitra.controller.CookieNames;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.UserDto;
 import com.mitra.service.ProfileLikeService;
