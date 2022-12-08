@@ -4,17 +4,17 @@ public class ValidatorFactory {
 
     private static final ValidatorFactory INSTANCE = new ValidatorFactory();
 
-    private final UserDtoValidator userDtoValidator;
+    private final UserValidator userValidator;
 
     private ValidatorFactory() {
-        userDtoValidator = new UserDtoValidator();
+        userValidator = new UserValidator();
     }
 
     public static ValidatorFactory getInstance() {
         return INSTANCE;
     }
 
-    public UserDtoValidator getUserDtoValidator() {
-        return userDtoValidator;
+    public UserValidator getUserValidator() {
+        return userValidator;
     }
 }
