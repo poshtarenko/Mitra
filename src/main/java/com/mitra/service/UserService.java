@@ -18,13 +18,42 @@ public interface UserService {
      */
     Optional<UserDto> tryLogin(String email, String password);
 
+    /**
+     * Try register
+     *
+     * @param email    email
+     * @param password password
+     * @return true if registered, false if not
+     */
     boolean register(String email, String password);
 
-    void changePassword(UserDto userDto, String newPassword);
+    /**
+     * Change user password
+     *
+     * @param userId      user id
+     * @param newPassword new password
+     */
+    void changePassword(int userId, String newPassword);
 
-    void changeRole(UserDto userDto, Role role);
+    /**
+     * Change user role
+     *
+     * @param userId user id
+     * @param role   new role
+     */
+    void changeRole(int userId, Role role);
 
-    void upgradeToPremium(UserDto userDto);
+    /**
+     * Upgrade user to premium
+     *
+     * @param userId user id
+     */
+    void upgradeToPremium(int userId);
 
-    void ban(UserDto userDto);
+    /**
+     * Ban user
+     *
+     * @param userId user id
+     */
+    void ban(int userId);
 }

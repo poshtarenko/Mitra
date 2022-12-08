@@ -8,18 +8,65 @@ import java.util.Optional;
 
 public interface ProfileLikeService {
 
+    /**
+     * Put a like
+     *
+     * @param senderId   sender id
+     * @param receiverId receiver id
+     */
     void like(int senderId, int receiverId);
 
+    /**
+     * Make response on like
+     *
+     * @param senderId   sender id
+     * @param receiverId receiver id
+     * @param reaction   reaction
+     */
     void makeResponseOnLike(int senderId, int receiverId, Reaction reaction);
 
+    /**
+     * Get all profile likes
+     *
+     * @param profileId first id
+     * @return list of profile likes
+     */
     List<LikeDto> getProfileLikes(int profileId);
 
-    List<LikeDto> getOwnWithoutResponseLikes(int profileId, List<LikeDto> profileLikes);
+    /**
+     * Extract likes we are waiting response
+     *
+     * @param profileId my profile id
+     * @param likes     list of likes
+     * @return list of profile likes
+     */
+    List<LikeDto> getOwnWithoutResponseLikes(int profileId, List<LikeDto> likes);
 
-    List<LikeDto> getWaitingResponseLikes(int profileId, List<LikeDto> profileLikes);
+    /**
+     * Extract likes another user is waiting our response
+     *
+     * @param profileId my profile id
+     * @param likes     list of likes
+     * @return list of profile likes
+     */
+    List<LikeDto> getWaitingResponseLikes(int profileId, List<LikeDto> likes);
 
-    List<LikeDto> getMutualLikes(int profileId, List<LikeDto> profileLikes);
+    /**
+     * Extract mutual likes
+     *
+     * @param profileId my profile id
+     * @param likes     list of likes
+     * @return list of profile likes
+     */
+    List<LikeDto> getMutualLikes(int profileId, List<LikeDto> likes);
 
+    /**
+     * Get like by sender and receiver
+     *
+     * @param senderId   sender id
+     * @param receiverId receiver id
+     * @return optional of like
+     */
     Optional<LikeDto> getLike(int senderId, int receiverId);
 
 }

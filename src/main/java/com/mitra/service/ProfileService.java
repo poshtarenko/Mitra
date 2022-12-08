@@ -5,7 +5,6 @@ import com.mitra.dto.ProfileDto;
 import com.mitra.exception.DaoException;
 
 import java.io.InputStream;
-import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +18,7 @@ public interface ProfileService {
      * @param offset        offset
      * @return list of profileDTOs
      */
-    List<ProfileDto> findAll(ProfileFilter profileFilter, int limit, int offset);
+    List<ProfileDto> getAll(ProfileFilter profileFilter, int limit, int offset);
 
     /**
      * Get count of profiles matching filter
