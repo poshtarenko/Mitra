@@ -8,6 +8,7 @@ import com.mitra.dto.TrackDto;
 import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Track;
 import com.mitra.service.TrackService;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -16,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class TrackServiceImpl implements TrackService {
 
     private final DtoMapper<TrackDto, Track> trackDtoMapper;
@@ -38,7 +40,7 @@ public class TrackServiceImpl implements TrackService {
                     .map(trackDtoMapper::mapToDto)
                     .collect(Collectors.toList());
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Getting profile music failed");
             return Collections.emptyList();
         }
     }
@@ -48,7 +50,7 @@ public class TrackServiceImpl implements TrackService {
         try (Connection connection = ConnectionManager.get()) {
             profileDao.setPreviewTrack(connection, profileId, trackId);
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Setting profile preview track failed");
         }
     }
 
@@ -60,7 +62,7 @@ public class TrackServiceImpl implements TrackService {
             trackToSave.setFilePath(fileId);
             trackDao.save(connection, trackToSave);
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Track saving failed");
         }
     }
 
@@ -69,7 +71,7 @@ public class TrackServiceImpl implements TrackService {
         try (Connection connection = ConnectionManager.get()) {
             trackDao.delete(connection, trackId);
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Track removing failed");
         }
     }
 }

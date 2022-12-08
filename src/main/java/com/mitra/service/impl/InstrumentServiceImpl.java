@@ -6,6 +6,7 @@ import com.mitra.dto.InstrumentDto;
 import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Instrument;
 import com.mitra.service.InstrumentService;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class InstrumentServiceImpl implements InstrumentService {
 
     private final InstrumentDao instrumentDao;
@@ -30,7 +32,7 @@ public class InstrumentServiceImpl implements InstrumentService {
                     .map(instrumentDtoMapper::mapToDto)
                     .collect(Collectors.toList());
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Getting all instruments failed");
             return Collections.emptyList();
         }
     }
@@ -42,7 +44,7 @@ public class InstrumentServiceImpl implements InstrumentService {
                     .map(instrumentDtoMapper::mapToDto)
                     .collect(Collectors.toList());
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Getting all profile instruments failed");
             return Collections.emptyList();
         }
     }
@@ -55,7 +57,7 @@ public class InstrumentServiceImpl implements InstrumentService {
                     .collect(Collectors.toList());
             instrumentDao.setProfileInstruments(connection, profileId, instrumentsToSave);
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Setting instruments to profile failed");
         }
     }
 }

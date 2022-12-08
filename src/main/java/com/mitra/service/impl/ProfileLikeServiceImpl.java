@@ -7,6 +7,7 @@ import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Like;
 import com.mitra.entity.Reaction;
 import com.mitra.service.ProfileLikeService;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class ProfileLikeServiceImpl implements ProfileLikeService {
 
     private final LikeDao likeDao;
@@ -30,7 +32,7 @@ public class ProfileLikeServiceImpl implements ProfileLikeService {
         try (Connection connection = ConnectionManager.get()) {
             likeDao.like(connection, senderId, receiverId);
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Like failed");
         }
     }
 
@@ -39,7 +41,7 @@ public class ProfileLikeServiceImpl implements ProfileLikeService {
         try (Connection connection = ConnectionManager.get()) {
             likeDao.makeResponse(connection, senderId, receiverId, reaction);
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Response on like failed");
         }
     }
 
@@ -50,8 +52,8 @@ public class ProfileLikeServiceImpl implements ProfileLikeService {
                     .map(likeDtoMapper::mapToDto)
                     .collect(Collectors.toList());
         } catch (SQLException e) {
+            log.error("Getting all profile likes failed");
             return Collections.emptyList();
-            // TODO : log
         }
     }
 
@@ -82,8 +84,8 @@ public class ProfileLikeServiceImpl implements ProfileLikeService {
             return likeDao.findBySenderAndReceiver(connection, senderId, receiverId)
                     .map(likeDtoMapper::mapToDto);
         } catch (SQLException e) {
+            log.error("Getting like failed");
             return Optional.empty();
-            // TODO : log
         }
     }
 }

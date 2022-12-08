@@ -8,6 +8,7 @@ import com.mitra.entity.Chat;
 import com.mitra.entity.dummy.DummyProfile;
 import com.mitra.entity.impl.ChatImpl;
 import com.mitra.service.ChatService;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class ChatServiceImpl implements ChatService {
 
     private final ChatDao chatDao;
@@ -33,7 +35,7 @@ public class ChatServiceImpl implements ChatService {
                     Collections.emptyList());
             return chatDao.save(connection, chat);
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Starting of chat failed");
             return 0;
         }
     }
@@ -45,6 +47,7 @@ public class ChatServiceImpl implements ChatService {
                     .map(chatDtoMapper::mapToDto)
                     .collect(Collectors.toList());
         } catch (SQLException e) {
+            log.error("Getting profile chats failed");
             return Collections.emptyList();
         }
     }
@@ -55,6 +58,7 @@ public class ChatServiceImpl implements ChatService {
             Optional<Chat> chat = chatDao.find(connection, firstProfileId, secondProfileId);
             return chat.map(chatDtoMapper::mapToDto);
         } catch (SQLException e) {
+            log.error("Chat not found by profile ids");
             return Optional.empty();
         }
     }
@@ -65,6 +69,7 @@ public class ChatServiceImpl implements ChatService {
             Optional<Chat> chat = chatDao.find(connection, chatId);
             return chat.map(chatDtoMapper::mapToDto);
         } catch (SQLException e) {
+            log.error("Chat not found by id");
             return Optional.empty();
         }
     }

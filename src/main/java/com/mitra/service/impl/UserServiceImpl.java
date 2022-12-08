@@ -10,11 +10,13 @@ import com.mitra.exception.ValidationException;
 import com.mitra.security.PasswordEncryptor;
 import com.mitra.service.UserService;
 import com.mitra.validator.Validator;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
 
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
@@ -38,9 +40,10 @@ public class UserServiceImpl implements UserService {
 
             Optional<User> user = userDao.find(connection, userDto.getEmail(), encryptedPassword);
 
+            log.info("User logged in : {}", userDto);
             return user.map(userDtoMapper::mapToDto);
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Login failed");
             return Optional.empty();
         }
     }
@@ -56,9 +59,10 @@ public class UserServiceImpl implements UserService {
 
             userDao.save(connection, user);
 
+            log.info("User registered : {}", userDto);
             return true;
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Registration failed");
             return false;
         }
     }

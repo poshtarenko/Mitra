@@ -6,6 +6,7 @@ import com.mitra.dto.SpecialityDto;
 import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Speciality;
 import com.mitra.service.SpecialityService;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class SpecialityServiceImpl implements SpecialityService {
 
     private final SpecialityDao specialityDao;
@@ -30,7 +32,7 @@ public class SpecialityServiceImpl implements SpecialityService {
                     .map(specialityDtoMapper::mapToDto)
                     .collect(Collectors.toList());
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Getting all specialities failed");
             return Collections.emptyList();
         }
     }
@@ -42,7 +44,7 @@ public class SpecialityServiceImpl implements SpecialityService {
                     .map(specialityDtoMapper::mapToDto)
                     .collect(Collectors.toList());
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Getting all profile specialities failed");
             return Collections.emptyList();
         }
     }
@@ -55,7 +57,7 @@ public class SpecialityServiceImpl implements SpecialityService {
                     .collect(Collectors.toList());
             specialityDao.setProfileSpecialities(connection, profileId, specialitiesToSave);
         } catch (SQLException e) {
-            // TODO : log
+            log.error("Setting profile specialities failed");
         }
     }
 }
