@@ -51,7 +51,7 @@ public class RequestProcessorFactory {
         requestProcessorsMap.put(UrlPath.LIKES,
                 new LikesProcessor(serviceFactory.getProfileLikeService()));
         requestProcessorsMap.put(UrlPath.MUSIC,
-                new MyMusicProcessor(serviceFactory.getTrackService()));
+                new MusicProcessor(serviceFactory.getTrackService()));
         requestProcessorsMap.put(UrlPath.AUDIO,
                 new AudioProcessor(cloudStorageProvider));
     }
@@ -60,7 +60,7 @@ public class RequestProcessorFactory {
         RequestProcessor requestProcessor = requestProcessorsMap.get(urlPath);
 
         if (requestProcessor == null)
-            throw new PageDontExistException("Page " + urlPath.get() + " does not exist");
+            throw new PageDontExistException("Page " + urlPath.getUrl() + " does not exist");
 
         return requestProcessor;
     }
