@@ -48,7 +48,7 @@ class ProfileServiceTest {
     @Test
     @Order(2)
     void findAll() {
-        List<ProfileDto> allProfiles = profileService.findAll(new ProfileFilter(), 0, 0);
+        List<ProfileDto> allProfiles = profileService.getAll(new ProfileFilter(), 0, 0);
         Optional<ProfileDto> profileOptional = allProfiles.stream()
                 .filter(p -> p.getId().equals(profile.getId()))
                 .findFirst();
@@ -87,7 +87,7 @@ class ProfileServiceTest {
     @Order(4)
     void getAllIds() {
         List<Integer> allIds = profileService.getAllIDs();
-        List<Integer> allIds2 = profileService.findAll(new ProfileFilter(), 0, 0).stream()
+        List<Integer> allIds2 = profileService.getAll(new ProfileFilter(), 0, 0).stream()
                 .map(p -> p.getId())
                 .collect(Collectors.toList());
 
