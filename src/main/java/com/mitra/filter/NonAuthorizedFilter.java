@@ -20,19 +20,19 @@ public class NonAuthorizedFilter implements Filter {
 
     static {
         enabledUrlsForNonAuthorized = new HashSet<>();
-        enabledUrlsForNonAuthorized.add(UrlPath.LANDING_PAGE.get());
-        enabledUrlsForNonAuthorized.add(UrlPath.AUTHORIZATION.get());
-        enabledUrlsForNonAuthorized.add(UrlPath.REGISTRATION.get());
+        enabledUrlsForNonAuthorized.add(UrlPath.LANDING_PAGE.getUrl());
+        enabledUrlsForNonAuthorized.add(UrlPath.AUTHORIZATION.getUrl());
+        enabledUrlsForNonAuthorized.add(UrlPath.REGISTRATION.getUrl());
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
-        UserDto user = (UserDto) req.getSession().getAttribute(SessionAttributes.USER.name());
+        Integer userId = (Integer) req.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
-        if (user == null && !enabledUrlsForNonAuthorized.contains(req.getRequestURI())) {
-            resp.sendRedirect(UrlPath.AUTHORIZATION.get());
+        if (userId == null && !enabledUrlsForNonAuthorized.contains(req.getRequestURI())) {
+            resp.sendRedirect(UrlPath.AUTHORIZATION.getUrl());
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }

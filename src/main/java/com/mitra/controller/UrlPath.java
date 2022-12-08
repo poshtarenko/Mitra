@@ -25,7 +25,7 @@ public enum UrlPath {
     private final String urlPath;
     private final String jspFileName;
 
-    public String get() {
+    public String getUrl() {
         return getPathWithServletPrefix();
     }
 

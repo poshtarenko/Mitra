@@ -5,7 +5,6 @@ import com.mitra.controller.UrlPath;
 import com.mitra.controller.request_processor.util.ChatHelper;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.LikeDto;
-import com.mitra.dto.ProfileDto;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Reaction;
 import com.mitra.service.ChatService;
@@ -15,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,7 +30,7 @@ public class ChatsProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
+        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
         List<ChatDto> chats1 = chatService.getProfileChats(myId);
         List<ChatDto> chats = chats1.stream().map(chat -> ChatHelper.putFriendIdToSecondPlace(chat, myId))
                 .collect(Collectors.toList());
@@ -42,15 +40,15 @@ public class ChatsProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
+        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
         int profileId = Integer.parseInt(request.getParameter("profileId"));
 
         Optional<LikeDto> like = profileLikeService.getLike(myId, profileId);
         if (like.isPresent() && like.get().getReaction() == Reaction.LIKE) {
             int chatId = chatService.startChat(myId, profileId);
-            redirect(response, UrlPath.CHAT.get() + "?c=" + chatId);
+            redirect(response, UrlPath.CHAT.getUrl() + "?c=" + chatId);
             return;
         }
-        redirect(response, UrlPath.CHATS.get());
+        redirect(response, UrlPath.CHATS.getUrl());
     }
 }

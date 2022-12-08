@@ -3,9 +3,9 @@ package com.mitra.controller.request_processor.impl;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.controller.request_processor.util.ChatHelper;
+import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.MessageDto;
-import com.mitra.dto.ProfileDto;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.dummy.DummyProfile;
 import com.mitra.service.ChatService;
@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,8 +31,11 @@ public class ChatProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
+        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+
+        ParameterHelper.redirectIfParameterIsEmpty(response, request.getParameter("c"), UrlPath.CHATS.getUrl());
         int chatId = Integer.parseInt(request.getParameter("c"));
+
         Optional<ChatDto> chatOptional = chatService.getChat(chatId);
         if (chatOptional.isPresent()) {
             ChatDto chat = ChatHelper.putFriendIdToSecondPlace(chatOptional.get(), myId);
@@ -46,7 +48,7 @@ public class ChatProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
+        int myId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER_ID.name())).getId();
         int chatId = Integer.parseInt(request.getParameter("chatId"));
         Optional<ChatDto> chat = chatService.getChat(chatId);
 
@@ -62,6 +64,6 @@ public class ChatProcessor extends AbstractRequestProcessor {
             );
             messageService.sendMessage(message);
         }
-        redirect(response, UrlPath.CHAT.get() + "?c=" + chatId);
+        redirect(response, UrlPath.CHAT.getUrl() + "?c=" + chatId);
     }
 }

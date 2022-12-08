@@ -2,7 +2,7 @@ package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
-import com.mitra.controller.CookieNames;
+import com.mitra.controller.Cookies;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.UserDto;
 import com.mitra.service.ProfileLikeService;
@@ -31,9 +31,9 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
+        int myId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER_ID.name())).getId();
 
-        Cookie profileIdsCookie = CookieHelper.getCookie(request, CookieNames.PROFILE_IDS.name());
+        Cookie profileIdsCookie = CookieHelper.getCookie(request, Cookies.PROFILE_IDS.name());
         // update cookie if not exists
         if (profileIdsCookie == null) {
             List<Integer> allIds = profileService.getAllIDs();
@@ -54,7 +54,7 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
 
         Optional<ProfileDto> profileOptional = profileService.find(id);
         if (!profileOptional.isPresent()) {
-            redirect(response, UrlPath.SWIPE_SEARCH.get());
+            redirect(response, UrlPath.SWIPE_SEARCH.getUrl());
             return;
         }
 
@@ -68,7 +68,7 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
         // skip profile if we already liked it or this user liked us
         if (profileLikeService.getLike(myId, id).isPresent()
                 || profileLikeService.getLike(id, myId).isPresent()) {
-            redirect(response, UrlPath.SWIPE_SEARCH.get());
+            redirect(response, UrlPath.SWIPE_SEARCH.getUrl());
             return;
         }
 
@@ -105,7 +105,7 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
     }
 
     public Cookie updateProfileIdsCookie(HttpServletResponse response, String value) {
-        Cookie cookie = new Cookie(CookieNames.PROFILE_IDS.name(), value);
+        Cookie cookie = new Cookie(Cookies.PROFILE_IDS.name(), value);
         cookie.setMaxAge(8 * 60 * 60); // 8 hours
         response.addCookie(cookie);
         return cookie;

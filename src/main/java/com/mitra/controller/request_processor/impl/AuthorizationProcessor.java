@@ -2,6 +2,7 @@ package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
+import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Role;
 import com.mitra.exception.ValidationException;
@@ -28,8 +29,15 @@ public class AuthorizationProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getSession().getAttribute(SessionAttributes.USER_ID.name()) != null) {
+            redirect(response, UrlPath.MY_PROFILE.getUrl());
+            return;
+        }
+
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        ParameterHelper.redirectIfParameterIsEmpty(response, email, UrlPath.AUTHORIZATION.getUrl());
+        ParameterHelper.redirectIfParameterIsEmpty(response, password, UrlPath.AUTHORIZATION.getUrl());
 
         UserDto userDto = UserDto.builder()
                 .email(email)
@@ -42,10 +50,10 @@ public class AuthorizationProcessor extends AbstractRequestProcessor {
             if (!user.isPresent()) {
                 throw new ValidationException("Credentials are invalid");
             }
-            request.getSession().setAttribute(SessionAttributes.USER.name(), user.get());
-            redirect(response, UrlPath.MY_PROFILE.get());
+            request.getSession().setAttribute(SessionAttributes.USER_ID.name(), user.get().getId());
+            redirect(response, UrlPath.MY_PROFILE.getUrl());
         } catch (ValidationException e) {
-            redirect(response, UrlPath.AUTHORIZATION.get());
+            redirect(response, UrlPath.AUTHORIZATION.getUrl());
         }
     }
 }

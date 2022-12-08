@@ -13,18 +13,18 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.List;
 
-public class MyMusicProcessor extends AbstractRequestProcessor {
+public class MusicProcessor extends AbstractRequestProcessor {
 
     private final TrackService trackService;
 
-    public MyMusicProcessor(TrackService trackService) {
+    public MusicProcessor(TrackService trackService) {
         this.trackService = trackService;
     }
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int profileId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
-        List<TrackDto> profileMusic = trackService.getProfileMusic(profileId);
+        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+        List<TrackDto> profileMusic = trackService.getProfileMusic(myId);
         request.setAttribute("tracks", profileMusic);
         forward(request, response, UrlPath.MUSIC.getJspFileName());
     }
@@ -38,7 +38,7 @@ public class MyMusicProcessor extends AbstractRequestProcessor {
             String author = request.getParameter("author");
             Part audio = request.getPart("audio");
 
-            int profileId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
+            int profileId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER_ID.name())).getId();
 
             TrackDto trackDto = TrackDto.builder()
                     .name(name)
@@ -52,6 +52,6 @@ public class MyMusicProcessor extends AbstractRequestProcessor {
             trackService.remove(trackId);
         }
 
-        redirect(response, UrlPath.MUSIC.get());
+        redirect(response, UrlPath.MUSIC.getUrl());
     }
 }

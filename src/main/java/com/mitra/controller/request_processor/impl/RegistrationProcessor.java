@@ -28,6 +28,11 @@ public class RegistrationProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getSession().getAttribute(SessionAttributes.USER_ID.name()) != null) {
+            redirect(response, UrlPath.MY_PROFILE.getUrl());
+            return;
+        }
+
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
@@ -45,11 +50,11 @@ public class RegistrationProcessor extends AbstractRequestProcessor {
             if (!user.isPresent()) {
                 throw new ValidationException("Credentials are invalid");
             }
-            request.getSession().setAttribute(SessionAttributes.USER.name(), user.get());
+            request.getSession().setAttribute(SessionAttributes.USER_ID.name(), user.get().getId());
 
-            redirect(response, UrlPath.CREATE_PROFILE.get());
+            redirect(response, UrlPath.CREATE_PROFILE.getUrl());
         } catch (ValidationException e) {
-            redirect(response, UrlPath.REGISTRATION.get());
+            redirect(response, UrlPath.REGISTRATION.getUrl());
         }
     }
 }

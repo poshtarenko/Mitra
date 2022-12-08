@@ -19,8 +19,8 @@ public class AuthorizedFilter implements Filter {
 
     static {
         notEnabledUrlsForAuthorized = new HashSet<>();
-        notEnabledUrlsForAuthorized.add(UrlPath.AUTHORIZATION.get());
-        notEnabledUrlsForAuthorized.add(UrlPath.REGISTRATION.get());
+        notEnabledUrlsForAuthorized.add(UrlPath.AUTHORIZATION.getUrl());
+        notEnabledUrlsForAuthorized.add(UrlPath.REGISTRATION.getUrl());
     }
 
     // if user is authorized and tries to move to auth/register page --> redirect him to his profile page
@@ -28,10 +28,10 @@ public class AuthorizedFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
-        UserDto user = (UserDto) req.getSession().getAttribute(SessionAttributes.USER.name());
+        Integer userId = (Integer) req.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
-        if (user != null && notEnabledUrlsForAuthorized.contains(req.getRequestURI())) {
-            resp.sendRedirect(UrlPath.MY_PROFILE.get());
+        if (userId != null && notEnabledUrlsForAuthorized.contains(req.getRequestURI())) {
+            resp.sendRedirect(UrlPath.MY_PROFILE.getUrl());
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }

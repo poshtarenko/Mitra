@@ -33,7 +33,7 @@ public class WrongUrlFilter implements Filter {
             }
         }
 
-        ((HttpServletResponse) servletResponse).sendRedirect(UrlPath.LANDING_PAGE.get());
+        ((HttpServletResponse) servletResponse).sendRedirect(UrlPath.LANDING_PAGE.getUrl());
     }
 
     @Override

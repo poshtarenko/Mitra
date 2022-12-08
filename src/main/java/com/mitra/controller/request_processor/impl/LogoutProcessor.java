@@ -11,7 +11,7 @@ import java.io.IOException;
 public class LogoutProcessor extends AbstractRequestProcessor {
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getSession().setAttribute(SessionAttributes.USER.name(), null);
-        redirect(response, UrlPath.AUTHORIZATION.get());
+        request.getSession().setAttribute(SessionAttributes.USER_ID.name(), null);
+        redirect(response, UrlPath.AUTHORIZATION.getUrl());
     }
 }

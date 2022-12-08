@@ -23,13 +23,13 @@ public class LikesProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int profileId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
+        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
-        List<LikeDto> likes = profileLikeService.getProfileLikes(profileId);
+        List<LikeDto> likes = profileLikeService.getProfileLikes(myId);
 
-        request.setAttribute("ownLikes", profileLikeService.getOwnWithoutResponseLikes(profileId, likes));
-        request.setAttribute("waitingResponseLikes", profileLikeService.getWaitingResponseLikes(profileId, likes));
-        request.setAttribute("mutualLikes", profileLikeService.getMutualLikes(profileId, likes));
+        request.setAttribute("ownLikes", profileLikeService.getOwnWithoutResponseLikes(myId, likes));
+        request.setAttribute("waitingResponseLikes", profileLikeService.getWaitingResponseLikes(myId, likes));
+        request.setAttribute("mutualLikes", profileLikeService.getMutualLikes(myId, likes));
 
         forward(request, response, UrlPath.LIKES.getJspFileName());
     }
@@ -40,12 +40,12 @@ public class LikesProcessor extends AbstractRequestProcessor {
 
         String idParam = request.getParameter("id");
         if (idParam == null || idParam.equals("")) {
-            redirect(response, UrlPath.MY_PROFILE.get());
+            redirect(response, UrlPath.MY_PROFILE.getUrl());
             return;
         }
         int anotherUserId = Integer.parseInt(idParam);
 
-        int userId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
+        int userId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER_ID.name())).getId();
 
         if (type.equalsIgnoreCase("LIKE")) {
             profileLikeService.like(userId, anotherUserId);

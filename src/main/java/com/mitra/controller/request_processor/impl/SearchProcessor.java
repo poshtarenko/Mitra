@@ -119,7 +119,7 @@ public class SearchProcessor extends AbstractRequestProcessor {
                 .build();
 
         request.setAttribute("profiles", profileService
-                .findAll(
+                .getAll(
                         profileFilter,
                         PAGE_SIZE,
                         PAGE_SIZE * (page - 1))

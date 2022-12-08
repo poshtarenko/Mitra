@@ -31,20 +31,20 @@ public class ProfileProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+
         String idParam = request.getParameter("id");
         if (idParam == null || idParam.equals("")) {
-            redirect(response, UrlPath.MY_PROFILE.get());
+            redirect(response, UrlPath.MY_PROFILE.getUrl());
             return;
         }
         int profileId = Integer.parseInt(idParam);
 
         Optional<ProfileDto> profile = profileService.find(profileId);
         if (!profile.isPresent()) {
-            redirect(response, UrlPath.MY_PROFILE.get());
+            redirect(response, UrlPath.MY_PROFILE.getUrl());
             return;
         }
-
-        int myId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
 
         Optional<LikeDto> myPossibleLike = profileLikeService.getLike(myId, profileId);
         Optional<LikeDto> anotherPossibleLike = profileLikeService.getLike(profileId, myId);

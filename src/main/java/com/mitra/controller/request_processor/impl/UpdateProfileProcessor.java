@@ -3,11 +3,10 @@ package com.mitra.controller.request_processor.impl;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.controller.request_processor.util.LocationHelper;
-import com.mitra.controller.request_processor.util.SessionAttrHelper;
+import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.dto.InstrumentDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.SpecialityDto;
-import com.mitra.dto.UserDto;
 import com.mitra.entity.Gender;
 import com.mitra.service.InstrumentService;
 import com.mitra.service.LocationService;
@@ -43,8 +42,8 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserDto user = (UserDto) request.getSession().getAttribute(SessionAttributes.USER.name());
-        Optional<ProfileDto> profileOptional = profileService.find(user.getId());
+        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+        Optional<ProfileDto> profileOptional = profileService.find(myId);
 
         if (!profileOptional.isPresent()) {
             throw new RuntimeException("Profile not found");
@@ -94,17 +93,17 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int userId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER.name())).getId();
+        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
         List<InstrumentDto> instruments;
-        if (request.getParameterValues("instruments") != null)
+        if (ParameterHelper.parameterNotEmpty(request.getParameter("instruments")))
             instruments = Arrays.stream(request.getParameterValues("instruments"))
                     .map(val -> new InstrumentDto(0, val))
                     .collect(Collectors.toList());
         else instruments = Collections.emptyList();
 
         List<SpecialityDto> specialities;
-        if (request.getParameterValues("specialities") != null)
+        if (ParameterHelper.parameterNotEmpty(request.getParameter("specialities")))
             specialities = Arrays.stream(request.getParameterValues("specialities"))
                     .map(val -> new SpecialityDto(0, val))
                     .collect(Collectors.toList());
@@ -117,7 +116,7 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
 
 
         ProfileDto profileDto = ProfileDto.builder()
-                .id(userId)
+                .id(myId)
                 .name(request.getParameter("name"))
                 .age(Integer.valueOf(request.getParameter("age")))
                 .gender(Gender.valueOf(request.getParameter("gender")))
@@ -128,11 +127,8 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
                 .photoPath(request.getParameter("photoPath"))
                 .build();
 
-        profileService.updateProfile(userId, profileDto, photoInputStream);
+        profileService.updateProfile(myId, profileDto, photoInputStream);
 
-        // update profile field in user session attribute
-        SessionAttrHelper.getUserWithUpdatedProfile(request, profileDto);
-
-        redirect(response, UrlPath.MY_PROFILE.get());
+        redirect(response, UrlPath.MY_PROFILE.getUrl());
     }
 }
