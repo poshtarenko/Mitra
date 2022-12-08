@@ -7,10 +7,11 @@ import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Role;
 import com.mitra.entity.User;
 import com.mitra.entity.impl.UserImpl;
+import com.mitra.exception.DaoException;
 import com.mitra.exception.ValidationException;
 import com.mitra.security.PasswordEncryptor;
 import com.mitra.service.UserService;
-import com.mitra.validator.Validator;
+import com.mitra.validator.UserValidator;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
@@ -22,20 +23,22 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private final DtoMapper<UserDto, User> userDtoMapper;
-    private final Validator<UserDto> userDtoValidator;
+    private final UserValidator userValidator;
     private final PasswordEncryptor passwordEncryptor;
 
-    public UserServiceImpl(UserDao userDao, DtoMapper<UserDto, User> userDtoMapper, Validator<UserDto> userDtoValidator, PasswordEncryptor passwordEncryptor) {
+    public UserServiceImpl(UserDao userDao, DtoMapper<UserDto, User> userDtoMapper, UserValidator userValidator, PasswordEncryptor passwordEncryptor) {
         this.userDao = userDao;
         this.userDtoMapper = userDtoMapper;
-        this.userDtoValidator = userDtoValidator;
+        this.userValidator = userValidator;
         this.passwordEncryptor = passwordEncryptor;
     }
 
     @Override
     public Optional<UserDto> tryLogin(String email, String password) {
         try (Connection connection = ConnectionManager.get()) {
-            String encryptedPassword = encryptPassword(password);
+            checkCredentialsOrThrowException(email, password);
+
+            String encryptedPassword = passwordEncryptor.encrypt(password);
             Optional<User> user = userDao.find(connection, email, encryptedPassword);
 
             log.info("User logged in : {}", email);
@@ -49,8 +52,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean register(String email, String password) {
         try (Connection connection = ConnectionManager.get()) {
-            //checkUserDtoIsValid(userDto);
-            String encryptedPassword = encryptPassword(password);
+            checkCredentialsOrThrowException(email, password);
+
+            String encryptedPassword = passwordEncryptor.encrypt(password);
 
             User user = new UserImpl(
                     0,
@@ -70,32 +74,58 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(UserDto userDto, String newPassword) {
-
-    }
-
-    @Override
-    public void changeRole(UserDto userDto, Role role) {
-
-    }
-
-    @Override
-    public void upgradeToPremium(UserDto userDto) {
-
-    }
-
-    @Override
-    public void ban(UserDto userDto) {
-
-    }
-
-    private void checkUserDtoIsValid(UserDto userDto) {
-        if (!userDtoValidator.isValid(userDto)) {
-            throw new ValidationException(userDto + " is invalid.");
+    public void changePassword(int userId, String newPassword) {
+        try (Connection connection = ConnectionManager.get()) {
+            String encryptedPassword = passwordEncryptor.encrypt(newPassword);
+            userDao.changePassword(connection, userId, encryptedPassword);
+        } catch (SQLException e) {
+            log.error("Password change failed");
         }
     }
 
-    private String encryptPassword(String password) {
-        return passwordEncryptor.encrypt(password);
+    @Override
+    public void changeRole(int userId, Role role) {
+        try (Connection connection = ConnectionManager.get()) {
+            userDao.changeRole(connection, userId, role);
+        } catch (SQLException e) {
+            log.error("Role change failed");
+        }
+    }
+
+    @Override
+    public void upgradeToPremium(int userId) {
+        try (Connection connection = ConnectionManager.get()) {
+            User user = userDao.find(connection, userId)
+                    .orElseThrow(() -> new DaoException("User with id " + userId + " not found"));
+
+            if (user.getRole() == Role.USER)
+                userDao.changeRole(connection, userId, Role.USER_PR);
+            else
+                log.warn("Trying upgrade to premium user which has not 'USER' role");
+        } catch (SQLException | DaoException e) {
+            log.error("Upgrade to premium failed");
+        }
+    }
+
+    @Override
+    public void ban(int userId) {
+        try (Connection connection = ConnectionManager.get()) {
+            User user = userDao.find(connection, userId)
+                    .orElseThrow(() -> new DaoException("User with id " + userId + " not found"));
+
+            if (user.getRole() == Role.ADMIN)
+                userDao.changeRole(connection, userId, Role.BANNED);
+            else
+                log.warn("Trying to ban admin");
+        } catch (SQLException | DaoException e) {
+            log.error("Ban failed");
+        }
+    }
+
+
+    private void checkCredentialsOrThrowException(String email, String password) {
+        if (!userValidator.emailIsValid(email) || !userValidator.passwordIsValid(password))
+            return;
+        throw new ValidationException("Credentials are invalid");
     }
 }

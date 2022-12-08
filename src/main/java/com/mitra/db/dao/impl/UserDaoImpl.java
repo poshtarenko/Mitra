@@ -7,10 +7,7 @@ import com.mitra.db.dao.ProfileDao;
 import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.dao.UserDao;
 import com.mitra.db.mapper.RowMapper;
-import com.mitra.entity.Gender;
-import com.mitra.entity.Location;
-import com.mitra.entity.Profile;
-import com.mitra.entity.User;
+import com.mitra.entity.*;
 import com.mitra.entity.impl.ProfileImpl;
 import com.mitra.exception.DaoException;
 
@@ -50,6 +47,15 @@ public class UserDaoImpl implements UserDao {
             Table.USER, Column.USER.EMAIL.shortName(), Column.USER.PASSWORD.shortName(), Column.USER.ROLE_ID.shortName(),
             Column.ROLE.ID, Table.ROLE, Column.ROLE.ROLE, Column.USER.ID);
 
+    public static final String UPDATE_PASSWORD_SQL = String.format(
+            "UPDATE %s SET %s = ? WHERE %s = ?",
+            Table.USER, Column.USER.PASSWORD.shortName(), Column.USER.ID);
+
+    public static final String UPDATE_ROLE_SQL = String.format(
+            "UPDATE %s SET %s = (SELECT %s FROM %s WHERE %s = '?') WHERE %s = ?;",
+            Table.USER, Column.USER.ROLE_ID, Column.ROLE.ID, Table.ROLE, Column.ROLE.ROLE, Column.USER.ID);
+
+
     public static final String DELETE_SQL = String.format(
             "DELETE FROM %s WHERE %s = ?",
             Table.USER, Column.USER.ID);
@@ -74,6 +80,16 @@ public class UserDaoImpl implements UserDao {
         user.ifPresent(value -> value.setProfile(profileDao.find(connection, value.getId())
                 .orElseThrow(() -> new RuntimeException("User without profile must be impossible"))));
         return user;
+    }
+
+    @Override
+    public void changePassword(Connection connection, int userId, String newPassword) throws DaoException {
+        queryExecutor.update(connection, UPDATE_PASSWORD_SQL, newPassword, userId);
+    }
+
+    @Override
+    public void changeRole(Connection connection, int userId, Role newRole) throws DaoException {
+        queryExecutor.update(connection, UPDATE_ROLE_SQL, newRole.name(), userId);
     }
 
     @Override

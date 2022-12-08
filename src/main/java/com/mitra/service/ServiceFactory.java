@@ -35,7 +35,7 @@ public class ServiceFactory {
         specialityService = new SpecialityServiceImpl(daoFactory.getSpecialityDao(), dtoMapperFactory.getSpecialityDtoMapper());
         profileLikeService = new ProfileLikeServiceImpl(daoFactory.getLikeDao(), dtoMapperFactory.getLikeDtoMapper());
         userService = new UserServiceImpl(daoFactory.getUserDao(), dtoMapperFactory.getUserDtoMapper(),
-                validatorFactory.getUserDtoValidator(), EncryptorSHA512.getInstance());
+                validatorFactory.getUserValidator(), EncryptorSHA512.getInstance());
         trackService = new TrackServiceImpl(dtoMapperFactory.getTrackDtoMapper(), daoFactory.getProfileDao(),
                 daoFactory.getTrackDao(), cloudStorageProvider);
         profileService = new ProfileServiceImpl(daoFactory.getProfileDao(), dtoMapperFactory.getProfileDtoMapper(),
