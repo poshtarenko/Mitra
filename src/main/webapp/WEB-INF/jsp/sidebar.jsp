@@ -13,7 +13,7 @@
 
                 </div>
 
-                <p id="name" class="userName">${sessionScope.get("USER").getProfile().getName()}</p>
+                <p id="name" class="userName">${sessionScope.get("USER_NAME")}</p>
             </a>
         </li>
 

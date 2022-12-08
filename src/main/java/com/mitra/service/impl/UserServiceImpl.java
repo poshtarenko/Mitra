@@ -34,6 +34,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<UserDto> find(int id) {
+        try (Connection connection = ConnectionManager.get()) {
+            Optional<User> user = userDao.find(connection, id);
+            return user.map(userDtoMapper::mapToDto);
+        } catch (SQLException e) {
+            log.error("Find user by id is failed", e);
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public Optional<UserDto> tryLogin(String email, String password) {
         try (Connection connection = ConnectionManager.get()) {
             checkCredentialsOrThrowException(email, password);
@@ -44,7 +55,7 @@ public class UserServiceImpl implements UserService {
             log.info("User logged in : {}", email);
             return user.map(userDtoMapper::mapToDto);
         } catch (SQLException e) {
-            log.error("Login failed");
+            log.error("Login failed", e);
             return Optional.empty();
         }
     }
@@ -68,27 +79,51 @@ public class UserServiceImpl implements UserService {
             log.info("User registered : email={}, id={}", email, createdUserId);
             return true;
         } catch (SQLException e) {
-            log.error("Registration failed");
+            log.error("Registration failed", e);
             return false;
+        }
+    }
+
+    @Override
+    public void changeEmail(int userId, String newEmail) {
+        try (Connection connection = ConnectionManager.get()) {
+            if (!userValidator.emailIsValid(newEmail))
+                return;
+
+            User user = userDao.find(connection, userId)
+                    .orElseThrow(() -> new DaoException("User with id " + userId + " not found"));
+            user.setEmail(newEmail);
+            userDao.update(connection, userId, user);
+        } catch (SQLException | DaoException e) {
+            log.error("Email change failed", e);
         }
     }
 
     @Override
     public void changePassword(int userId, String newPassword) {
         try (Connection connection = ConnectionManager.get()) {
+            if (!userValidator.passwordIsValid(newPassword))
+                return;
+
             String encryptedPassword = passwordEncryptor.encrypt(newPassword);
-            userDao.changePassword(connection, userId, encryptedPassword);
-        } catch (SQLException e) {
-            log.error("Password change failed");
+            User user = userDao.find(connection, userId)
+                    .orElseThrow(() -> new DaoException("User with id " + userId + " not found"));
+            user.setPassword(encryptedPassword);
+            userDao.update(connection, userId, user);
+        } catch (SQLException | DaoException e) {
+            log.error("Password change failed", e);
         }
     }
 
     @Override
     public void changeRole(int userId, Role role) {
         try (Connection connection = ConnectionManager.get()) {
-            userDao.changeRole(connection, userId, role);
-        } catch (SQLException e) {
-            log.error("Role change failed");
+            User user = userDao.find(connection, userId)
+                    .orElseThrow(() -> new DaoException("User with id " + userId + " not found"));
+            user.setRole(role);
+            userDao.update(connection, userId, user);
+        } catch (SQLException | DaoException e) {
+            log.error("Role changing failed", e);
         }
     }
 
@@ -97,13 +132,10 @@ public class UserServiceImpl implements UserService {
         try (Connection connection = ConnectionManager.get()) {
             User user = userDao.find(connection, userId)
                     .orElseThrow(() -> new DaoException("User with id " + userId + " not found"));
-
-            if (user.getRole() == Role.USER)
-                userDao.changeRole(connection, userId, Role.USER_PR);
-            else
-                log.warn("Trying upgrade to premium user which has not 'USER' role");
+            user.setRole(Role.USER_PR);
+            userDao.update(connection, userId, user);
         } catch (SQLException | DaoException e) {
-            log.error("Upgrade to premium failed");
+            log.error("Upgrade to premium failed", e);
         }
     }
 
@@ -112,19 +144,16 @@ public class UserServiceImpl implements UserService {
         try (Connection connection = ConnectionManager.get()) {
             User user = userDao.find(connection, userId)
                     .orElseThrow(() -> new DaoException("User with id " + userId + " not found"));
-
-            if (user.getRole() == Role.ADMIN)
-                userDao.changeRole(connection, userId, Role.BANNED);
-            else
-                log.warn("Trying to ban admin");
+            user.setRole(Role.BANNED);
+            userDao.update(connection, userId, user);
         } catch (SQLException | DaoException e) {
-            log.error("Ban failed");
+            log.error("Ban failed", e);
         }
     }
 
 
     private void checkCredentialsOrThrowException(String email, String password) {
-        if (!userValidator.emailIsValid(email) || !userValidator.passwordIsValid(password))
+        if (userValidator.emailIsValid(email) && userValidator.passwordIsValid(password))
             return;
         throw new ValidationException("Credentials are invalid");
     }

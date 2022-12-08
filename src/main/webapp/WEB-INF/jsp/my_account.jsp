@@ -35,29 +35,27 @@
 
         <main class="main">
             <div class="main-content">
-                <h2>Моя анкета</h2>
-                <a href="${pageContext.request.contextPath}/app/upd_profile">ОНОВИТИ АНКЕТУ</a>
-                <a href="${pageContext.request.contextPath}/app/account">НАЛАШТУВАТИ АКАУНТ</a>
                 <br>
-                <c:if test="${not empty requestScope.profile.getPhotoPath()}">
-                    <img class="rounded img-rounded" width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
-                </c:if>
-                <c:if test="${empty requestScope.profile.getPhotoPath()}">
-                    <img class="rounded img-rounded" width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
-                </c:if>
-                <h3>${requestScope.profile.getName()}</h3>
-                <p><b>${requestScope.profile.getLocation().getCity()}, ${requestScope.profile.getAge()} років, ${requestScope.profile.getGender().name()}</b></p>
-                <p><b>Інструменти :</b>
-                    <c:forEach var="instrument" items="${requestScope.profile.getInstruments()}">
-                        <span>${instrument.getName()}   </span>
-                    </c:forEach>
-                </p>
-                <p><b>Спеціальність :</b>
-                    <c:forEach var="speciality" items="${requestScope.profile.getSpecialities()}">
-                        <span>${speciality.getName()}   </span>
-                    </c:forEach>
-                </p>
-                <p>${requestScope.profile.getText()}</p>
+                <h2>Мій акаунт</h2>
+                <br>
+                <p><b>Email : </b>${requestScope.user.getEmail()}</p>
+                <form action="${pageContext.request.contextPath}/app/account" method="post">
+                    <label for="email">Новий E-mail : </label>
+                    <input type="hidden" name="action" value="UPD_EMAIL">
+                    <input type="email" name="email" id="email">
+                    <input type="submit" value="Оновити E-mail">
+                </form>
+                <br><br>
+                <form action="${pageContext.request.contextPath}/app/account" method="post">
+                    <label for="password">Новий пароль : </label>
+                    <input type="hidden" name="action" value="UPD_PASSWORD">
+                    <input type="password" name="password" id="password">
+                    <input type="submit" value="Оновити пароль">
+                </form>
+                <br><br>
+                <form action="${pageContext.request.contextPath}/app/logout" method="post">
+                    <input type="submit" value="Вийти з акаунту">
+                </form>
             </div>
         </main>
     </div>

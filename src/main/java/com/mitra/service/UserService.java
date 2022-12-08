@@ -7,7 +7,13 @@ import java.util.Optional;
 
 public interface UserService {
 
-    // TODO : comments
+    /**
+     * Find user by ID
+     *
+     * @param id user id
+     * @return optional of userDto
+     */
+    Optional<UserDto> find(int id);
 
     /**
      * Try login
@@ -26,6 +32,14 @@ public interface UserService {
      * @return true if registered, false if not
      */
     boolean register(String email, String password);
+
+    /**
+     * Change user email
+     *
+     * @param userId   user id
+     * @param newEmail new email
+     */
+    void changeEmail(int userId, String newEmail);
 
     /**
      * Change user password

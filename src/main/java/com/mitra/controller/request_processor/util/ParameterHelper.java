@@ -9,10 +9,12 @@ public final class ParameterHelper {
         return parameterValue != null && !parameterValue.equals("");
     }
 
-    public static void redirectIfParameterIsEmpty(HttpServletResponse response, String parameterValue, String url) throws IOException {
-        if (!parameterNotEmpty(parameterValue)) {
-            response.sendRedirect(url);
+    public static boolean redirectIfParameterIsEmpty(HttpServletResponse response, String parameterValue, String url) throws IOException {
+        if (parameterNotEmpty(parameterValue)) {
+            return false;
         }
+        response.sendRedirect(url);
+        return true;
     }
 
 }

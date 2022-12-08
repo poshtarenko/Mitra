@@ -46,6 +46,8 @@ public class RequestProcessorFactory {
                         serviceFactory.getSpecialityService(), serviceFactory.getProfileService()));
         requestProcessorsMap.put(UrlPath.SWIPE_SEARCH,
                 new SearchBySwipeProcessor(serviceFactory.getProfileService(), serviceFactory.getProfileLikeService()));
+        requestProcessorsMap.put(UrlPath.MY_ACCOUNT,
+                new MyAccountProcessor(serviceFactory.getUserService()));
         requestProcessorsMap.put(UrlPath.IMAGES,
                 new ImageProcessor(cloudStorageProvider));
         requestProcessorsMap.put(UrlPath.LIKES,
