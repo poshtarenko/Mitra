@@ -9,9 +9,16 @@ public interface UserService {
 
     // TODO : comments
 
-    Optional<UserDto> tryLogin(UserDto userDto);
+    /**
+     * Try login
+     *
+     * @param email    email
+     * @param password password
+     * @return optional of userDto
+     */
+    Optional<UserDto> tryLogin(String email, String password);
 
-    boolean register(UserDto userDto);
+    boolean register(String email, String password);
 
     void changePassword(UserDto userDto, String newPassword);
 

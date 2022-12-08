@@ -39,14 +39,8 @@ public class AuthorizationProcessor extends AbstractRequestProcessor {
         ParameterHelper.redirectIfParameterIsEmpty(response, email, UrlPath.AUTHORIZATION.getUrl());
         ParameterHelper.redirectIfParameterIsEmpty(response, password, UrlPath.AUTHORIZATION.getUrl());
 
-        UserDto userDto = UserDto.builder()
-                .email(email)
-                .password(password)
-                .role(Role.USER)
-                .build();
-
         try {
-            Optional<UserDto> user = userService.tryLogin(userDto);
+            Optional<UserDto> user = userService.tryLogin(email, password);
             if (!user.isPresent()) {
                 throw new ValidationException("Credentials are invalid");
             }

@@ -36,17 +36,11 @@ public class RegistrationProcessor extends AbstractRequestProcessor {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        UserDto userDto = UserDto.builder()
-                .id(0)
-                .email(email)
-                .password(password)
-                .role(Role.USER)
-                .build();
 
         try {
-            userService.register(userDto);
+            userService.register(email, password);
 
-            Optional<UserDto> user = userService.tryLogin(userDto);
+            Optional<UserDto> user = userService.tryLogin(email, password);
             if (!user.isPresent()) {
                 throw new ValidationException("Credentials are invalid");
             }

@@ -6,6 +6,7 @@ import com.mitra.dto.UserDto;
 import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Role;
 import com.mitra.entity.User;
+import com.mitra.entity.impl.UserImpl;
 import com.mitra.exception.ValidationException;
 import com.mitra.security.PasswordEncryptor;
 import com.mitra.service.UserService;
@@ -32,15 +33,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> tryLogin(UserDto userDto) {
+    public Optional<UserDto> tryLogin(String email, String password) {
         try (Connection connection = ConnectionManager.get()) {
-            checkUserDtoIsValid(userDto); //validation in order not to make redundant requests to DB
+            String encryptedPassword = encryptPassword(password);
+            Optional<User> user = userDao.find(connection, email, encryptedPassword);
 
-            String encryptedPassword = encryptPassword(userDto.getPassword());
-
-            Optional<User> user = userDao.find(connection, userDto.getEmail(), encryptedPassword);
-
-            log.info("User logged in : {}", userDto);
+            log.info("User logged in : {}", email);
             return user.map(userDtoMapper::mapToDto);
         } catch (SQLException e) {
             log.error("Login failed");
@@ -49,17 +47,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean register(UserDto userDto) {
+    public boolean register(String email, String password) {
         try (Connection connection = ConnectionManager.get()) {
-            checkUserDtoIsValid(userDto);
+            //checkUserDtoIsValid(userDto);
+            String encryptedPassword = encryptPassword(password);
 
-            User user = userDtoMapper.mapToEntity(userDto);
-            String encryptedPassword = encryptPassword(userDto.getPassword());
-            user.setPassword(encryptedPassword);
+            User user = new UserImpl(
+                    0,
+                    email,
+                    encryptedPassword,
+                    Role.USER
+            );
 
-            userDao.save(connection, user);
+            int createdUserId = userDao.save(connection, user);
 
-            log.info("User registered : {}", userDto);
+            log.info("User registered : email={}, id={}", email, createdUserId);
             return true;
         } catch (SQLException e) {
             log.error("Registration failed");

@@ -58,22 +58,22 @@ public class ProfileLikeServiceImpl implements ProfileLikeService {
     }
 
     @Override
-    public List<LikeDto> getOwnWithoutResponseLikes(int profileId, List<LikeDto> profileLikes) {
-        return profileLikes.stream()
+    public List<LikeDto> getOwnWithoutResponseLikes(int profileId, List<LikeDto> likes) {
+        return likes.stream()
                 .filter(like -> like.getSender().getId() == profileId && like.getReaction() != Reaction.LIKE)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<LikeDto> getWaitingResponseLikes(int profileId, List<LikeDto> profileLikes) {
-        return profileLikes.stream()
+    public List<LikeDto> getWaitingResponseLikes(int profileId, List<LikeDto> likes) {
+        return likes.stream()
                 .filter(like -> like.getReceiver().getId() == profileId && like.getReaction() == Reaction.NO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<LikeDto> getMutualLikes(int profileId, List<LikeDto> profileLikes) {
-        return profileLikes.stream()
+    public List<LikeDto> getMutualLikes(int profileId, List<LikeDto> likes) {
+        return likes.stream()
                 .filter(like -> like.getReaction() == Reaction.LIKE)
                 .collect(Collectors.toList());
     }
