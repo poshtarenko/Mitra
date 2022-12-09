@@ -11,11 +11,15 @@ import com.mitra.exception.DaoException;
 import com.mitra.exception.ValidationException;
 import com.mitra.security.PasswordEncryptor;
 import com.mitra.service.UserService;
+import com.mitra.validator.Error;
 import com.mitra.validator.UserValidator;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -45,7 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> tryLogin(String email, String password) {
+    public Optional<UserDto> tryLogin(String email, String password) throws ValidationException {
         try (Connection connection = ConnectionManager.get()) {
             checkCredentialsOrThrowException(email, password);
 
@@ -61,7 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean register(String email, String password) {
+    public boolean register(String email, String password) throws ValidationException {
         try (Connection connection = ConnectionManager.get()) {
             checkCredentialsOrThrowException(email, password);
 
@@ -85,10 +89,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changeEmail(int userId, String newEmail) {
+    public void changeEmail(int userId, String newEmail) throws ValidationException {
         try (Connection connection = ConnectionManager.get()) {
-            if (!userValidator.emailIsValid(newEmail))
-                return;
+            Optional<Error> emailNotValidError = userValidator.checkEmail(newEmail);
+            if (emailNotValidError.isPresent())
+                throw new ValidationException(Collections.singletonList(emailNotValidError.get()));
 
             User user = userDao.find(connection, userId)
                     .orElseThrow(() -> new DaoException("User with id " + userId + " not found"));
@@ -100,10 +105,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(int userId, String newPassword) {
+    public void changePassword(int userId, String newPassword) throws ValidationException {
         try (Connection connection = ConnectionManager.get()) {
-            if (!userValidator.passwordIsValid(newPassword))
-                return;
+            Optional<Error> passwordNotValidError = userValidator.checkPassword(newPassword);
+            if (passwordNotValidError.isPresent())
+                throw new ValidationException(Collections.singletonList(passwordNotValidError.get()));
 
             String encryptedPassword = passwordEncryptor.encrypt(newPassword);
             User user = userDao.find(connection, userId)
@@ -152,9 +158,12 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private void checkCredentialsOrThrowException(String email, String password) {
-        if (userValidator.emailIsValid(email) && userValidator.passwordIsValid(password))
-            return;
-        throw new ValidationException("Credentials are invalid");
+    private void checkCredentialsOrThrowException(String email, String password) throws ValidationException {
+        List<Error> errors = new ArrayList<>();
+        userValidator.checkEmail(email).ifPresent(errors::add);
+        userValidator.checkPassword(password).ifPresent(errors::add);
+
+        if (!errors.isEmpty())
+            throw new ValidationException(errors);
     }
 }

@@ -3,6 +3,7 @@ package com.mitra.controller.request_processor.impl;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.controller.request_processor.util.ParameterHelper;
+import com.mitra.exception.ValidationException;
 import com.mitra.service.UserService;
 
 import javax.servlet.ServletException;
@@ -37,14 +38,22 @@ public class MyAccountProcessor extends AbstractRequestProcessor {
             String password = request.getParameter("password");
             if (ParameterHelper.redirectIfParameterIsEmpty(response, password, UrlPath.MY_ACCOUNT.getUrl()))
                 return;
-            userService.changePassword(myId, password);
+            try {
+                userService.changePassword(myId, password);
+            } catch (ValidationException e) {
+                request.setAttribute("passwordErrors", e.getErrors());
+            }
         } else if (action.equals("UPD_EMAIL")) {
             String email = request.getParameter("email");
             if (ParameterHelper.redirectIfParameterIsEmpty(response, email, UrlPath.MY_ACCOUNT.getUrl()))
                 return;
-            userService.changeEmail(myId, email);
+            try {
+                userService.changeEmail(myId, email);
+            } catch (ValidationException e) {
+                request.setAttribute("emailErrors", e.getErrors());
+            }
         }
 
-        redirect(response, UrlPath.MY_ACCOUNT.getUrl());
+        processGet(request, response);
     }
 }

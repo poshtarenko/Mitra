@@ -2,6 +2,7 @@ package com.mitra.service;
 
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Role;
+import com.mitra.exception.ValidationException;
 
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public interface UserService {
      * @param password password
      * @return optional of userDto
      */
-    Optional<UserDto> tryLogin(String email, String password);
+    Optional<UserDto> tryLogin(String email, String password) throws ValidationException;
 
     /**
      * Try register
@@ -31,7 +32,7 @@ public interface UserService {
      * @param password password
      * @return true if registered, false if not
      */
-    boolean register(String email, String password);
+    boolean register(String email, String password) throws ValidationException;
 
     /**
      * Change user email
@@ -39,7 +40,7 @@ public interface UserService {
      * @param userId   user id
      * @param newEmail new email
      */
-    void changeEmail(int userId, String newEmail);
+    void changeEmail(int userId, String newEmail) throws ValidationException;
 
     /**
      * Change user password
@@ -47,7 +48,7 @@ public interface UserService {
      * @param userId      user id
      * @param newPassword new password
      */
-    void changePassword(int userId, String newPassword);
+    void changePassword(int userId, String newPassword) throws ValidationException;
 
     /**
      * Change user role

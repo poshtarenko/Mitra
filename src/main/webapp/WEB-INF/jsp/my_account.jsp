@@ -45,6 +45,11 @@
                     <input type="email" name="email" id="email">
                     <input type="submit" value="Оновити E-mail">
                 </form>
+                <c:if test="${not empty requestScope.emailErrors}">
+                    <c:forEach var="err" items="${requestScope.emailErrors}">
+                        <p>${err.getMessage()}</p>
+                    </c:forEach>
+                </c:if>
                 <br><br>
                 <form action="${pageContext.request.contextPath}/app/account" method="post">
                     <label for="password">Новий пароль : </label>
@@ -52,6 +57,11 @@
                     <input type="password" name="password" id="password">
                     <input type="submit" value="Оновити пароль">
                 </form>
+                <c:if test="${not empty requestScope.passwordErrors}">
+                    <c:forEach var="err" items="${requestScope.passwordErrors}">
+                        <p>${err.getMessage()}</p>
+                    </c:forEach>
+                </c:if>
                 <br><br>
                 <form action="${pageContext.request.contextPath}/app/logout" method="post">
                     <input type="submit" value="Вийти з акаунту">

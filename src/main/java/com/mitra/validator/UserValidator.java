@@ -1,21 +1,29 @@
 package com.mitra.validator;
 
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserValidator {
 
-    public boolean emailIsValid(String email) {
+    public Optional<Error> checkEmail(String email) {
         Pattern emailPattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
         Matcher emailMatcher = emailPattern.matcher(email);
 
-        return emailMatcher.matches();
+        if (emailMatcher.matches())
+            return Optional.empty();
+        else
+            return Optional.of(Error.of("WRONG EMAIL", "Введіть правильний e-mail"));
     }
 
-    public boolean passwordIsValid(String password) {
-        Pattern passwordPattern = Pattern.compile("[A-Za-z0-9._%+-]{6,30}");
+    public Optional<Error> checkPassword(String password) {
+        Pattern passwordPattern = Pattern.compile("[A-Za-z0-9_%]{6,30}");
         Matcher passwordMatcher = passwordPattern.matcher(password);
 
-        return passwordMatcher.matches();
+        if (passwordMatcher.matches())
+            return Optional.empty();
+        else
+            return Optional.of(Error.of("WRONG PASSWORD", "Пароль має мати більше 6 символів, та " +
+                    "складатися з латинських букв, цифр або символів '_' та '%'"));
     }
 }

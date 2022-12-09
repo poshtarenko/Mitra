@@ -1,22 +1,18 @@
 package com.mitra.exception;
 
-public class ValidationException extends RuntimeException {
-    public ValidationException() {
+import com.mitra.validator.Error;
+
+import java.util.List;
+
+public class ValidationException extends Exception {
+
+    List<Error> errors;
+
+    public ValidationException(List<Error> errors) {
+        this.errors = errors;
     }
 
-    public ValidationException(String message) {
-        super(message);
-    }
-
-    public ValidationException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public ValidationException(Throwable cause) {
-        super(cause);
-    }
-
-    public ValidationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public List<Error> getErrors() {
+        return errors;
     }
 }

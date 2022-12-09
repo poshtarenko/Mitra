@@ -4,8 +4,6 @@ import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.controller.request_processor.util.LoginHelper;
 import com.mitra.controller.request_processor.util.ParameterHelper;
-import com.mitra.dto.UserDto;
-import com.mitra.entity.Role;
 import com.mitra.exception.ValidationException;
 import com.mitra.service.UserService;
 
@@ -13,7 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 public class AuthorizationProcessor extends AbstractRequestProcessor {
 
@@ -41,10 +38,11 @@ public class AuthorizationProcessor extends AbstractRequestProcessor {
         ParameterHelper.redirectIfParameterIsEmpty(response, password, UrlPath.AUTHORIZATION.getUrl());
 
         try {
-            LoginHelper.login(email, password, userService, request);
+            LoginHelper.loginAndUpdateSessionAttrs(email, password, userService, request);
             redirect(response, UrlPath.MY_PROFILE.getUrl());
         } catch (ValidationException e) {
-            redirect(response, UrlPath.AUTHORIZATION.getUrl());
+            request.setAttribute("errors", e.getErrors());
+            processGet(request, response);
         }
     }
 }
