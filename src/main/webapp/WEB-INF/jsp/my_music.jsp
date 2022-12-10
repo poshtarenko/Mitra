@@ -45,9 +45,15 @@
                         </audio>
                         <form action="${pageContext.request.contextPath}/app/music" method="post"
                               enctype='multipart/form-data'>
-                            <input type="hidden" name="action" value="delete"/><br>
+                            <input type="hidden" name="action" value="DELETE"/><br>
                             <input type="hidden" name="trackId" value="${track.getId()}"/>
                             <input type="submit" value="Видалити">
+                        </form>
+                        <form action="${pageContext.request.contextPath}/app/music" method="post"
+                              enctype='multipart/form-data'>
+                            <input type="hidden" name="action" value="SET_PREVIEW"/><br>
+                            <input type="hidden" name="trackId" value="${track.getId()}"/>
+                            <input type="submit" value="Встановити на preview">
                         </form>
                         <hr>
                     </c:forEach><br>
@@ -58,7 +64,7 @@
 
                 <h3>Додати трек</h3>
                 <form action="${pageContext.request.contextPath}/app/music" method="post" enctype='multipart/form-data'>
-                    <input type="hidden" name="action" value="add"/><br>
+                    <input type="hidden" name="action" value="ADD"/><br>
 
                     <label for="name"></label> Назва :
                     <input type="text" name="name" id="name"/><br><br>

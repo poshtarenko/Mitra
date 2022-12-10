@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public final class LoginHelper {
     public static void loginAndUpdateSessionAttrs(String email, String password, UserService userService, HttpServletRequest req) throws ValidationException {
-        Optional<UserDto> user = userService.tryLogin(email, password);
+        Optional<UserDto> user = userService.find(email, password);
         if (!user.isPresent()) {
             throw new ValidationException(Collections.singletonList(
                     Error.of("CREDENTIALS ARE INVALID", "Введені логін та пароль неправильні")));

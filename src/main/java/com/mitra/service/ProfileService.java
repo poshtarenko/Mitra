@@ -3,12 +3,21 @@ package com.mitra.service;
 import com.mitra.db.filter.ProfileFilter;
 import com.mitra.dto.ProfileDto;
 import com.mitra.exception.DaoException;
+import com.mitra.exception.ValidationException;
 
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
 public interface ProfileService {
+
+    /**
+     * Create new profile
+     *
+     * @param profile profileDto
+     * @return id of created profile
+     */
+    int createProfile(ProfileDto profile) throws ValidationException;
 
     /**
      * Get all user profiles from DB
@@ -52,6 +61,6 @@ public interface ProfileService {
      * @param profileDto profileDTO
      * @param newPhoto   InputStream with photo
      */
-    void updateProfile(int userId, ProfileDto profileDto, InputStream newPhoto);
+    void updateProfile(int userId, ProfileDto profileDto, InputStream newPhoto) throws ValidationException;
 
 }

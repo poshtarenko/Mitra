@@ -25,13 +25,17 @@ public class ProfileRowMapper implements RowMapper<Profile> {
                 .country(resultSet.getString(11))
                 .build();
 
-        Track previewTrack = new TrackImpl(
-                resultSet.getInt(12),
-                resultSet.getString(13),
-                resultSet.getString(14),
-                resultSet.getString(15),
-                new DummyProfile(resultSet.getInt(1))
-        );
+
+        Track previewTrack = null;
+        if (resultSet.getObject(12) != null) {
+            previewTrack = new TrackImpl(
+                    resultSet.getInt(12),
+                    resultSet.getString(13),
+                    resultSet.getString(14),
+                    resultSet.getString(15),
+                    new DummyProfile(resultSet.getInt(1))
+            );
+        }
 
         return ProfileImpl.builder()
                 .id(resultSet.getInt(1))

@@ -3,6 +3,7 @@ package com.mitra.service.impl;
 import com.mitra.db.filter.ProfileFilter;
 import com.mitra.dto.ProfileDto;
 import com.mitra.entity.Gender;
+import com.mitra.exception.ValidationException;
 import com.mitra.service.ProfileService;
 import com.mitra.service.ServiceFactory;
 import org.junit.jupiter.api.*;
@@ -29,7 +30,11 @@ class ProfileServiceTest {
 
     @AfterAll
     static void tearDown() {
-        profileService.updateProfile(141, profileCopy, null);
+        try {
+            profileService.updateProfile(141, profileCopy, null);
+        } catch (ValidationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -113,7 +118,11 @@ class ProfileServiceTest {
                 .photoPath(profile.getPhotoPath())
                 .build();
 
-        profileService.updateProfile(141, profileToUpdate, null);
+        try {
+            profileService.updateProfile(141, profileToUpdate, null);
+        } catch (ValidationException e) {
+            fail();
+        }
 
         profile = profileService.find(id).get();
 

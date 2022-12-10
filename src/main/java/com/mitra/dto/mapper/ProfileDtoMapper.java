@@ -58,6 +58,7 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
                 .text(dto.getText())
                 .photoPath(dto.getPhotoPath())
                 .location(location)
+                .previewTrack(dto.getPreviewTrack())
                 .instruments(instruments)
                 .specialities(specialities)
                 .build();
@@ -93,6 +94,7 @@ public class ProfileDtoMapper implements DtoMapper<ProfileDto, Profile> {
                 .text(entity.getText())
                 .photoPath(entity.getPhotoPath())
                 .location(locationDto)
+                .previewTrack(entity.getPreviewTrack())
                 .instruments(instrumentDtos)
                 .specialities(specialityDtos)
                 .build();

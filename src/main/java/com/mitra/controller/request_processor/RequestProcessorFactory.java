@@ -33,10 +33,10 @@ public class RequestProcessorFactory {
                 new UpdateProfileProcessor(serviceFactory.getProfileService(), serviceFactory.getLocationService(),
                         serviceFactory.getInstrumentService(), serviceFactory.getSpecialityService()));
         requestProcessorsMap.put(UrlPath.MY_PROFILE,
-                new MyProfileProcessor(serviceFactory.getProfileService()));
+                new MyProfileProcessor(serviceFactory.getProfileService(), serviceFactory.getTrackService()));
         requestProcessorsMap.put(UrlPath.PROFILE,
                 new ProfileProcessor(serviceFactory.getProfileService(), serviceFactory.getProfileLikeService(),
-                        serviceFactory.getChatService()));
+                        serviceFactory.getTrackService(), serviceFactory.getChatService()));
         requestProcessorsMap.put(UrlPath.CHAT,
                 new ChatProcessor(serviceFactory.getChatService(), serviceFactory.getMessageService()));
         requestProcessorsMap.put(UrlPath.CHATS,

@@ -56,6 +56,17 @@
                 </p>
                 <p>${requestScope.profile.getText()}</p>
 
+                <p><b>Музика :</b></p>
+                <c:if test="${not empty requestScope.tracks}">
+                    <c:forEach var="track" items="${requestScope.tracks}">
+                        <p>${track.getName()} - ${track.getAuthor()}</p>
+                        <audio controls>
+                            <source src="${pageContext.request.contextPath}/app/audio?path=${track.getFilePath()}"
+                                    type="audio/mpeg">
+                        </audio>
+                    </c:forEach><br>
+                </c:if><br>
+
                 <c:if test="${not empty requestScope.enableToLike}">
                     <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/likes" method="post">
                         <input type="hidden" name="type" value="LIKE">

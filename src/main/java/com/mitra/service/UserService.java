@@ -23,7 +23,7 @@ public interface UserService {
      * @param password password
      * @return optional of userDto
      */
-    Optional<UserDto> tryLogin(String email, String password) throws ValidationException;
+    Optional<UserDto> find(String email, String password) throws ValidationException;
 
     /**
      * Try register

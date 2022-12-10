@@ -8,6 +8,7 @@ import com.mitra.dto.InstrumentDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.SpecialityDto;
 import com.mitra.entity.Gender;
+import com.mitra.exception.ValidationException;
 import com.mitra.service.InstrumentService;
 import com.mitra.service.LocationService;
 import com.mitra.service.ProfileService;
@@ -127,7 +128,12 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
                 .photoPath(request.getParameter("photoPath"))
                 .build();
 
-        profileService.updateProfile(myId, profileDto, photoInputStream);
+        try {
+            profileService.updateProfile(myId, profileDto, photoInputStream);
+        } catch (ValidationException e) {
+            request.setAttribute("errors", e.getErrors());
+            processGet(request, response);
+        }
 
         redirect(response, UrlPath.MY_PROFILE.getUrl());
     }

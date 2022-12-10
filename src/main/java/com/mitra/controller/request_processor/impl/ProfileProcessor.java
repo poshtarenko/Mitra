@@ -10,6 +10,7 @@ import com.mitra.entity.Reaction;
 import com.mitra.service.ChatService;
 import com.mitra.service.ProfileLikeService;
 import com.mitra.service.ProfileService;
+import com.mitra.service.TrackService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,11 +22,13 @@ public class ProfileProcessor extends AbstractRequestProcessor {
 
     private final ProfileService profileService;
     private final ProfileLikeService profileLikeService;
+    private final TrackService trackService;
     private final ChatService chatService;
 
-    public ProfileProcessor(ProfileService profileService, ProfileLikeService profileLikeService, ChatService chatService) {
+    public ProfileProcessor(ProfileService profileService, ProfileLikeService profileLikeService, TrackService trackService, ChatService chatService) {
         this.profileService = profileService;
         this.profileLikeService = profileLikeService;
+        this.trackService = trackService;
         this.chatService = chatService;
     }
 
@@ -76,6 +79,7 @@ public class ProfileProcessor extends AbstractRequestProcessor {
         }
 
         request.setAttribute("profile", profile.get());
+        request.setAttribute("tracks", trackService.getProfileMusic(profileId));
         forward(request, response, UrlPath.PROFILE.getJspFileName());
     }
 }

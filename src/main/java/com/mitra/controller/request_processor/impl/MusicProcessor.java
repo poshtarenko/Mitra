@@ -33,12 +33,12 @@ public class MusicProcessor extends AbstractRequestProcessor {
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        if (action.equals("add")) {
+        if (action.equals("ADD")) {
             String name = request.getParameter("name");
             String author = request.getParameter("author");
             Part audio = request.getPart("audio");
 
-            int profileId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER_ID.name())).getId();
+            int profileId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
             TrackDto trackDto = TrackDto.builder()
                     .name(name)
@@ -47,9 +47,13 @@ public class MusicProcessor extends AbstractRequestProcessor {
                     .build();
 
             trackService.save(trackDto, audio.getInputStream());
-        } else if (action.equals("delete")) {
+        } else if (action.equals("DELETE")) {
             int trackId = Integer.parseInt(request.getParameter("trackId"));
             trackService.remove(trackId);
+        } else if (action.equals("SET_PREVIEW")) {
+            int trackId = Integer.parseInt(request.getParameter("trackId"));
+            int profileId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+            trackService.setProfilePreviewTrack(profileId, trackId);
         }
 
         redirect(response, UrlPath.MUSIC.getUrl());

@@ -39,7 +39,7 @@ public class ServiceFactory {
         trackService = new TrackServiceImpl(dtoMapperFactory.getTrackDtoMapper(), daoFactory.getProfileDao(),
                 daoFactory.getTrackDao(), cloudStorageProvider);
         profileService = new ProfileServiceImpl(daoFactory.getProfileDao(), dtoMapperFactory.getProfileDtoMapper(),
-                cloudStorageProvider);
+                cloudStorageProvider, validatorFactory.getProfileValidator());
     }
 
     public static ServiceFactory getInstance() {

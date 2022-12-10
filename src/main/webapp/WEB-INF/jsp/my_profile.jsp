@@ -36,8 +36,9 @@
         <main class="main">
             <div class="main-content">
                 <h2>Моя анкета</h2>
-                <a href="${pageContext.request.contextPath}/app/upd_profile">ОНОВИТИ АНКЕТУ</a>
                 <a href="${pageContext.request.contextPath}/app/account">НАЛАШТУВАТИ АКАУНТ</a>
+                <a href="${pageContext.request.contextPath}/app/upd_profile">ОНОВИТИ АНКЕТУ</a>
+                <a href="${pageContext.request.contextPath}/app/music">МОЯ МУЗИКА</a>
                 <br>
                 <c:if test="${not empty requestScope.profile.getPhotoPath()}">
                     <img class="rounded img-rounded" width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
@@ -58,6 +59,20 @@
                     </c:forEach>
                 </p>
                 <p>${requestScope.profile.getText()}</p>
+
+                <c:if test="${not empty requestScope.tracks}">
+                    <c:forEach var="track" items="${requestScope.tracks}">
+                        <p>${track.getName()} - ${track.getAuthor()}</p>
+                        <audio controls>
+                            <source src="${pageContext.request.contextPath}/app/audio?path=${track.getFilePath()}"
+                                    type="audio/mpeg">
+                        </audio>
+                        <hr>
+                    </c:forEach><br>
+                </c:if><br>
+                <c:if test="${empty requestScope.tracks}">
+                    <p>Ваш список музики пустий, <a href="${pageContext.request.contextPath}/app/music">додайте свою</a></p><br>
+                </c:if><br>
             </div>
         </main>
     </div>

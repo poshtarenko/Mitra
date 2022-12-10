@@ -1,6 +1,7 @@
 package com.mitra.dto;
 
 import com.mitra.entity.Gender;
+import com.mitra.entity.Track;
 import lombok.Builder;
 import lombok.Value;
 
@@ -16,6 +17,7 @@ public class ProfileDto implements Dto {
     LocationDto location;
     String text;
     String photoPath;
+    Track previewTrack;
     List<InstrumentDto> instruments;
     List<SpecialityDto> specialities;
     List<LikeDto> likes;

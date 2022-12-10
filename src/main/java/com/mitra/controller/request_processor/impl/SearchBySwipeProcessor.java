@@ -31,7 +31,7 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER_ID.name())).getId();
+        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
         Cookie profileIdsCookie = CookieHelper.getCookie(request, Cookies.PROFILE_IDS.name());
         // update cookie if not exists

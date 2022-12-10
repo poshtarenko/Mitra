@@ -5,6 +5,7 @@ import com.mitra.controller.UrlPath;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.UserDto;
 import com.mitra.service.ProfileService;
+import com.mitra.service.TrackService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +15,11 @@ import java.io.IOException;
 public class MyProfileProcessor extends AbstractRequestProcessor {
 
     private final ProfileService profileService;
+    private final TrackService trackService;
 
-    public MyProfileProcessor(ProfileService profileService) {
+    public MyProfileProcessor(ProfileService profileService, TrackService trackService) {
         this.profileService = profileService;
+        this.trackService = trackService;
     }
 
     @Override
@@ -26,6 +29,7 @@ public class MyProfileProcessor extends AbstractRequestProcessor {
         ProfileDto profile = profileService.find(myId)
                 .orElseThrow(() -> new ServletException("User without profile must be impossible, but it does not"));
         request.setAttribute("profile", profile);
+        request.setAttribute("tracks", trackService.getProfileMusic(myId));
         forward(request, response, UrlPath.MY_PROFILE.getJspFileName());
     }
 }

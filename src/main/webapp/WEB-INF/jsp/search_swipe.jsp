@@ -48,6 +48,14 @@
                 <h3>
                     <a href="${pageContext.request.contextPath}/app/profile?id=${requestScope.profile.getId()}">${requestScope.profile.getName()}</a>
                 </h3>
+                <c:if test="${not empty requestScope.profile.getPreviewTrack()}">
+                        <p>${requestScope.profile.getPreviewTrack().getName()} - ${requestScope.profile.getPreviewTrack().getAuthor()}</p>
+                        <audio controls>
+                            <source src="${pageContext.request.contextPath}/app/audio?path=${requestScope.profile.getPreviewTrack().getFilePath()}"
+                                    type="audio/mpeg">
+                        </audio>
+                        <hr>
+                </c:if><br>
                 <p><b>${requestScope.profile.getLocation().getCity()}, ${requestScope.profile.getAge()}
                     років, ${requestScope.profile.getGender().name()}</b></p>
                 <c:if test="${not empty requestScope.profile.getInstruments()}">

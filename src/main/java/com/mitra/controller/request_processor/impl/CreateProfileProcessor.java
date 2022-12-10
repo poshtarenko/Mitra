@@ -6,6 +6,7 @@ import com.mitra.controller.request_processor.util.LocationHelper;
 import com.mitra.dto.LocationDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.entity.Gender;
+import com.mitra.exception.ValidationException;
 import com.mitra.service.LocationService;
 import com.mitra.service.ProfileService;
 
@@ -53,7 +54,12 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
                 .location(locationDto)
                 .build();
 
-        profileService.updateProfile(myId, profile, null);
+        try {
+            profileService.updateProfile(myId, profile, null);
+        } catch (ValidationException e) {
+            request.setAttribute("errors", e.getErrors());
+            processGet(request, response);
+        }
 
         redirect(response, UrlPath.MY_PROFILE.getUrl());
     }

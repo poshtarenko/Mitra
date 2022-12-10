@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> tryLogin(String email, String password) throws ValidationException {
+    public Optional<UserDto> find(String email, String password) throws ValidationException {
         try (Connection connection = ConnectionManager.get()) {
             checkCredentialsOrThrowException(email, password);
 
