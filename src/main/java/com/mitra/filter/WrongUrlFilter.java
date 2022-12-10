@@ -19,7 +19,7 @@ public class WrongUrlFilter implements Filter {
         enabledUrlStarts = new HashSet<>();
         enabledUrlStarts.add("/WEB-INF");
         enabledUrlStarts.add("/resources");
-        enabledUrlStarts.add(UrlPath.SERVLET_CONST);
+        enabledUrlStarts.add(UrlPath.APP_PATH_PREFIX);
     }
 
     @Override

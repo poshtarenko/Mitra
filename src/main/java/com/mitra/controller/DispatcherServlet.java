@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet(UrlPath.SERVLET_CONST + "/*")
+@WebServlet(UrlPath.APP_PATH_PREFIX + "/*")
 @MultipartConfig()
 public class DispatcherServlet extends HttpServlet {
 

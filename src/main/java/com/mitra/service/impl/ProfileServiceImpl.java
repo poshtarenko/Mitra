@@ -41,13 +41,13 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public int createProfile(ProfileDto profileDto) throws ValidationException {
+    public int create(ProfileDto profileDto) throws ValidationException {
         try (Connection connection = ConnectionManager.get()) {
             checkProfileOrThrowException(profileDto);
             Profile profile = profileDtoMapper.mapToEntity(profileDto);
             return profileDao.save(connection, profile);
         } catch (SQLException e) {
-            log.error("Profile update failed");
+            log.error("Profile creating failed");
             return 0;
         }
     }

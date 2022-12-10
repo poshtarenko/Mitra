@@ -31,7 +31,7 @@ public enum UrlPath {
     }
 
     private String getPathWithServletPrefix() {
-        return SERVLET_CONST + urlPath;
+        return APP_PATH_PREFIX + urlPath;
     }
 
     public String getJspFileName() {
@@ -52,5 +52,5 @@ public enum UrlPath {
     // All requests on default servlets are marked with prefix "/app"
     // Another requests don't have prefixes, they use directories names
     // ("resources" for css/js/images, "WEB-INF for jsp, etc)
-    public static final String SERVLET_CONST = "/app";
+    public static final String APP_PATH_PREFIX = "/app";
 }

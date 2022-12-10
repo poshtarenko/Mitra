@@ -47,6 +47,7 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
         LocationDto locationDto = LocationHelper.stringToLocationDto(request.getParameter("city"));
 
         ProfileDto profile = ProfileDto.builder()
+                .id(myId)
                 .name(request.getParameter("name"))
                 .age(Integer.valueOf(request.getParameter("age")))
                 .gender(Gender.valueOf(request.getParameter("gender")))
@@ -55,7 +56,8 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
                 .build();
 
         try {
-            profileService.updateProfile(myId, profile, null);
+            profileService.create(profile);
+            request.getSession().setAttribute(SessionAttributes.USER_NAME.name(), profile.getName());
         } catch (ValidationException e) {
             request.setAttribute("errors", e.getErrors());
             processGet(request, response);

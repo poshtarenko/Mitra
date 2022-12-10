@@ -17,7 +17,7 @@ public interface ProfileService {
      * @param profile profileDto
      * @return id of created profile
      */
-    int createProfile(ProfileDto profile) throws ValidationException;
+    int create(ProfileDto profile) throws ValidationException;
 
     /**
      * Get all user profiles from DB
