@@ -39,7 +39,12 @@
                     <h4>Друзі</h4>
                     <c:forEach var="like" items="${requestScope.mutualLikes}">
                         <p>
-                            <a href="${pageContext.request.contextPath}/app/profile?id=${like.getReceiver().getId()}">${like.getReceiver().getName()}</a>
+                            <c:if test="${like.getSender().getId() == sessionScope.USER_ID}">
+                                <a href="${pageContext.request.contextPath}/app/profile?id=${like.getReceiver().getId()}">${like.getReceiver().getName()}</a>
+                            </c:if>
+                            <c:if test="${like.getReceiver().getId() == sessionScope.USER_ID}">
+                                <a href="${pageContext.request.contextPath}/app/profile?id=${like.getSender().getId()}">${like.getSender().getName()}</a>
+                            </c:if>
                         </p>
                     </c:forEach><br>
                 </c:if>

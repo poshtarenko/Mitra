@@ -1,7 +1,5 @@
 package com.mitra.db.mapper;
 
-import com.mitra.entity.Identifiable;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

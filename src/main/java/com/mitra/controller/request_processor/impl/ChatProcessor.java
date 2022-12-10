@@ -2,11 +2,9 @@ package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
-import com.mitra.controller.request_processor.util.ChatHelper;
 import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.MessageDto;
-import com.mitra.dto.UserDto;
 import com.mitra.entity.dummy.DummyProfile;
 import com.mitra.service.ChatService;
 import com.mitra.service.MessageService;
@@ -31,14 +29,12 @@ public class ChatProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
-
         ParameterHelper.redirectIfParameterIsEmpty(response, request.getParameter("c"), UrlPath.CHATS.getUrl());
         int chatId = Integer.parseInt(request.getParameter("c"));
 
         Optional<ChatDto> chatOptional = chatService.getChat(chatId);
         if (chatOptional.isPresent()) {
-            ChatDto chat = ChatHelper.putFriendIdToSecondPlace(chatOptional.get(), myId);
+            ChatDto chat = chatOptional.get();
             request.setAttribute("chat", chat);
             List<MessageDto> chatMessages = messageService.getChatMessages(chatId);
             request.setAttribute("messages", chatMessages);
@@ -48,7 +44,7 @@ public class ChatProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER_ID.name())).getId();
+        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
         int chatId = Integer.parseInt(request.getParameter("chatId"));
         Optional<ChatDto> chat = chatService.getChat(chatId);
 

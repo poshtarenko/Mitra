@@ -2,8 +2,8 @@ package com.mitra.db.dao.impl;
 
 import com.mitra.db.Column;
 import com.mitra.db.Table;
-import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.dao.SpecialityDao;
+import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Speciality;
 import com.mitra.exception.DaoException;

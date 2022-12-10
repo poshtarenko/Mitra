@@ -24,7 +24,7 @@ public interface SpecialityService {
     /**
      * Set specialities list to profile
      *
-     * @param profileId profile id
+     * @param profileId    profile id
      * @param specialities specialities list
      */
     void setSpecialitiesToProfile(int profileId, List<SpecialityDto> specialities);

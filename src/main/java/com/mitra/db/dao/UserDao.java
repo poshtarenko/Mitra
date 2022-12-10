@@ -1,6 +1,5 @@
 package com.mitra.db.dao;
 
-import com.mitra.entity.Role;
 import com.mitra.entity.User;
 import com.mitra.exception.DaoException;
 

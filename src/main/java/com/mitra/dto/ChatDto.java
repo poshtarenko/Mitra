@@ -1,7 +1,6 @@
 package com.mitra.dto;
 
 import com.mitra.entity.Message;
-import com.mitra.entity.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 

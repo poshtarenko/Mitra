@@ -52,13 +52,13 @@
                     <hr>
                     <c:if test="${not empty requestScope.messages}">
                         <c:forEach var="msg" items="${requestScope.messages}">
-                            <c:if test="${msg.getSender().getId() == sessionScope.USER.getId()}">
+                            <c:if test="${msg.getSender().getId() == sessionScope.USER_ID}">
                                 <div style="margin-left: 300px">
                                     <p>${msg.getMessage()}</p>
                                     <p>${msg.getTime().getHour()}:${msg.getTime().getMinute()}</p>
                                 </div>
                             </c:if>
-                            <c:if test="${msg.getSender().getId() != sessionScope.USER.getId()}">
+                            <c:if test="${msg.getSender().getId() != sessionScope.USER_ID}">
                                 <div>
                                     <p>${msg.getMessage()}</p>
                                     <p>${msg.getTime().getHour()}:${msg.getTime().getMinute()}</p>

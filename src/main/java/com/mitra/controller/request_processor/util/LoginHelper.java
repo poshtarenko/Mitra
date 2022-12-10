@@ -12,7 +12,7 @@ import java.util.Collections;
 public final class LoginHelper {
 
     public static void loginAndUpdateSessionAttrs(String email, String password, UserService userService,
-                                                     HttpServletRequest req) throws ValidationException {
+                                                  HttpServletRequest req) throws ValidationException {
         UserDto user = userService.find(email, password)
                 .orElseThrow(() -> new ValidationException(Collections.singletonList(
                         Error.of(

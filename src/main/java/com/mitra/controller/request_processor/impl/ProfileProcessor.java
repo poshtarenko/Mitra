@@ -5,7 +5,6 @@ import com.mitra.controller.UrlPath;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.LikeDto;
 import com.mitra.dto.ProfileDto;
-import com.mitra.dto.UserDto;
 import com.mitra.entity.Reaction;
 import com.mitra.service.ChatService;
 import com.mitra.service.ProfileLikeService;

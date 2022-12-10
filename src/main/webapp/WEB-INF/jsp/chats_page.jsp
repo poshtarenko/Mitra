@@ -40,17 +40,32 @@
                     <br>
                     <c:forEach var="chat" items="${requestScope.chats}">
                         <div style="display: inline-flex">
-                            <c:if test="${not empty chat.getSecondProfile().getPhotoPath()}">
-                                <img width="50" height="50"
-                                     src="${pageContext.request.contextPath}/app/images?path=${chat.getSecondProfile().getPhotoPath()}"/>
+                            <c:if test="${chat.getFirstProfile().getId() == sessionScope.USER_ID}">
+                                <c:if test="${not empty chat.getSecondProfile().getPhotoPath()}">
+                                    <img width="50" height="50"
+                                         src="${pageContext.request.contextPath}/app/images?path=${chat.getSecondProfile().getPhotoPath()}"/>
+                                </c:if>
+                                <c:if test="${empty chat.getSecondProfile().getPhotoPath()}">
+                                    <img width="50" height="50"
+                                         src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
+                                </c:if>
+                                <a href="${pageContext.request.contextPath}/app/chat?c=${chat.getId()}">
+                                        ${chat.getSecondProfile().getName()}
+                                </a>
                             </c:if>
-                            <c:if test="${empty chat.getSecondProfile().getPhotoPath()}">
-                                <img width="50" height="50"
-                                     src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
+                            <c:if test="${chat.getSecondProfile().getId() == sessionScope.USER_ID}">
+                                <c:if test="${not empty chat.getFirstProfile().getPhotoPath()}">
+                                    <img width="50" height="50"
+                                         src="${pageContext.request.contextPath}/app/images?path=${chat.getFirstProfile().getPhotoPath()}"/>
+                                </c:if>
+                                <c:if test="${empty chat.getFirstProfile().getPhotoPath()}">
+                                    <img width="50" height="50"
+                                         src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
+                                </c:if>
+                                <a href="${pageContext.request.contextPath}/app/chat?c=${chat.getId()}">
+                                        ${chat.getFirstProfile().getName()}
+                                </a>
                             </c:if>
-                            <a href="${pageContext.request.contextPath}/app/chat?c=${chat.getId()}">
-                                    ${chat.getSecondProfile().getName()}
-                            </a>
                         </div>
                         <br>
                     </c:forEach><br>

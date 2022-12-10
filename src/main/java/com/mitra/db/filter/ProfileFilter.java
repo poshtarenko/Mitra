@@ -1,6 +1,8 @@
 package com.mitra.db.filter;
 
-import com.mitra.entity.*;
+import com.mitra.entity.Gender;
+import com.mitra.entity.Instrument;
+import com.mitra.entity.Speciality;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

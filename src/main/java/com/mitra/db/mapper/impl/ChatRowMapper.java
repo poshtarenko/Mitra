@@ -1,12 +1,10 @@
 package com.mitra.db.mapper.impl;
 
 import com.mitra.db.mapper.RowMapper;
-import com.mitra.entity.*;
-import com.mitra.entity.dummy.DummyProfile;
+import com.mitra.entity.Chat;
+import com.mitra.entity.Profile;
 import com.mitra.entity.impl.ChatImpl;
-import com.mitra.entity.impl.LocationImpl;
 import com.mitra.entity.impl.ProfileImpl;
-import com.mitra.entity.impl.TrackImpl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

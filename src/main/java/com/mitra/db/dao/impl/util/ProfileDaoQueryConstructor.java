@@ -128,8 +128,7 @@ public final class ProfileDaoQueryConstructor {
     private static boolean appendClause(boolean whereClauseProvided, StringBuilder SQL) {
         if (whereClauseProvided) {
             SQL.append("AND ");
-        }
-        else {
+        } else {
             SQL.append("WHERE ");
         }
         return true;

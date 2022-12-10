@@ -1,8 +1,6 @@
 package com.mitra.db.dao;
 
-import com.mitra.dto.ChatDto;
 import com.mitra.entity.Chat;
-import com.mitra.entity.Message;
 
 import java.sql.Connection;
 import java.util.List;

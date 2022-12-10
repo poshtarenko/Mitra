@@ -2,7 +2,10 @@ package com.mitra.db.dao.impl;
 
 import com.mitra.db.Column;
 import com.mitra.db.Table;
-import com.mitra.db.dao.*;
+import com.mitra.db.dao.InstrumentDao;
+import com.mitra.db.dao.ProfileDao;
+import com.mitra.db.dao.SpecialityDao;
+import com.mitra.db.dao.TrackDao;
 import com.mitra.db.dao.impl.util.ProfileDaoQueryConstructor;
 import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.filter.ProfileFilter;

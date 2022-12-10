@@ -34,8 +34,7 @@ public class AuthorizedFilter implements Filter {
         if (notEnabledUrlsForAuthorized.contains(req.getRequestURI()) && userId != null) {
             if (userName == null) {
                 resp.sendRedirect(UrlPath.CREATE_PROFILE.getUrl());
-            }
-            else {
+            } else {
                 resp.sendRedirect(UrlPath.MY_PROFILE.getUrl());
             }
             return;

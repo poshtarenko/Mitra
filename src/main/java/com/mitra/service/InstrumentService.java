@@ -24,7 +24,7 @@ public interface InstrumentService {
     /**
      * Set instruments list to profile
      *
-     * @param profileId profile id
+     * @param profileId   profile id
      * @param instruments instruments list
      */
     void setInstrumentsToProfile(int profileId, List<InstrumentDto> instruments);

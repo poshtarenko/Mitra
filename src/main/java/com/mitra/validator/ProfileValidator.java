@@ -19,8 +19,8 @@ public class ProfileValidator {
                     "Вік може бути у межах від 5 до 100"));
     }
 
-    public Optional<Error> checkText(String name) {
-        if (name.length() < 500)
+    public Optional<Error> checkText(String text) {
+        if (text.length() < 500)
             return Optional.empty();
         else
             return Optional.of(Error.of("WRONG PROFILE TEXT",

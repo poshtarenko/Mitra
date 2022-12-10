@@ -1,6 +1,5 @@
 package com.mitra.service;
 
-import com.mitra.dto.ChatDto;
 import com.mitra.dto.MessageDto;
 
 import java.util.List;

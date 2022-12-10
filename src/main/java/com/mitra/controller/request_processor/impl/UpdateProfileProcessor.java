@@ -133,6 +133,7 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
         } catch (ValidationException e) {
             request.setAttribute("errors", e.getErrors());
             processGet(request, response);
+            return;
         }
 
         redirect(response, UrlPath.MY_PROFILE.getUrl());

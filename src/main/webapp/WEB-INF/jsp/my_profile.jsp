@@ -60,6 +60,7 @@
                 </p>
                 <p>${requestScope.profile.getText()}</p>
 
+                <p><b>Моя музика :</b>
                 <c:if test="${not empty requestScope.tracks}">
                     <c:forEach var="track" items="${requestScope.tracks}">
                         <p>${track.getName()} - ${track.getAuthor()}</p>

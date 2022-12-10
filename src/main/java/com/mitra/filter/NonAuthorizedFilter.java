@@ -36,8 +36,7 @@ public class NonAuthorizedFilter implements Filter {
         } else {
             if (userId == null) {
                 resp.sendRedirect(UrlPath.AUTHORIZATION.getUrl());
-            }
-            else if (userName == null && !req.getRequestURI().equals(UrlPath.CREATE_PROFILE.getUrl())) {
+            } else if (userName == null && !req.getRequestURI().equals(UrlPath.CREATE_PROFILE.getUrl())) {
                 resp.sendRedirect(UrlPath.CREATE_PROFILE.getUrl());
             } else {
                 filterChain.doFilter(servletRequest, servletResponse);

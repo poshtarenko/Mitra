@@ -3,8 +3,6 @@ package com.mitra.db.dao.impl;
 import com.mitra.db.Column;
 import com.mitra.db.Table;
 import com.mitra.db.dao.ChatDao;
-import com.mitra.db.dao.LocationDao;
-import com.mitra.db.dao.ProfileDao;
 import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Chat;
@@ -29,11 +27,11 @@ public class ChatDaoImpl implements ChatDao {
                     "JOIN %s p1 ON %s = %s " +
                     "JOIN %s p2 ON %s = %s ",
             Column.CHAT.ID,
-            "p1."+Column.PROFILE.ID.shortName(), "p1."+Column.PROFILE.NAME.shortName(), "p1."+Column.PROFILE.PHOTO_PATH.shortName(),
-            "p2."+Column.PROFILE.ID.shortName(), "p2."+Column.PROFILE.NAME.shortName(), "p2."+Column.PROFILE.PHOTO_PATH.shortName(),
+            "p1." + Column.PROFILE.ID.shortName(), "p1." + Column.PROFILE.NAME.shortName(), "p1." + Column.PROFILE.PHOTO_PATH.shortName(),
+            "p2." + Column.PROFILE.ID.shortName(), "p2." + Column.PROFILE.NAME.shortName(), "p2." + Column.PROFILE.PHOTO_PATH.shortName(),
             Table.CHAT,
-            Table.PROFILE, Column.CHAT.PROFILE1_ID, "p1."+Column.PROFILE.ID.shortName(),
-            Table.PROFILE, Column.CHAT.PROFILE2_ID, "p2."+Column.PROFILE.ID.shortName());
+            Table.PROFILE, Column.CHAT.PROFILE1_ID, "p1." + Column.PROFILE.ID.shortName(),
+            Table.PROFILE, Column.CHAT.PROFILE2_ID, "p2." + Column.PROFILE.ID.shortName());
 
     public static final String FIND_BY_PROFILE = FIND_ALL_SQL + String.format("WHERE %s = ? OR %s = ?",
             Column.CHAT.PROFILE1_ID, Column.CHAT.PROFILE2_ID);

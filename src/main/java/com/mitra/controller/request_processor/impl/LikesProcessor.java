@@ -3,7 +3,6 @@ package com.mitra.controller.request_processor.impl;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.dto.LikeDto;
-import com.mitra.dto.UserDto;
 import com.mitra.entity.Reaction;
 import com.mitra.service.ProfileLikeService;
 
@@ -45,7 +44,7 @@ public class LikesProcessor extends AbstractRequestProcessor {
         }
         int anotherUserId = Integer.parseInt(idParam);
 
-        int userId = ((UserDto) request.getSession().getAttribute(SessionAttributes.USER_ID.name())).getId();
+        int userId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
         if (type.equalsIgnoreCase("LIKE")) {
             profileLikeService.like(userId, anotherUserId);

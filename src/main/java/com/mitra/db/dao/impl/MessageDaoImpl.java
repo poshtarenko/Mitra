@@ -2,10 +2,10 @@ package com.mitra.db.dao.impl;
 
 import com.mitra.db.Column;
 import com.mitra.db.Table;
-import com.mitra.db.dao.*;
+import com.mitra.db.dao.MessageDao;
 import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.mapper.RowMapper;
-import com.mitra.entity.*;
+import com.mitra.entity.Message;
 import com.mitra.exception.DaoException;
 
 import java.sql.Connection;
