@@ -3,6 +3,7 @@ package com.mitra.controller.request_processor.impl;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.controller.request_processor.util.LocationHelper;
+import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.dto.LocationDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.entity.Gender;
@@ -42,16 +43,15 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
-        System.out.println(request.getParameter("name"));
-
-        LocationDto locationDto = LocationHelper.stringToLocationDto(request.getParameter("city"));
+        LocationDto locationDto = LocationHelper
+                .stringToLocationDto(ParameterHelper.getNecessaryParameter(request, "city"));
 
         ProfileDto profile = ProfileDto.builder()
                 .id(myId)
-                .name(request.getParameter("name"))
-                .age(Integer.valueOf(request.getParameter("age")))
-                .gender(Gender.valueOf(request.getParameter("gender")))
-                .text(request.getParameter("text"))
+                .name(ParameterHelper.getNecessaryParameter(request, "name"))
+                .age(Integer.valueOf(ParameterHelper.getNecessaryParameter(request, "age")))
+                .gender(Gender.valueOf(ParameterHelper.getNecessaryParameter(request, "gender")))
+                .text(ParameterHelper.getNecessaryParameter(request, "text"))
                 .location(locationDto)
                 .build();
 

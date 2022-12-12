@@ -5,24 +5,24 @@ import com.mitra.controller.UrlPath;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.LikeDto;
 import com.mitra.entity.Reaction;
+import com.mitra.exception.BadRequestException;
 import com.mitra.service.ChatService;
-import com.mitra.service.ProfileLikeService;
+import com.mitra.service.LikeService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 public class ChatsProcessor extends AbstractRequestProcessor {
 
     private final ChatService chatService;
-    private final ProfileLikeService profileLikeService;
+    private final LikeService likeService;
 
-    public ChatsProcessor(ChatService chatService, ProfileLikeService profileLikeService) {
+    public ChatsProcessor(ChatService chatService, LikeService likeService) {
         this.chatService = chatService;
-        this.profileLikeService = profileLikeService;
+        this.likeService = likeService;
     }
 
     @Override
@@ -38,8 +38,8 @@ public class ChatsProcessor extends AbstractRequestProcessor {
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
         int profileId = Integer.parseInt(request.getParameter("profileId"));
 
-        Optional<LikeDto> like = profileLikeService.getLike(myId, profileId);
-        if (like.isPresent() && like.get().getReaction() == Reaction.LIKE) {
+        LikeDto like = likeService.getLike(myId, profileId).orElseThrow(BadRequestException::new);
+        if (like.getReaction() == Reaction.LIKE) {
             int chatId = chatService.startChat(myId, profileId);
             redirect(response, UrlPath.CHAT.getUrl() + "?c=" + chatId);
             return;

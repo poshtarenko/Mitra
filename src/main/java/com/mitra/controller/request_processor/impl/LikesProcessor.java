@@ -4,7 +4,7 @@ import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.dto.LikeDto;
 import com.mitra.entity.Reaction;
-import com.mitra.service.ProfileLikeService;
+import com.mitra.service.LikeService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,21 +14,21 @@ import java.util.List;
 
 public class LikesProcessor extends AbstractRequestProcessor {
 
-    private final ProfileLikeService profileLikeService;
+    private final LikeService likeService;
 
-    public LikesProcessor(ProfileLikeService profileLikeService) {
-        this.profileLikeService = profileLikeService;
+    public LikesProcessor(LikeService likeService) {
+        this.likeService = likeService;
     }
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
-        List<LikeDto> likes = profileLikeService.getProfileLikes(myId);
+        List<LikeDto> likes = likeService.getProfileLikes(myId);
 
-        request.setAttribute("ownLikes", profileLikeService.getOwnWithoutResponseLikes(myId, likes));
-        request.setAttribute("waitingResponseLikes", profileLikeService.getWaitingResponseLikes(myId, likes));
-        request.setAttribute("mutualLikes", profileLikeService.getMutualLikes(myId, likes));
+        request.setAttribute("ownLikes", likeService.extractOwnWithoutResponse(myId, likes));
+        request.setAttribute("waitingResponseLikes", likeService.extractWaitingResponse(myId, likes));
+        request.setAttribute("mutualLikes", likeService.extractMutual(myId, likes));
 
         forward(request, response, UrlPath.LIKES.getJspFileName());
     }
@@ -47,15 +47,15 @@ public class LikesProcessor extends AbstractRequestProcessor {
         int userId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
         if (type.equalsIgnoreCase("LIKE")) {
-            profileLikeService.like(userId, anotherUserId);
+            likeService.like(userId, anotherUserId);
         } else if (type.equalsIgnoreCase("RESPONSE")) {
             String reaction = request.getParameter("reaction");
             if (reaction.equalsIgnoreCase("LIKE"))
-                profileLikeService.makeResponseOnLike(anotherUserId, userId, Reaction.LIKE);
+                likeService.makeResponseOnLike(anotherUserId, userId, Reaction.LIKE);
             if (reaction.equalsIgnoreCase("DISLIKE"))
-                profileLikeService.makeResponseOnLike(anotherUserId, userId, Reaction.DISLIKE);
+                likeService.makeResponseOnLike(anotherUserId, userId, Reaction.DISLIKE);
             if (reaction.equalsIgnoreCase("IGNORE"))
-                profileLikeService.makeResponseOnLike(anotherUserId, userId, Reaction.IGNORE);
+                likeService.makeResponseOnLike(anotherUserId, userId, Reaction.IGNORE);
         }
 
         String referer = request.getHeader("referer");

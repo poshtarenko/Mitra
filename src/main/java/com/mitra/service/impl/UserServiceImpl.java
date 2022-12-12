@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
         try (Connection connection = ConnectionManager.get()) {
             Optional<User> user = userDao.find(connection, id);
             return user.map(userDtoMapper::mapToDto);
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Find user by id is failed", e);
             return Optional.empty();
         }
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
             log.info("User logged in : {}", email);
             return user.map(userDtoMapper::mapToDto);
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Login failed", e);
             return Optional.empty();
         }
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
 
             log.info("User registered : email={}, id={}", email, createdUserId);
             return true;
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Registration failed", e);
             return false;
         }

@@ -8,6 +8,7 @@ import com.mitra.dto.InstrumentDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.SpecialityDto;
 import com.mitra.entity.Gender;
+import com.mitra.exception.PageNotFoundException;
 import com.mitra.exception.ValidationException;
 import com.mitra.service.InstrumentService;
 import com.mitra.service.LocationService;
@@ -44,17 +45,17 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
-        Optional<ProfileDto> profileOptional = profileService.find(myId);
 
-        if (!profileOptional.isPresent()) {
-            throw new RuntimeException("Profile not found");
-        }
-        ProfileDto profile = profileOptional.get();
+        ProfileDto profile = profileService.find(myId).orElseThrow(PageNotFoundException::new);
+
         String profileLocation = LocationHelper.locationDtoToString(profile.getLocation());
+
         String profileGender = profile.getGender().name();
+
         List<String> profileInstruments = profile.getInstruments().stream()
                 .map(InstrumentDto::getName)
                 .collect(Collectors.toList());
+
         List<String> profileSpecialities = profile.getSpecialities().stream()
                 .map(SpecialityDto::getName)
                 .collect(Collectors.toList());
@@ -114,7 +115,6 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
         InputStream photoInputStream = null;
         if (photoPart != null && photoPart.getSize() > 0)
             photoInputStream = photoPart.getInputStream();
-
 
         ProfileDto profileDto = ProfileDto.builder()
                 .id(myId)

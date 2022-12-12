@@ -5,6 +5,7 @@ import com.mitra.db.dao.LocationDao;
 import com.mitra.dto.LocationDto;
 import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Location;
+import com.mitra.exception.DaoException;
 import com.mitra.service.LocationService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,7 +32,7 @@ public class LocationServiceImpl implements LocationService {
             return locationDao.findAll(connection).stream()
                     .map(locationDtoMapper::mapToDto)
                     .collect(Collectors.toList());
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Getting all locations failed");
             return Collections.emptyList();
         }

@@ -2,12 +2,14 @@ package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
+import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.LikeDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.entity.Reaction;
+import com.mitra.exception.PageNotFoundException;
 import com.mitra.service.ChatService;
-import com.mitra.service.ProfileLikeService;
+import com.mitra.service.LikeService;
 import com.mitra.service.ProfileService;
 import com.mitra.service.TrackService;
 
@@ -20,13 +22,13 @@ import java.util.Optional;
 public class ProfileProcessor extends AbstractRequestProcessor {
 
     private final ProfileService profileService;
-    private final ProfileLikeService profileLikeService;
+    private final LikeService likeService;
     private final TrackService trackService;
     private final ChatService chatService;
 
-    public ProfileProcessor(ProfileService profileService, ProfileLikeService profileLikeService, TrackService trackService, ChatService chatService) {
+    public ProfileProcessor(ProfileService profileService, LikeService likeService, TrackService trackService, ChatService chatService) {
         this.profileService = profileService;
-        this.profileLikeService = profileLikeService;
+        this.likeService = likeService;
         this.trackService = trackService;
         this.chatService = chatService;
     }
@@ -35,21 +37,12 @@ public class ProfileProcessor extends AbstractRequestProcessor {
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
-        String idParam = request.getParameter("id");
-        if (idParam == null || idParam.equals("")) {
-            redirect(response, UrlPath.MY_PROFILE.getUrl());
-            return;
-        }
-        int profileId = Integer.parseInt(idParam);
+        int profileId = Integer.parseInt(ParameterHelper.getNecessaryParameter(request, "id"));
 
-        Optional<ProfileDto> profile = profileService.find(profileId);
-        if (!profile.isPresent()) {
-            redirect(response, UrlPath.MY_PROFILE.getUrl());
-            return;
-        }
+        ProfileDto profile = profileService.find(profileId).orElseThrow(PageNotFoundException::new);
 
-        Optional<LikeDto> myPossibleLike = profileLikeService.getLike(myId, profileId);
-        Optional<LikeDto> anotherPossibleLike = profileLikeService.getLike(profileId, myId);
+        Optional<LikeDto> myPossibleLike = likeService.getLike(myId, profileId);
+        Optional<LikeDto> anotherPossibleLike = likeService.getLike(profileId, myId);
 
         if (myPossibleLike.isPresent()) {
             LikeDto myLike = myPossibleLike.get();
@@ -77,7 +70,7 @@ public class ProfileProcessor extends AbstractRequestProcessor {
             request.setAttribute("enableToLike", "+");
         }
 
-        request.setAttribute("profile", profile.get());
+        request.setAttribute("profile", profile);
         request.setAttribute("tracks", trackService.getProfileMusic(profileId));
         forward(request, response, UrlPath.PROFILE.getJspFileName());
     }

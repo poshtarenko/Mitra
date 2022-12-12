@@ -6,7 +6,7 @@ import com.mitra.entity.Reaction;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProfileLikeService {
+public interface LikeService {
 
     /**
      * Put a like
@@ -40,7 +40,7 @@ public interface ProfileLikeService {
      * @param likes     list of likes
      * @return list of profile likes
      */
-    List<LikeDto> getOwnWithoutResponseLikes(int profileId, List<LikeDto> likes);
+    List<LikeDto> extractOwnWithoutResponse(int profileId, List<LikeDto> likes);
 
     /**
      * Extract likes another user is waiting our response
@@ -49,7 +49,7 @@ public interface ProfileLikeService {
      * @param likes     list of likes
      * @return list of profile likes
      */
-    List<LikeDto> getWaitingResponseLikes(int profileId, List<LikeDto> likes);
+    List<LikeDto> extractWaitingResponse(int profileId, List<LikeDto> likes);
 
     /**
      * Extract mutual likes
@@ -58,7 +58,7 @@ public interface ProfileLikeService {
      * @param likes     list of likes
      * @return list of profile likes
      */
-    List<LikeDto> getMutualLikes(int profileId, List<LikeDto> likes);
+    List<LikeDto> extractMutual(int profileId, List<LikeDto> likes);
 
     /**
      * Get like by sender and receiver

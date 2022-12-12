@@ -5,6 +5,7 @@ import com.mitra.db.dao.InstrumentDao;
 import com.mitra.dto.InstrumentDto;
 import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Instrument;
+import com.mitra.exception.DaoException;
 import com.mitra.service.InstrumentService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,7 +32,7 @@ public class InstrumentServiceImpl implements InstrumentService {
             return instrumentDao.findAll(connection).stream()
                     .map(instrumentDtoMapper::mapToDto)
                     .collect(Collectors.toList());
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Getting all instruments failed");
             return Collections.emptyList();
         }
@@ -43,7 +44,7 @@ public class InstrumentServiceImpl implements InstrumentService {
             return instrumentDao.getProfileInstruments(connection, profileId).stream()
                     .map(instrumentDtoMapper::mapToDto)
                     .collect(Collectors.toList());
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Getting all profile instruments failed");
             return Collections.emptyList();
         }
@@ -56,7 +57,7 @@ public class InstrumentServiceImpl implements InstrumentService {
                     .map(instrumentDtoMapper::mapToEntity)
                     .collect(Collectors.toList());
             instrumentDao.setProfileInstruments(connection, profileId, instrumentsToSave);
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Setting instruments to profile failed");
         }
     }

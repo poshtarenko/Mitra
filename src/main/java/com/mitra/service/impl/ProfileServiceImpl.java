@@ -46,7 +46,7 @@ public class ProfileServiceImpl implements ProfileService {
             checkProfileOrThrowException(profileDto);
             Profile profile = profileDtoMapper.mapToEntity(profileDto);
             return profileDao.save(connection, profile);
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Profile creating failed");
             return 0;
         }
@@ -58,7 +58,7 @@ public class ProfileServiceImpl implements ProfileService {
             return profileDao.findAll(connection, profileFilter, limit, offset).stream()
                     .map(profileDtoMapper::mapToDto)
                     .collect(Collectors.toList());
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Getting all profiles failed");
             return Collections.emptyList();
         }
@@ -68,7 +68,7 @@ public class ProfileServiceImpl implements ProfileService {
     public int getCount(ProfileFilter profileFilter) throws DaoException {
         try (Connection connection = ConnectionManager.get()) {
             return profileDao.getCount(connection, profileFilter);
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Getting count of profile matching filter failed");
             return 0;
         }
@@ -79,7 +79,7 @@ public class ProfileServiceImpl implements ProfileService {
         try (Connection connection = ConnectionManager.get()) {
             Optional<Profile> profile = profileDao.find(connection, id);
             return profile.map(profileDtoMapper::mapToDto);
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Find profile failed");
             return Optional.empty();
         }
@@ -88,8 +88,8 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public List<Integer> getAllIDs() {
         try (Connection connection = ConnectionManager.get()) {
-            return profileDao.getAllIds(connection);
-        } catch (SQLException e) {
+            return profileDao.getIdsForSwipeSearch(connection);
+        } catch (DaoException | SQLException e) {
             log.error("Getting all profile ids failed");
             return Collections.emptyList();
         }
@@ -116,7 +116,7 @@ public class ProfileServiceImpl implements ProfileService {
             }
 
             profileDao.update(connection, userId, profile);
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Profile update failed");
         }
     }

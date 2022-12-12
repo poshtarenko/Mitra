@@ -4,7 +4,7 @@ import com.mitra.controller.Cookies;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.UrlPath;
 import com.mitra.dto.ProfileDto;
-import com.mitra.service.ProfileLikeService;
+import com.mitra.service.LikeService;
 import com.mitra.service.ProfileService;
 import com.mitra.util.CookieHelper;
 
@@ -21,11 +21,11 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
     private static final char DELIMITER = 'x';
 
     private final ProfileService profileService;
-    private final ProfileLikeService profileLikeService;
+    private final LikeService likeService;
 
-    public SearchBySwipeProcessor(ProfileService profileService, ProfileLikeService profileLikeService) {
+    public SearchBySwipeProcessor(ProfileService profileService, LikeService likeService) {
         this.profileService = profileService;
-        this.profileLikeService = profileLikeService;
+        this.likeService = likeService;
     }
 
     @Override
@@ -65,8 +65,8 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
         updateProfileIdsCookie(response, profileIdsCookieValue);
 
         // skip profile if we already liked it or this user liked us
-        if (profileLikeService.getLike(myId, id).isPresent()
-                || profileLikeService.getLike(id, myId).isPresent()) {
+        if (likeService.getLike(myId, id).isPresent()
+                || likeService.getLike(id, myId).isPresent()) {
             redirect(response, UrlPath.SWIPE_SEARCH.getUrl());
             return;
         }

@@ -15,7 +15,7 @@ public class ServiceFactory {
     private final UserService userService;
     private final ProfileService profileService;
     private final TrackService trackService;
-    private final ProfileLikeService profileLikeService;
+    private final LikeService likeService;
     private final LocationService locationService;
     private final InstrumentService instrumentService;
     private final SpecialityService specialityService;
@@ -33,7 +33,7 @@ public class ServiceFactory {
         locationService = new LocationServiceImpl(daoFactory.getLocationDao(), dtoMapperFactory.getLocationDtoMapper());
         instrumentService = new InstrumentServiceImpl(daoFactory.getInstrumentDao(), dtoMapperFactory.getInstrumentDtoMapper());
         specialityService = new SpecialityServiceImpl(daoFactory.getSpecialityDao(), dtoMapperFactory.getSpecialityDtoMapper());
-        profileLikeService = new ProfileLikeServiceImpl(daoFactory.getLikeDao(), dtoMapperFactory.getLikeDtoMapper());
+        likeService = new LikeServiceImpl(daoFactory.getLikeDao(), dtoMapperFactory.getLikeDtoMapper());
         userService = new UserServiceImpl(daoFactory.getUserDao(), dtoMapperFactory.getUserDtoMapper(),
                 validatorFactory.getUserValidator(), EncryptorSHA512.getInstance());
         trackService = new TrackServiceImpl(dtoMapperFactory.getTrackDtoMapper(), daoFactory.getProfileDao(),
@@ -66,8 +66,8 @@ public class ServiceFactory {
         return specialityService;
     }
 
-    public ProfileLikeService getProfileLikeService() {
-        return profileLikeService;
+    public LikeService getProfileLikeService() {
+        return likeService;
     }
 
     public TrackService getTrackService() {

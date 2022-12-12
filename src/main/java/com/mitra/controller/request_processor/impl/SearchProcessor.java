@@ -51,7 +51,7 @@ public class SearchProcessor extends AbstractRequestProcessor {
         String name = null;
         if (ParameterHelper.parameterNotEmpty(request.getParameter("name"))) {
             name = request.getParameter("name");
-            request.setAttribute("selectedName", name);
+            request.setAttribute("selectedName", request.getParameter("name"));
         }
 
         Gender gender = null;

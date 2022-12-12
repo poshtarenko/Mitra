@@ -6,6 +6,8 @@ import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.MessageDto;
 import com.mitra.entity.dummy.DummyProfile;
+import com.mitra.exception.AccessDeniedException;
+import com.mitra.exception.PageNotFoundException;
 import com.mitra.service.ChatService;
 import com.mitra.service.MessageService;
 
@@ -15,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public class ChatProcessor extends AbstractRequestProcessor {
 
@@ -29,37 +30,46 @@ public class ChatProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ParameterHelper.redirectIfParameterIsEmpty(response, request.getParameter("c"), UrlPath.CHATS.getUrl());
-        int chatId = Integer.parseInt(request.getParameter("c"));
+        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
-        Optional<ChatDto> chatOptional = chatService.getChat(chatId);
-        if (chatOptional.isPresent()) {
-            ChatDto chat = chatOptional.get();
-            request.setAttribute("chat", chat);
-            List<MessageDto> chatMessages = messageService.getChatMessages(chatId);
-            request.setAttribute("messages", chatMessages);
-        }
+        int chatId = Integer.parseInt(ParameterHelper.getNecessaryParameter(request, "c"));
+
+        ChatDto chat = getChatAndCheckAccess(chatId, myId);
+
+        request.setAttribute("chat", chat);
+        List<MessageDto> chatMessages = messageService.getChatMessages(chatId);
+        request.setAttribute("messages", chatMessages);
+
         forward(request, response, UrlPath.CHAT.getJspFileName());
     }
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
-        int chatId = Integer.parseInt(request.getParameter("chatId"));
-        Optional<ChatDto> chat = chatService.getChat(chatId);
+        int chatId = Integer.parseInt(ParameterHelper.getNecessaryParameter(request, "chatId"));
 
-        if (chat.isPresent()) {
-            String msg = request.getParameter("msg");
-            MessageDto message = new MessageDto(
-                    0L,
-                    new DummyProfile(myId),
-                    chat.get(),
-                    msg,
-                    LocalDateTime.now(),
-                    false
-            );
-            messageService.sendMessage(message);
-        }
+        ChatDto chat = getChatAndCheckAccess(chatId, myId);
+
+        String msg = ParameterHelper.getNecessaryParameter(request, "msg");;
+        MessageDto message = new MessageDto(
+                0L,
+                new DummyProfile(myId),
+                chat,
+                msg,
+                LocalDateTime.now(),
+                false
+        );
+        messageService.sendMessage(message);
+
         redirect(response, UrlPath.CHAT.getUrl() + "?c=" + chatId);
+    }
+
+    private ChatDto getChatAndCheckAccess(int chatId, int userId) {
+        ChatDto chat = chatService.getChat(chatId).orElseThrow(PageNotFoundException::new);
+
+        if (!chat.getFirstProfile().getId().equals(userId) && !chat.getSecondProfile().getId().equals(userId))
+            throw new AccessDeniedException();
+
+        return chat;
     }
 }
