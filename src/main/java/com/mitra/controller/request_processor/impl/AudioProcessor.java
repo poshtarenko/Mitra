@@ -1,6 +1,7 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.cloud.CloudStorageProvider;
+import com.mitra.controller.request_processor.AbstractRequestProcessor;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;

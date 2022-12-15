@@ -1,4 +1,4 @@
-package com.mitra.controller.request_processor.impl;
+package com.mitra.controller.request_processor;
 
 import com.mitra.controller.request_processor.RequestProcessor;
 import com.mitra.util.PropertiesUtil;
@@ -8,26 +8,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-abstract class AbstractRequestProcessor implements RequestProcessor {
+public abstract class AbstractRequestProcessor implements RequestProcessor {
 
     public static final String JSP_PATH = PropertiesUtil.get("jsp.path");
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        methodNotAllowed(request, response, "GET");
+        methodNotAllowed(response, "GET");
     }
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        methodNotAllowed(request, response, "POST");
+        methodNotAllowed(response, "POST");
     }
 
     @Override
     public void processDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        methodNotAllowed(request, response, "DELETE");
+        methodNotAllowed(response, "DELETE");
     }
 
-    private void methodNotAllowed(HttpServletRequest request, HttpServletResponse response, String method) throws IOException {
+    private void methodNotAllowed(HttpServletResponse response, String method) throws IOException {
         String msg = "Method" + method + "is not supported";
         response.sendError(400, msg);
     }

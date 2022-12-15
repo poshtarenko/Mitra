@@ -1,6 +1,6 @@
 package com.mitra.dto;
 
-import com.mitra.entity.Message;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 
@@ -10,7 +10,15 @@ import java.util.List;
 @AllArgsConstructor
 public class ChatDto implements Dto {
     Integer id;
-    ProfileDto firstProfile;
-    ProfileDto secondProfile;
-    List<Message> messages;
+
+    @JsonIgnoreProperties({"age", "gender", "location", "text", "previewTrack",
+            "instruments", "gender", "specialities", "likes" })
+    ProfileDto myProfile;
+
+    @JsonIgnoreProperties({"age", "gender", "location", "text", "previewTrack",
+            "instruments", "gender", "specialities", "likes" })
+    ProfileDto friendProfile;
+
+    List<MessageDto> messages;
+
 }

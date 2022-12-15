@@ -22,8 +22,8 @@ public class DtoMapperFactory {
         instrumentDtoMapper = new InstrumentDtoMapper();
         specialityDtoMapper = new SpecialityDtoMapper();
         profileDtoMapper = new ProfileDtoMapper(locationDtoMapper, instrumentDtoMapper, specialityDtoMapper);
-        chatDtoMapper = new ChatDtoMapper(profileDtoMapper);
-        messageDtoMapper = new MessageDtoMapper(chatDtoMapper);
+        messageDtoMapper = new MessageDtoMapper(profileDtoMapper);
+        chatDtoMapper = new ChatDtoMapper(profileDtoMapper, messageDtoMapper);
         trackDtoMapper = new TrackDtoMapper(profileDtoMapper);
         likeDtoMapper = new LikeDtoMapper(profileDtoMapper);
         userDtoMapper = new UserDtoMapper(profileDtoMapper);

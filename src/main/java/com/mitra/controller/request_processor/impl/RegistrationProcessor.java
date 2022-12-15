@@ -1,6 +1,7 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.UrlPath;
+import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.controller.request_processor.util.LoginHelper;
 import com.mitra.exception.ValidationException;
 import com.mitra.service.UserService;
