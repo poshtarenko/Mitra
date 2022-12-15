@@ -50,8 +50,8 @@
                         </a>
                     </div>
                     <hr>
-                    <c:if test="${not empty requestScope.messages}">
-                        <c:forEach var="msg" items="${requestScope.messages}">
+                    <c:if test="${not empty requestScope.chat.getMessages()}">
+                        <c:forEach var="msg" items="${requestScope.chat.getMessages()}">
                             <c:if test="${msg.getSender().getId() == sessionScope.USER_ID}">
                                 <div style="margin-left: 300px">
                                     <p>${msg.getMessage()}</p>
@@ -66,7 +66,7 @@
                             </c:if>
                         </c:forEach>
                     </c:if>
-                    <c:if test="${empty requestScope.messages}">
+                    <c:if test="${empty requestScope.chat.getMessages()}">
                         <p>Повідомлень поки немає</p>
                     </c:if>
 

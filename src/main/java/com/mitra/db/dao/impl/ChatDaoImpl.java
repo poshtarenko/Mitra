@@ -3,6 +3,7 @@ package com.mitra.db.dao.impl;
 import com.mitra.db.Column;
 import com.mitra.db.Table;
 import com.mitra.db.dao.ChatDao;
+import com.mitra.db.dao.MessageDao;
 import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.mapper.RowMapper;
 import com.mitra.entity.Chat;
@@ -16,10 +17,12 @@ public class ChatDaoImpl implements ChatDao {
 
     private final RowMapper<Chat> chatRowMapper;
     private final QueryExecutor<Integer, Chat> queryExecutor;
+    private final MessageDao messageDao;
 
-    public ChatDaoImpl(RowMapper<Chat> chatRowMapper) {
+    public ChatDaoImpl(RowMapper<Chat> chatRowMapper, MessageDao messageDao) {
         this.chatRowMapper = chatRowMapper;
         this.queryExecutor = new QueryExecutor<>(chatRowMapper);
+        this.messageDao = messageDao;
     }
 
     public static final String FIND_ALL_SQL = String.format(
@@ -52,13 +55,17 @@ public class ChatDaoImpl implements ChatDao {
 
     @Override
     public Optional<Chat> find(Connection connection, Integer id) throws DaoException {
-        return queryExecutor.selectOne(connection, FIND_SQL, id);
+        Optional<Chat> chat = queryExecutor.selectOne(connection, FIND_SQL, id);
+        chat.ifPresent(c -> c.setMessages(messageDao.getChatMessages(connection, c.getId())));
+        return chat;
     }
 
     @Override
     public Optional<Chat> find(Connection connection, int firstProfileId, int secondProfileId) {
-        return queryExecutor.selectOne(connection, FIND_BY_PROFILES_SQL, firstProfileId, secondProfileId,
-                secondProfileId, firstProfileId);
+        Optional<Chat> chat = queryExecutor.selectOne(connection, FIND_BY_PROFILES_SQL,
+                firstProfileId, secondProfileId, secondProfileId, firstProfileId);
+        chat.ifPresent(c -> c.setMessages(messageDao.getChatMessages(connection, c.getId())));
+        return chat;
     }
 
     @Override

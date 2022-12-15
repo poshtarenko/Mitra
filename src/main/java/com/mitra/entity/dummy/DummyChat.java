@@ -30,6 +30,11 @@ public class DummyChat implements Chat {
     }
 
     @Override
+    public void setMessages(List<Message> messages) {
+        throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
+    }
+
+    @Override
     public void addMessage(Message message) {
         throw DummyEntityHelper.getUnsupportedOperationExceptionAndLog();
     }

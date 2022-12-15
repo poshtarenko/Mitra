@@ -8,15 +8,18 @@ import com.mitra.dto.MessageDto;
 import com.mitra.entity.dummy.DummyProfile;
 import com.mitra.service.ChatService;
 import com.mitra.service.MessageService;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public class ChatProcessor extends AbstractRequestProcessor {
 
     private final ChatService chatService;
@@ -36,8 +39,6 @@ public class ChatProcessor extends AbstractRequestProcessor {
         if (chatOptional.isPresent()) {
             ChatDto chat = chatOptional.get();
             request.setAttribute("chat", chat);
-            List<MessageDto> chatMessages = messageService.getChatMessages(chatId);
-            request.setAttribute("messages", chatMessages);
         }
         forward(request, response, UrlPath.CHAT.getJspFileName());
     }
@@ -49,11 +50,18 @@ public class ChatProcessor extends AbstractRequestProcessor {
         Optional<ChatDto> chat = chatService.getChat(chatId);
 
         if (chat.isPresent()) {
+            ChatDto chatDto = chat.get();
+            if (chatDto.getFirstProfile().getId() != myId && chatDto.getSecondProfile().getId() != myId) {
+                log.warn("Trying to write message in chat where user do not participate, userId={}, chat={}",
+                        myId, chatDto);
+                throw new AccessDeniedException("Trying to write message in chat where user do not participate");
+            }
+
             String msg = request.getParameter("msg");
             MessageDto message = new MessageDto(
                     0L,
                     new DummyProfile(myId),
-                    chat.get(),
+                    chatDto,
                     msg,
                     LocalDateTime.now(),
                     false

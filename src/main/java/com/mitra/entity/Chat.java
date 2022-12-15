@@ -5,6 +5,8 @@ import java.util.List;
 public interface Chat extends Identifiable<Integer> {
     List<Message> getMessages();
 
+    void setMessages(List<Message> messages);
+
     void addMessage(Message message);
 
     void removeMessage(Message message);

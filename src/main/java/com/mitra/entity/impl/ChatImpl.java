@@ -11,7 +11,7 @@ public class ChatImpl implements Chat {
     private Integer id;
     private Profile firstProfile;
     private Profile secondProfile;
-    private final List<Message> messages;
+    private List<Message> messages;
 
     public ChatImpl(Integer id, Profile firstProfile, Profile secondProfile, List<Message> messages) {
         this.id = id;
@@ -23,6 +23,11 @@ public class ChatImpl implements Chat {
     @Override
     public List<Message> getMessages() {
         return new ArrayList<>(messages);
+    }
+
+    @Override
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 
     @Override

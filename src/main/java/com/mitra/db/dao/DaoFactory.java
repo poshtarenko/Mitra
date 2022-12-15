@@ -20,8 +20,8 @@ public class DaoFactory {
     private DaoFactory() {
         RowMapperFactory rowMapperFactory = RowMapperFactory.getInstance();
 
-        chatDao = new ChatDaoImpl(rowMapperFactory.getChatRowMapper());
         messageDao = new MessageDaoImpl(rowMapperFactory.getMessageRowMapper());
+        chatDao = new ChatDaoImpl(rowMapperFactory.getChatRowMapper(), messageDao);
         likeDao = new LikeDaoImpl(rowMapperFactory.getLikeRowMapper());
         trackDao = new TrackDaoImpl(rowMapperFactory.getMusicRowMapper());
         locationDao = new LocationDaoImpl(rowMapperFactory.getLocationRowMapper());
