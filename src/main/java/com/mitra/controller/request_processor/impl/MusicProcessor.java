@@ -1,7 +1,7 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.dto.TrackDto;
 import com.mitra.service.TrackService;
@@ -26,7 +26,7 @@ public class MusicProcessor extends AbstractRequestProcessor {
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
         List<TrackDto> profileMusic = trackService.getProfileMusic(myId);
         request.setAttribute("tracks", profileMusic);
-        forward(request, response, UrlPath.MUSIC.getJspFileName());
+        forward(request, response, AppUrl.MUSIC.getJspFileName());
     }
 
     @Override
@@ -56,6 +56,6 @@ public class MusicProcessor extends AbstractRequestProcessor {
             trackService.setProfilePreviewTrack(profileId, trackId);
         }
 
-        redirect(response, UrlPath.MUSIC.getUrl());
+        redirect(response, AppUrl.MUSIC.getUrl());
     }
 }

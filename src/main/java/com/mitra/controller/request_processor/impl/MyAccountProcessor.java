@@ -1,7 +1,7 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.exception.ValidationException;
@@ -24,20 +24,20 @@ public class MyAccountProcessor extends AbstractRequestProcessor {
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
         request.setAttribute("user", userService.find(myId).get());
-        forward(request, response, UrlPath.MY_ACCOUNT.getJspFileName());
+        forward(request, response, AppUrl.MY_ACCOUNT.getJspFileName());
     }
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        if (ParameterHelper.redirectIfParameterIsEmpty(response, action, UrlPath.MY_ACCOUNT.getUrl()))
+        if (ParameterHelper.getNecessaryParameter(response, action, AppUrl.MY_ACCOUNT.getUrl()))
             return;
 
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
         if (action.equals("UPD_PASSWORD")) {
             String password = request.getParameter("password");
-            if (ParameterHelper.redirectIfParameterIsEmpty(response, password, UrlPath.MY_ACCOUNT.getUrl()))
+            if (ParameterHelper.getNecessaryParameter(response, password, AppUrl.MY_ACCOUNT.getUrl()))
                 return;
             try {
                 userService.changePassword(myId, password);
@@ -46,7 +46,7 @@ public class MyAccountProcessor extends AbstractRequestProcessor {
             }
         } else if (action.equals("UPD_EMAIL")) {
             String email = request.getParameter("email");
-            if (ParameterHelper.redirectIfParameterIsEmpty(response, email, UrlPath.MY_ACCOUNT.getUrl()))
+            if (ParameterHelper.getNecessaryParameter(response, email, AppUrl.MY_ACCOUNT.getUrl()))
                 return;
             try {
                 userService.changeEmail(myId, email);

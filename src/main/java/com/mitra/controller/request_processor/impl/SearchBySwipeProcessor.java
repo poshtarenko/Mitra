@@ -2,7 +2,7 @@ package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.Cookies;
 import com.mitra.controller.SessionAttributes;
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.dto.ProfileDto;
 import com.mitra.service.ProfileLikeService;
@@ -54,7 +54,7 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
 
         Optional<ProfileDto> profileOptional = profileService.find(id);
         if (!profileOptional.isPresent()) {
-            redirect(response, UrlPath.SWIPE_SEARCH.getUrl());
+            redirect(response, AppUrl.SWIPE_SEARCH.getUrl());
             return;
         }
 
@@ -68,11 +68,11 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
         // skip profile if we already liked it or this user liked us
         if (profileLikeService.getLike(myId, id).isPresent()
                 || profileLikeService.getLike(id, myId).isPresent()) {
-            redirect(response, UrlPath.SWIPE_SEARCH.getUrl());
+            redirect(response, AppUrl.SWIPE_SEARCH.getUrl());
             return;
         }
 
-        forward(request, response, UrlPath.SWIPE_SEARCH.getJspFileName());
+        forward(request, response, AppUrl.SWIPE_SEARCH.getJspFileName());
     }
 
     public String profileIdsToString(List<Integer> profileIds) {

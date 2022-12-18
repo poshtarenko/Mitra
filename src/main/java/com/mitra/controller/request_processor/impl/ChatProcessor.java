@@ -1,7 +1,7 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.dto.ChatDto;
@@ -32,7 +32,7 @@ public class ChatProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ParameterHelper.redirectIfParameterIsEmpty(response, request.getParameter("c"), UrlPath.CHATS.getUrl());
+        ParameterHelper.getNecessaryParameter(response, request.getParameter("c"), AppUrl.CHATS.getUrl());
         int chatId = Integer.parseInt(request.getParameter("c"));
 
         Optional<ChatDto> chatOptional = chatService.getChat(chatId);
@@ -40,7 +40,7 @@ public class ChatProcessor extends AbstractRequestProcessor {
             ChatDto chat = chatOptional.get();
             request.setAttribute("chat", chat);
         }
-        forward(request, response, UrlPath.CHAT.getJspFileName());
+        forward(request, response, AppUrl.CHAT.getJspFileName());
     }
 
     @Override
@@ -68,6 +68,6 @@ public class ChatProcessor extends AbstractRequestProcessor {
             );
             messageService.sendMessage(message);
         }
-        redirect(response, UrlPath.CHAT.getUrl() + "?c=" + chatId);
+        redirect(response, AppUrl.CHAT.getUrl() + "?c=" + chatId);
     }
 }

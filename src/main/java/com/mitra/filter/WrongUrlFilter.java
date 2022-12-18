@@ -1,6 +1,7 @@
 package com.mitra.filter;
 
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
+import com.mitra.controller.RestUrl;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -19,7 +20,8 @@ public class WrongUrlFilter implements Filter {
         enabledUrlStarts = new HashSet<>();
         enabledUrlStarts.add("/WEB-INF");
         enabledUrlStarts.add("/resources");
-        enabledUrlStarts.add(UrlPath.APP_PATH_PREFIX);
+        enabledUrlStarts.add(AppUrl.APP_PATH_PREFIX);
+        enabledUrlStarts.add(RestUrl.REST_PATH_PREFIX);
     }
 
     @Override
@@ -33,7 +35,7 @@ public class WrongUrlFilter implements Filter {
             }
         }
 
-        ((HttpServletResponse) servletResponse).sendRedirect(UrlPath.LANDING_PAGE.getUrl());
+        ((HttpServletResponse) servletResponse).sendRedirect(AppUrl.LANDING_PAGE.getUrl());
     }
 
     @Override

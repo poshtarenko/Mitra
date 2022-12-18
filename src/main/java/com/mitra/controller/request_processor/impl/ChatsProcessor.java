@@ -1,7 +1,7 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.LikeDto;
@@ -31,7 +31,7 @@ public class ChatsProcessor extends AbstractRequestProcessor {
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
         List<ChatDto> chats = chatService.getProfileChats(myId);
         request.setAttribute("chats", chats);
-        forward(request, response, UrlPath.CHATS.getJspFileName());
+        forward(request, response, AppUrl.CHATS.getJspFileName());
     }
 
     @Override
@@ -42,9 +42,9 @@ public class ChatsProcessor extends AbstractRequestProcessor {
         Optional<LikeDto> like = profileLikeService.getLike(myId, profileId);
         if (like.isPresent() && like.get().getReaction() == Reaction.LIKE) {
             int chatId = chatService.startChat(myId, profileId);
-            redirect(response, UrlPath.CHAT.getUrl() + "?c=" + chatId);
+            redirect(response, AppUrl.CHAT.getUrl() + "?c=" + chatId);
             return;
         }
-        redirect(response, UrlPath.CHATS.getUrl());
+        redirect(response, AppUrl.CHATS.getUrl());
     }
 }

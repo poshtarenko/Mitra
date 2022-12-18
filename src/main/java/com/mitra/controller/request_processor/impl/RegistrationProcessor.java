@@ -1,6 +1,6 @@
 package com.mitra.controller.request_processor.impl;
 
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.controller.request_processor.util.LoginHelper;
 import com.mitra.exception.ValidationException;
@@ -21,7 +21,7 @@ public class RegistrationProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        forward(request, response, UrlPath.REGISTRATION.getJspFileName());
+        forward(request, response, AppUrl.REGISTRATION.getJspFileName());
     }
 
     @Override
@@ -32,7 +32,7 @@ public class RegistrationProcessor extends AbstractRequestProcessor {
         try {
             userService.register(email, password);
             LoginHelper.loginAndUpdateSessionAttrs(email, password, userService, request);
-            redirect(response, UrlPath.CREATE_PROFILE.getUrl());
+            redirect(response, AppUrl.CREATE_PROFILE.getUrl());
         } catch (ValidationException e) {
             request.setAttribute("errors", e.getErrors());
             processGet(request, response);

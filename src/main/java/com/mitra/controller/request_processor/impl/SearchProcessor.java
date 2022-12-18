@@ -1,6 +1,6 @@
 package com.mitra.controller.request_processor.impl;
 
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.db.filter.ProfileFilter;
@@ -169,6 +169,6 @@ public class SearchProcessor extends AbstractRequestProcessor {
         specialitiesToJSP.removeAll(specialities);
         request.setAttribute("specialities", specialitiesToJSP);
 
-        forward(request, response, UrlPath.SEARCH.getJspFileName());
+        forward(request, response, AppUrl.SEARCH.getJspFileName());
     }
 }

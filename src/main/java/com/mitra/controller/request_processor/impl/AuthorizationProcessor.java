@@ -1,7 +1,7 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.controller.request_processor.util.LoginHelper;
 import com.mitra.controller.request_processor.util.ParameterHelper;
@@ -23,24 +23,24 @@ public class AuthorizationProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        forward(request, response, UrlPath.AUTHORIZATION.getJspFileName());
+        forward(request, response, AppUrl.AUTHORIZATION.getJspFileName());
     }
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getSession().getAttribute(SessionAttributes.USER_ID.name()) != null) {
-            redirect(response, UrlPath.MY_PROFILE.getUrl());
+            redirect(response, AppUrl.MY_PROFILE.getUrl());
             return;
         }
 
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        ParameterHelper.redirectIfParameterIsEmpty(response, email, UrlPath.AUTHORIZATION.getUrl());
-        ParameterHelper.redirectIfParameterIsEmpty(response, password, UrlPath.AUTHORIZATION.getUrl());
+        ParameterHelper.getNecessaryParameter(response, email, AppUrl.AUTHORIZATION.getUrl());
+        ParameterHelper.getNecessaryParameter(response, password, AppUrl.AUTHORIZATION.getUrl());
 
         try {
             LoginHelper.loginAndUpdateSessionAttrs(email, password, userService, request);
-            redirect(response, UrlPath.MY_PROFILE.getUrl());
+            redirect(response, AppUrl.MY_PROFILE.getUrl());
         } catch (ValidationException e) {
             request.setAttribute("errors", e.getErrors());
             processGet(request, response);

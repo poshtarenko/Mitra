@@ -1,7 +1,7 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 
 import javax.servlet.ServletException;
@@ -13,6 +13,6 @@ public class LogoutProcessor extends AbstractRequestProcessor {
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getSession().setAttribute(SessionAttributes.USER_ID.name(), null);
-        redirect(response, UrlPath.AUTHORIZATION.getUrl());
+        redirect(response, AppUrl.AUTHORIZATION.getUrl());
     }
 }

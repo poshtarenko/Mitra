@@ -1,7 +1,7 @@
 package com.mitra.filter;
 
 import com.mitra.controller.SessionAttributes;
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -11,15 +11,15 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-@WebFilter(UrlPath.APP_PATH_PREFIX + "/*")
+@WebFilter(AppUrl.APP_PATH_PREFIX + "/*")
 public class AuthorizedFilter implements Filter {
 
     private static final Set<String> notEnabledUrlsForAuthorized;
 
     static {
         notEnabledUrlsForAuthorized = new HashSet<>();
-        notEnabledUrlsForAuthorized.add(UrlPath.AUTHORIZATION.getUrl());
-        notEnabledUrlsForAuthorized.add(UrlPath.REGISTRATION.getUrl());
+        notEnabledUrlsForAuthorized.add(AppUrl.AUTHORIZATION.getUrl());
+        notEnabledUrlsForAuthorized.add(AppUrl.REGISTRATION.getUrl());
     }
 
     // if user is authorized and tries to move to auth/register page --> redirect him to his profile page
@@ -33,9 +33,9 @@ public class AuthorizedFilter implements Filter {
 
         if (notEnabledUrlsForAuthorized.contains(req.getRequestURI()) && userId != null) {
             if (userName == null) {
-                resp.sendRedirect(UrlPath.CREATE_PROFILE.getUrl());
+                resp.sendRedirect(AppUrl.CREATE_PROFILE.getUrl());
             } else {
-                resp.sendRedirect(UrlPath.MY_PROFILE.getUrl());
+                resp.sendRedirect(AppUrl.MY_PROFILE.getUrl());
             }
             return;
         }

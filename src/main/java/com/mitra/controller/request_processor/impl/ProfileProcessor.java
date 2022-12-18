@@ -1,7 +1,7 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.LikeDto;
@@ -38,14 +38,14 @@ public class ProfileProcessor extends AbstractRequestProcessor {
 
         String idParam = request.getParameter("id");
         if (idParam == null || idParam.equals("")) {
-            redirect(response, UrlPath.MY_PROFILE.getUrl());
+            redirect(response, AppUrl.MY_PROFILE.getUrl());
             return;
         }
         int profileId = Integer.parseInt(idParam);
 
         Optional<ProfileDto> profile = profileService.find(profileId);
         if (!profile.isPresent()) {
-            redirect(response, UrlPath.MY_PROFILE.getUrl());
+            redirect(response, AppUrl.MY_PROFILE.getUrl());
             return;
         }
 
@@ -80,6 +80,6 @@ public class ProfileProcessor extends AbstractRequestProcessor {
 
         request.setAttribute("profile", profile.get());
         request.setAttribute("tracks", trackService.getProfileMusic(profileId));
-        forward(request, response, UrlPath.PROFILE.getJspFileName());
+        forward(request, response, AppUrl.PROFILE.getJspFileName());
     }
 }

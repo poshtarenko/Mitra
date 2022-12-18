@@ -3,7 +3,7 @@ package com.mitra.controller;
 import java.util.Arrays;
 import java.util.Optional;
 
-public enum UrlPath {
+public enum AppUrl {
 
     LANDING_PAGE("", "landing"),
     AUTHORIZATION("/auth", "authorization"),
@@ -38,13 +38,13 @@ public enum UrlPath {
         return jspFileName;
     }
 
-    UrlPath(String urlPath, String jspFileName) {
+    AppUrl(String urlPath, String jspFileName) {
         this.jspFileName = jspFileName;
         this.urlPath = urlPath;
     }
 
-    public static Optional<UrlPath> getByPath(String path) {
-        return Arrays.stream(UrlPath.values())
+    public static Optional<AppUrl> getByPath(String path) {
+        return Arrays.stream(AppUrl.values())
                 .filter(urlPath -> urlPath.getPathWithServletPrefix().contains(path))
                 .findFirst();
     }

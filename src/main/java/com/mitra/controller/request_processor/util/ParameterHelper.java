@@ -1,5 +1,6 @@
 package com.mitra.controller.request_processor.util;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -9,7 +10,7 @@ public final class ParameterHelper {
         return parameterValue != null && !parameterValue.equals("");
     }
 
-    public static boolean redirectIfParameterIsEmpty(HttpServletResponse response, String parameterValue, String url) throws IOException {
+    public static boolean getNecessaryParameter(HttpServletRequest request, String parameterName) throws IOException {
         if (parameterNotEmpty(parameterValue)) {
             return false;
         }

@@ -1,7 +1,7 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.dto.LikeDto;
 import com.mitra.entity.Reaction;
@@ -31,7 +31,7 @@ public class LikesProcessor extends AbstractRequestProcessor {
         request.setAttribute("waitingResponseLikes", profileLikeService.getWaitingResponseLikes(myId, likes));
         request.setAttribute("mutualLikes", profileLikeService.getMutualLikes(myId, likes));
 
-        forward(request, response, UrlPath.LIKES.getJspFileName());
+        forward(request, response, AppUrl.LIKES.getJspFileName());
     }
 
     @Override
@@ -40,7 +40,7 @@ public class LikesProcessor extends AbstractRequestProcessor {
 
         String idParam = request.getParameter("id");
         if (idParam == null || idParam.equals("")) {
-            redirect(response, UrlPath.MY_PROFILE.getUrl());
+            redirect(response, AppUrl.MY_PROFILE.getUrl());
             return;
         }
         int anotherUserId = Integer.parseInt(idParam);

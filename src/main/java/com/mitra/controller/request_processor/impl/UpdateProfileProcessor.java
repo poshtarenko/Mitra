@@ -1,7 +1,7 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.controller.request_processor.util.LocationHelper;
 import com.mitra.controller.request_processor.util.ParameterHelper;
@@ -90,7 +90,7 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
         otherSpecialities.removeAll(profileSpecialities);
         request.setAttribute("otherSpecialities", otherSpecialities);
 
-        forward(request, response, UrlPath.UPDATE_PROFILE.getJspFileName());
+        forward(request, response, AppUrl.UPDATE_PROFILE.getJspFileName());
     }
 
     @Override
@@ -137,6 +137,6 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
             return;
         }
 
-        redirect(response, UrlPath.MY_PROFILE.getUrl());
+        redirect(response, AppUrl.MY_PROFILE.getUrl());
     }
 }

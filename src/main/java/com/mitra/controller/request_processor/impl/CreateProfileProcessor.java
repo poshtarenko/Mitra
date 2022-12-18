@@ -1,7 +1,7 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.controller.request_processor.util.LocationHelper;
 import com.mitra.dto.LocationDto;
@@ -36,7 +36,7 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
         request.setAttribute("cities", locations);
         request.setAttribute("genders", Gender.values());
 
-        forward(request, response, UrlPath.CREATE_PROFILE.getJspFileName());
+        forward(request, response, AppUrl.CREATE_PROFILE.getJspFileName());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
             processGet(request, response);
         }
 
-        redirect(response, UrlPath.MY_PROFILE.getUrl());
+        redirect(response, AppUrl.MY_PROFILE.getUrl());
     }
 
 }

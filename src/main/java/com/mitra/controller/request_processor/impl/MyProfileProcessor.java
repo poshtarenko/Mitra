@@ -1,7 +1,7 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.SessionAttributes;
-import com.mitra.controller.UrlPath;
+import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.dto.ProfileDto;
 import com.mitra.service.ProfileService;
@@ -30,6 +30,6 @@ public class MyProfileProcessor extends AbstractRequestProcessor {
                 .orElseThrow(() -> new ServletException("User without profile must be impossible, but it does not"));
         request.setAttribute("profile", profile);
         request.setAttribute("tracks", trackService.getProfileMusic(myId));
-        forward(request, response, UrlPath.MY_PROFILE.getJspFileName());
+        forward(request, response, AppUrl.MY_PROFILE.getJspFileName());
     }
 }

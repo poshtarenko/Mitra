@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet(UrlPath.APP_PATH_PREFIX + "/*")
+@WebServlet(AppUrl.APP_PATH_PREFIX + "/*")
 @MultipartConfig()
 public class DispatcherServlet extends HttpServlet {
 
@@ -38,7 +38,7 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     public RequestProcessor getProcessor(String requestUrl) {
-        Optional<UrlPath> urlPath = UrlPath.getByPath(requestUrl);
+        Optional<AppUrl> urlPath = AppUrl.getByPath(requestUrl);
 
         if (!urlPath.isPresent())
             throw new PageDontExistException("Path " + requestUrl + " is not represented");
