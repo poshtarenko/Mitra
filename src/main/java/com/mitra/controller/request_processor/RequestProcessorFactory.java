@@ -4,6 +4,7 @@ import com.mitra.cloud.CloudStorageProviderImpl;
 import com.mitra.cloud.GoogleDriveInitializer;
 import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.impl.*;
+import com.mitra.dto.mapper.DtoMapperFactory;
 import com.mitra.exception.PageDontExistException;
 import com.mitra.service.ServiceFactory;
 
@@ -18,6 +19,7 @@ public class RequestProcessorFactory {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         CloudStorageProviderImpl cloudStorageProvider =
                 new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService());
+        DtoMapperFactory dtoMapperFactory = DtoMapperFactory.getInstance();
 
         requestProcessorsMap.put(AppUrl.LANDING_PAGE,
                 new LandingProcessor());
@@ -43,7 +45,8 @@ public class RequestProcessorFactory {
                 new ChatsProcessor(serviceFactory.getChatService(), serviceFactory.getProfileLikeService()));
         requestProcessorsMap.put(AppUrl.SEARCH,
                 new SearchProcessor(serviceFactory.getLocationService(), serviceFactory.getInstrumentService(),
-                        serviceFactory.getSpecialityService(), serviceFactory.getProfileService()));
+                        serviceFactory.getSpecialityService(), serviceFactory.getProfileService(),
+                        dtoMapperFactory.getInstrumentDtoMapper(), dtoMapperFactory.getSpecialityDtoMapper()));
         requestProcessorsMap.put(AppUrl.SWIPE_SEARCH,
                 new SearchBySwipeProcessor(serviceFactory.getProfileService(), serviceFactory.getProfileLikeService()));
         requestProcessorsMap.put(AppUrl.MY_ACCOUNT,

@@ -46,7 +46,7 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
                 .id(myId)
                 .name(ParameterHelper.getNecessaryParameter(request, "name"))
                 .age(Integer.valueOf(ParameterHelper.getNecessaryParameter(request, "age")))
-                .gender(Gender.valueOf(ParameterHelper.getNecessaryParameter(request, "gender")))
+                .gender(Gender.getById(Integer.parseInt(request.getParameter("gender"))))
                 .text(ParameterHelper.getNecessaryParameter(request, "text"))
                 .location(location)
                 .build();

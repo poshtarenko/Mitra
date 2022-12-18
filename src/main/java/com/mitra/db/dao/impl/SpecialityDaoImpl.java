@@ -37,7 +37,7 @@ public class SpecialityDaoImpl implements SpecialityDao {
 
     public static final String SET_SPECIALITIES_TO_PROFILE = String.format(
             "INSERT INTO %s (SELECT ?, %s FROM %s WHERE %s IN (#L))",
-            Table.PROFILE_SPECIALITY, Column.SPECIALITY.ID, Table.SPECIALITY, Column.SPECIALITY.NAME);
+            Table.PROFILE_SPECIALITY, Column.SPECIALITY.ID, Table.SPECIALITY, Column.SPECIALITY.ID);
 
     public static final String DELETE_ALL_PROFILE_SPECIALITIES = String.format(
             "DELETE FROM %s WHERE %s = ?",
@@ -87,8 +87,8 @@ public class SpecialityDaoImpl implements SpecialityDao {
             String SQL = SET_SPECIALITIES_TO_PROFILE.replace("#L",
                     specialities.stream().map(v -> "?").collect(Collectors.joining(", ")));
 
-            List<String> specialityNames = specialities.stream().map(Speciality::getName).collect(Collectors.toList());
-            queryExecutor.update(connection, SQL, profileId, specialityNames);
+            List<Integer> specialityIds = specialities.stream().map(Speciality::getId).collect(Collectors.toList());
+            queryExecutor.update(connection, SQL, profileId, specialityIds);
         }
     }
 

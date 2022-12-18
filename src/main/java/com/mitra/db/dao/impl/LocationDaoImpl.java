@@ -23,11 +23,11 @@ public class LocationDaoImpl implements LocationDao {
     }
 
     public static final String FIND_ALL_SQL = String.format(
-            "SELECT %s, %s, %s, %s FROM %s " +
+            "SELECT %s, %s, %s, %s, %s FROM %s " +
                     "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s " +
                     "JOIN %s ON %s = %s",
-            Column.CITY.NAME, Column.LOCAL_AREA.NAME, Column.REGION.NAME, Column.COUNTRY.NAME, Table.CITY,
+            Column.CITY.ID, Column.CITY.NAME, Column.LOCAL_AREA.NAME, Column.REGION.NAME, Column.COUNTRY.NAME, Table.CITY,
             Table.LOCAL_AREA, Column.LOCAL_AREA.ID, Column.CITY.LOCAL_AREA_ID,
             Table.REGION, Column.REGION.ID, Column.LOCAL_AREA.ID,
             Table.COUNTRY, Column.COUNTRY.ID, Column.REGION.COUNTRY_ID);

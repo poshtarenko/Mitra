@@ -11,8 +11,6 @@ import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Gender;
 import com.mitra.entity.Instrument;
 import com.mitra.entity.Speciality;
-import com.mitra.entity.impl.InstrumentImpl;
-import com.mitra.entity.impl.SpecialityImpl;
 import com.mitra.service.InstrumentService;
 import com.mitra.service.LocationService;
 import com.mitra.service.ProfileService;
@@ -67,7 +65,7 @@ public class SearchProcessor extends AbstractRequestProcessor {
         List<Gender> genders = new ArrayList<>();
         Collections.addAll(genders, Gender.values());
         if (ParameterHelper.parameterNotEmpty(request.getParameter("gender"))) {
-            gender = Gender.valueOf(request.getParameter("gender"));
+            gender = Gender.getById(Integer.parseInt(request.getParameter("gender")));
             request.setAttribute("selectedGender", gender);
             genders.remove(gender);
         }
@@ -128,6 +126,7 @@ public class SearchProcessor extends AbstractRequestProcessor {
                 int id = Integer.parseInt(instrumentId);
                 for (InstrumentDto instrumentDto : instrumentsToJSP) {
                     if (instrumentDto.getId() == id) {
+                        instruments.add(instrumentDto);
                         instrumentsToRemove.add(instrumentDto);
                     }
                 }
@@ -146,12 +145,13 @@ public class SearchProcessor extends AbstractRequestProcessor {
                 int id = Integer.parseInt(specialityId);
                 for (SpecialityDto specialityDto : specialitiesToJSP) {
                     if (specialityDto.getId() == id) {
+                        specialities.add(specialityDto);
                         specialitiesToRemove.add(specialityDto);
                     }
                 }
             }
             request.setAttribute("selectedSpecialities", specialities);
-            specialitiesToJSP.removeAll(instrumentsToRemove);
+            specialitiesToJSP.removeAll(specialitiesToRemove);
         }
         request.setAttribute("specialities", specialitiesToJSP);
 

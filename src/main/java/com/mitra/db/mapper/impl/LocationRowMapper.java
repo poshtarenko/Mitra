@@ -12,10 +12,11 @@ public class LocationRowMapper implements RowMapper<Location> {
     @Override
     public Location map(ResultSet resultSet) throws SQLException {
         return LocationImpl.builder()
-                .city(resultSet.getString(1))
-                .localArea(resultSet.getString(2))
-                .region(resultSet.getString(3))
-                .country(resultSet.getString(4))
+                .id(resultSet.getInt(1))
+                .city(resultSet.getString(2))
+                .localArea(resultSet.getString(3))
+                .region(resultSet.getString(4))
+                .country(resultSet.getString(5))
                 .build();
     }
 }

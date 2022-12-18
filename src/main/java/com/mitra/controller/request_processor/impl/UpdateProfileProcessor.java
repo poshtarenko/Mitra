@@ -78,14 +78,14 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
         List<InstrumentDto> instruments;
         if (ParameterHelper.parameterNotEmpty(request.getParameter("instruments")))
             instruments = Arrays.stream(request.getParameterValues("instruments"))
-                    .map(val -> new InstrumentDto(0, val))
+                    .map(val -> new InstrumentDto(Integer.parseInt(val), null))
                     .collect(Collectors.toList());
         else instruments = Collections.emptyList();
 
         List<SpecialityDto> specialities;
         if (ParameterHelper.parameterNotEmpty(request.getParameter("specialities")))
             specialities = Arrays.stream(request.getParameterValues("specialities"))
-                    .map(val -> new SpecialityDto(0, val))
+                    .map(val -> new SpecialityDto(Integer.parseInt(val), null))
                     .collect(Collectors.toList());
         else specialities = Collections.emptyList();
 
@@ -98,7 +98,7 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
                 .id(myId)
                 .name(request.getParameter("name"))
                 .age(Integer.valueOf(request.getParameter("age")))
-                .gender(Gender.valueOf(request.getParameter("gender")))
+                .gender(Gender.getById(Integer.parseInt(request.getParameter("gender"))))
                 .text(request.getParameter("text"))
                 .location(LocationDto.builder()
                         .id(Integer.parseInt(request.getParameter("location")))

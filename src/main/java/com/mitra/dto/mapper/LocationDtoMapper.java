@@ -8,6 +8,7 @@ public class LocationDtoMapper implements DtoMapper<LocationDto, Location> {
     @Override
     public Location mapToEntity(LocationDto dto) {
         return LocationImpl.builder()
+                .id(dto.getId())
                 .city(dto.getCity())
                 .localArea(dto.getLocalArea())
                 .region(dto.getRegion())
@@ -18,6 +19,7 @@ public class LocationDtoMapper implements DtoMapper<LocationDto, Location> {
     @Override
     public LocationDto mapToDto(Location entity) {
         return LocationDto.builder()
+                .id(entity.getId())
                 .city(entity.getCity())
                 .localArea(entity.getLocalArea())
                 .region(entity.getRegion())

@@ -104,10 +104,10 @@ public final class ProfileDaoQueryConstructor {
         if (instrumentsList != null) {
             for (Instrument instrument : instrumentsList) {
                 whereClauseProvided = appendClause(whereClauseProvided, SQL);
-                SQL.append(String.format("%s IN (SELECT %s FROM %s JOIN %s ON %s = %s WHERE %s = '%s') ",
+                SQL.append(String.format("%s IN (SELECT %s FROM %s JOIN %s ON %s = %s WHERE %s = %s) ",
                         Column.PROFILE.ID, Column.PROFILE_INSTRUMENT.PROFILE_ID, Table.PROFILE_INSTRUMENT,
                         Table.INSTRUMENT, Column.INSTRUMENT.ID, Column.PROFILE_INSTRUMENT.INSTRUMENT_ID,
-                        Column.INSTRUMENT.NAME, instrument.getName()));
+                        Column.INSTRUMENT.ID, instrument.getId()));
             }
         }
 
@@ -115,10 +115,10 @@ public final class ProfileDaoQueryConstructor {
         if (specialityList != null) {
             for (Speciality speciality : specialityList) {
                 whereClauseProvided = appendClause(whereClauseProvided, SQL);
-                SQL.append(String.format("%s IN (SELECT %s FROM %s JOIN %s ON %s = %s WHERE %s = '%s') ",
+                SQL.append(String.format("%s IN (SELECT %s FROM %s JOIN %s ON %s = %s WHERE %s = %s) ",
                         Column.PROFILE.ID, Column.PROFILE_SPECIALITY.PROFILE_ID, Table.PROFILE_SPECIALITY,
                         Table.SPECIALITY, Column.SPECIALITY.ID, Column.PROFILE_SPECIALITY.SPECIALITY_ID,
-                        Column.SPECIALITY.NAME, speciality.getName()));
+                        Column.SPECIALITY.ID, speciality.getId()));
             }
         }
 

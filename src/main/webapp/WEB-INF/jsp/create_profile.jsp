@@ -60,7 +60,7 @@
                                 <select name="gender" class="selectpicker w-100" aria-label="Default select example"
                                         title="Виберіть стать">
                                     <c:forEach var="gender" items="${requestScope.genders}">
-                                        <option data-tokens="${gender}" value="${gender}">${gender}</option>
+                                        <option data-tokens="${gender.getId()}" value="${gender.getId()}">${gender.name()}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -76,8 +76,8 @@
                             <div id="location-input-box" class="inpt display-none">
                                 <select name="city" class="selectpicker w-100" data-live-search="true"
                                         title="Виберіть місто">
-                                    <c:forEach var="city" items="${requestScope.cities}">
-                                        <option data-tokens="${city}" value="${city}">${city}</option>
+                                    <c:forEach var="location" items="${requestScope.locations}">
+                                        <option data-tokens="${location.getId()}" value="${location.getId()}">${location.getCity()}</option>
                                     </c:forEach>
                                 </select>
                             </div>

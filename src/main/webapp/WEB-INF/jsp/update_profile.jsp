@@ -51,40 +51,6 @@
                         <div class="nameUser">${requestScope.profile.getName()}</div>
 
                         <div class="block" id="imageBlock">
-                            <!-- <h1 class="description">Аватар</h1> -->
-                            
-                            <!-- <div class="preview">
-
-                                <img src="Images/fox.jpg" alt="" id="image-preview">
-
-
-                            </div> -->
-
-                            <!-- <div id="carouselExampleIndicators" class="carousel slide w-50" style="height: 500px !important;" data-ride="carousel">
-                                <ol class="carousel-indicators">
-                                  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                                  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                                  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                                </ol>
-                                <div class="carousel-inner" style=" height: 500px !important;">
-                                  <div class="carousel-item active">
-                                    <img class="d-block w-100" src="Images/Red_fox.jpg" alt="First slide" id="image-preview">
-                                  </div>
-                                  
-                                </div>
-                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                  <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                  <span class="sr-only">Next</span>
-                                </a>
-                              </div> -->
-
-
-                              <!-- <img alt="..." src="Images/Red_fox.jpg" class="img-thumbnail" id="image-preview"> -->
-
 
                             <c:if test="${not empty requestScope.profile.getPhotoPath()}">
                                 <img class="rounded img-rounded" alt="..." id="image-preview" src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
@@ -92,14 +58,8 @@
                             <c:if test="${empty requestScope.profile.getPhotoPath()}">
                                 <img class="rounded img-rounded" alt="..." id="image-preview" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                             </c:if><br>
-
-
-
                            
                             <input type="file" name="photo" onchange="showPreview(event)" class="form-control form-control-lg" style="font-size: 18px; width: 747px;" id="customFile" />
-
-                            
-
                         </div>
 
 
@@ -112,117 +72,76 @@
                             <div class="form-group">
                                 <input type="text" class="form-control form-control-lg" style="font-size: 18px; width: 747px;" id="exampleInputEmail1" placeholder="Введіть ім'я"
                                        name="name" value="${requestScope.profile.getName()}">
-                                <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
-                              </div>
+                         </div>
 
                         </div>
 
 
                         <div class="block" id="ageBlock">
-
                             <h1 class="description">Вік</h1>
-
                             <div class="form-group">
                                 <input type="number" class="form-control form-control-lg raz" style="font-size: 18px; width: 747px;" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Введіть вік"
                                        name="age" value="${requestScope.profile.getAge()}">
-                                <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
                               </div>
-
                         </div>
 
 
                         
                         <div class="block" id="ageBlock">
-
                             <h1 class="description">Стать</h1>
-
                             <select name="gender" class="selectpicker" data-width="747px"  style="font-size: 18px;" aria-label="Default select example"
                                         title="Виберіть стать">
-                                    <option data-tokens="${requestScope.profileGender}" value="${requestScope.profileGender}" selected>${requestScope.profileGender}</option>
+                                    <option data-tokens="${requestScope.profile.getGender().getId()}" value="${requestScope.profile.getGender().getId()}" selected>${requestScope.profile.getGender().name()}</option>
                                     <c:forEach var="gender" items="${requestScope.otherGenders}">
-                                        <option data-tokens="${gender}" value="${gender}">${gender}</option>
+                                        <option data-tokens="${gender.getId()}" value="${gender.getId()}">${gender.name()}</option>
                                     </c:forEach>
                                 </select>
 
                         </div>
-
-
-
-
-        
-
-
-
-
-
 
 
                         <div class="block" id="textBlock">
-
                             <h1 class="description">Текст анкети</h1>
-
                             <textarea name="text" class="form-control form-control-lg textArea"  style="font-size: 18px; width: 747px;" id="exampleFormControlTextarea1">${requestScope.profile.getText()}</textarea>
-
-
                         </div>
                         
-                       
-
 
                         <div class="block" id="cityBlock">
-
                             <h1 class="description">Місто</h1>
-
                                 <select name="location" class="selectpicker" data-width="747px" data-live-search="true"
                                         title="Виберіть місто">
-                                    <c:forEach var="city" items="${requestScope.cities}">
-                                        <option data-tokens="${city}" value="${city}">${city}</option>
-                                    </c:forEach>
-                                    <option data-tokens="${requestScope.profileLocation}" value="${requestScope.profileLocation}" selected>${requestScope.profileLocation}</option>
+                                    <option data-tokens="${requestScope.profile.getLocation().getId()}" value="${requestScope.profile.getLocation().getId()}" selected>${requestScope.profile.getLocation().getCity()}</option>
                                     <c:forEach var="location" items="${requestScope.otherLocations}">
-                                        <option data-tokens="${location}" value="${location}">${location}</option>
+                                        <option data-tokens="${location.getId()}" value="${location.getId()}">${location.getCity()}</option>
                                     </c:forEach>
                                 </select>
-
                         </div>
-
-                    
 
 
                         <div class="block" id="instrumentsBlock">
-
                             <h1 class="description">Інструменти</h1>
-
                             <select name="instruments" class="selectpicker" data-width="747px" multiple data-live-search="true"
                                         title="Виберіть інструменти">
-                                <c:forEach var="instrument" items="${requestScope.profileInstruments}">
-                                    <option data-tokens="${instrument}" value="${instrument}" selected>${instrument}</option>
+                                <c:forEach var="instrument" items="${requestScope.profile.getInstruments()}">
+                                    <option data-tokens="${instrument.getId()}" value="${instrument.getId()}" selected>${instrument.getName()}</option>
                                 </c:forEach>
                                 <c:forEach var="instrument" items="${requestScope.otherInstruments}">
-                                    <option data-tokens="${instrument}" value="${instrument}">${instrument}</option>
+                                    <option data-tokens="${instrument.getId()}" value="${instrument.getId()}">${instrument.getName()}</option>
                                 </c:forEach><br>
                                 </select>
-                              
-                              
-
                         </div>
 
                         <div class="block" id="specialitiesBlock">
-
                             <h1 class="description">Мої спеціальності</h1>
-
                             <select name="specialities" id="specialty" class="selectpicker" data-width="747px" multiple data-live-search="true"
                                         title="Виберіть спеціальності">
-                                <c:forEach var="speciality" items="${requestScope.profileSpecialities}">
-                                    <option data-tokens="${speciality}" value="${speciality}" selected>${speciality}</option>
+                                <c:forEach var="speciality" items="${requestScope.profile.getSpecialities()}">
+                                    <option data-tokens="${speciality.getId()}" value="${speciality.getId()}" selected>${speciality.getName()}</option>
                                 </c:forEach>
                                 <c:forEach var="speciality" items="${requestScope.otherSpecialities}">
-                                    <option data-tokens="${speciality}" value="${speciality}">${speciality}</option>
+                                    <option data-tokens="${speciality.getId()}" value="${speciality.getId()}">${speciality.getName()}</option>
                                 </c:forEach><br>
                                 </select>
-                              
-                              
-
                         </div>
 
 
@@ -235,16 +154,9 @@
                 </main>  
 
 
-                  
-
             </div>
             
 
-           
-
-            
-
-        <!-- </div> -->
     </div>
 
     

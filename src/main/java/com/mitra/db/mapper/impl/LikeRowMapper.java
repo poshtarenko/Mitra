@@ -13,46 +13,46 @@ public class LikeRowMapper implements RowMapper<Like> {
     @Override
     public Like map(ResultSet resultSet) throws SQLException {
         Location senderLocation = LocationImpl.builder()
-                .id(resultSet.getInt(10))
-                .city(resultSet.getString(11))
-                .localArea(resultSet.getString(12))
-                .region(resultSet.getString(13))
-                .country(resultSet.getString(14))
+                .id(resultSet.getInt(11))
+                .city(resultSet.getString(12))
+                .localArea(resultSet.getString(13))
+                .region(resultSet.getString(14))
+                .country(resultSet.getString(15))
                 .build();
 
         Profile sender = ProfileImpl.builder()
-                .id(resultSet.getInt(4))
-                .name(resultSet.getString(5))
-                .age(resultSet.getInt(6))
-                .gender(Gender.valueOf(resultSet.getString(7)))
-                .text(resultSet.getString(8))
-                .photoPath(resultSet.getString(9))
+                .id(resultSet.getInt(5))
+                .name(resultSet.getString(6))
+                .age(resultSet.getInt(7))
+                .gender(Gender.valueOf(resultSet.getString(8)))
+                .text(resultSet.getString(9))
+                .photoPath(resultSet.getString(10))
                 .location(senderLocation)
                 .build();
 
         Location receiverLocation = LocationImpl.builder()
-                .id(resultSet.getInt(21))
-                .city(resultSet.getString(22))
-                .localArea(resultSet.getString(23))
-                .region(resultSet.getString(24))
-                .country(resultSet.getString(25))
+                .id(resultSet.getInt(22))
+                .city(resultSet.getString(23))
+                .localArea(resultSet.getString(24))
+                .region(resultSet.getString(25))
+                .country(resultSet.getString(26))
                 .build();
 
         Profile receiver = ProfileImpl.builder()
-                .id(resultSet.getInt(15))
-                .name(resultSet.getString(16))
-                .age(resultSet.getInt(17))
-                .gender(Gender.valueOf(resultSet.getString(18)))
-                .text(resultSet.getString(19))
-                .photoPath(resultSet.getString(20))
+                .id(resultSet.getInt(16))
+                .name(resultSet.getString(17))
+                .age(resultSet.getInt(18))
+                .gender(Gender.valueOf(resultSet.getString(19)))
+                .text(resultSet.getString(20))
+                .photoPath(resultSet.getString(21))
                 .location(receiverLocation)
                 .build();
 
         return new LikeImpl(
-                0,
+                resultSet.getInt(1),
                 sender,
                 receiver,
-                Reaction.getReactionByCode(resultSet.getInt(3))
+                Reaction.getReactionByCode(resultSet.getInt(4))
         );
     }
 }

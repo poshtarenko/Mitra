@@ -40,30 +40,30 @@
                     <br>
                     <c:forEach var="chat" items="${requestScope.chats}">
                         <div style="display: inline-flex">
-                            <c:if test="${chat.getFirstProfile().getId() == sessionScope.USER_ID}">
-                                <c:if test="${not empty chat.getSecondProfile().getPhotoPath()}">
+                            <c:if test="${chat.getMyProfile().getId() == sessionScope.USER_ID}">
+                                <c:if test="${not empty chat.getFriendProfile().getPhotoPath()}">
                                     <img width="50" height="50"
-                                         src="${pageContext.request.contextPath}/app/images?path=${chat.getSecondProfile().getPhotoPath()}"/>
+                                         src="${pageContext.request.contextPath}/app/images?path=${chat.getFriendProfile().getPhotoPath()}"/>
                                 </c:if>
-                                <c:if test="${empty chat.getSecondProfile().getPhotoPath()}">
+                                <c:if test="${empty chat.getFriendProfile().getPhotoPath()}">
                                     <img width="50" height="50"
                                          src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                                 </c:if>
                                 <a href="${pageContext.request.contextPath}/app/chat?c=${chat.getId()}">
-                                        ${chat.getSecondProfile().getName()}
+                                        ${chat.getFriendProfile().getName()}
                                 </a>
                             </c:if>
-                            <c:if test="${chat.getSecondProfile().getId() == sessionScope.USER_ID}">
-                                <c:if test="${not empty chat.getFirstProfile().getPhotoPath()}">
+                            <c:if test="${chat.getFriendProfile().getId() == sessionScope.USER_ID}">
+                                <c:if test="${not empty chat.getMyProfile().getPhotoPath()}">
                                     <img width="50" height="50"
-                                         src="${pageContext.request.contextPath}/app/images?path=${chat.getFirstProfile().getPhotoPath()}"/>
+                                         src="${pageContext.request.contextPath}/app/images?path=${chat.getMyProfile().getPhotoPath()}"/>
                                 </c:if>
-                                <c:if test="${empty chat.getFirstProfile().getPhotoPath()}">
+                                <c:if test="${empty chat.getMyProfile().getPhotoPath()}">
                                     <img width="50" height="50"
                                          src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                                 </c:if>
                                 <a href="${pageContext.request.contextPath}/app/chat?c=${chat.getId()}">
-                                        ${chat.getFirstProfile().getName()}
+                                        ${chat.getMyProfile().getName()}
                                 </a>
                             </c:if>
                         </div>

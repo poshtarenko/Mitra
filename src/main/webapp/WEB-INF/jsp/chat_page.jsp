@@ -37,16 +37,16 @@
                 <br>
                 <c:if test="${not empty requestScope.chat}">
                     <div style="display: inline-flex">
-                        <c:if test="${not empty requestScope.chat.getSecondProfile().getPhotoPath()}">
+                        <c:if test="${not empty requestScope.chat.getFriendProfile().getPhotoPath()}">
                             <img width="50" height="50"
-                                 src="${pageContext.request.contextPath}/app/images?path=${requestScope.chat.getSecondProfile().getPhotoPath()}"/>
+                                 src="${pageContext.request.contextPath}/app/images?path=${requestScope.chat.getFriendProfile().getPhotoPath()}"/>
                         </c:if>
-                        <c:if test="${empty requestScope.chat.getSecondProfile().getPhotoPath()}">
+                        <c:if test="${empty requestScope.chat.getFriendProfile().getPhotoPath()}">
                             <img width="50" height="50"
                                  src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                         </c:if>
                         <a href="${pageContext.request.contextPath}/app/chat?c=${requestScope.chat.getId()}">
-                                ${requestScope.chat.getSecondProfile().getName()}
+                                ${requestScope.chat.getFriendProfile().getName()}
                         </a>
                     </div>
                     <hr>

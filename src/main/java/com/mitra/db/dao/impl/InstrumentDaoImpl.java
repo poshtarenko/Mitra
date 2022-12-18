@@ -38,7 +38,7 @@ public class InstrumentDaoImpl implements InstrumentDao {
     // tip : INSERT INTO profile_instrument (SELECT 15, instrument.id FROM instrument WHERE name IN ('Guitar', 'Drums'));
     public static final String SET_INSTRUMENTS_TO_PROFILE = String.format(
             "INSERT INTO %s (SELECT ?, %s FROM %s WHERE %s IN (#L))",
-            Table.PROFILE_INSTRUMENT, Column.INSTRUMENT.ID, Table.INSTRUMENT, Column.INSTRUMENT.NAME);
+            Table.PROFILE_INSTRUMENT, Column.INSTRUMENT.ID, Table.INSTRUMENT, Column.INSTRUMENT.ID);
 
     public static final String DELETE_ALL_PROFILE_INSTRUMENTS = String.format(
             "DELETE FROM %s WHERE %s = ?",
@@ -88,8 +88,8 @@ public class InstrumentDaoImpl implements InstrumentDao {
             String SQL = SET_INSTRUMENTS_TO_PROFILE.replace("#L",
                     instruments.stream().map(v -> "?").collect(Collectors.joining(", ")));
 
-            List<String> instrumentNames = instruments.stream().map(Instrument::getName).collect(Collectors.toList());
-            queryExecutor.update(connection, SQL, profileId, instrumentNames);
+            List<Integer> instrumentIds = instruments.stream().map(Instrument::getId).collect(Collectors.toList());
+            queryExecutor.update(connection, SQL, profileId, instrumentIds);
         }
     }
 

@@ -40,9 +40,9 @@
 
                     <label for="gender">Стать</label>
                     <select name="gender" id="gender">
-                        <option value="${requestScope.selectedGender}" selected></option>
-                        <c:forEach var="speciality" items="${requestScope.genders}">
-                            <option value="${speciality}">${speciality}</option>
+                        <option data-tokens="${requestScope.selectedGender.getId()}" value="${requestScope.selectedGender.getId()}" selected>${requestScope.selectedGender.name()}</option>
+                        <c:forEach var="gender" items="${requestScope.genders}">
+                            <option data-tokens="${gender.getId()}" value="${gender.getId()}">${gender.name()}</option>
                         </c:forEach>
                     </select><br>
 
@@ -80,20 +80,20 @@
                     <label for="instruments">Інструменти</label>
                     <select name="instruments" id="instruments" multiple>
                         <c:forEach var="instrument" items="${requestScope.selectedInstruments}">
-                            <option value="${instrument}" selected>${instrument}</option>
+                            <option data-tokens="${instrument.getId()}" value="${instrument.getId()}" selected>${instrument.getName()}</option>
                         </c:forEach>
                         <c:forEach var="instrument" items="${requestScope.instruments}">
-                            <option value="${instrument}">${instrument}</option>
+                            <option data-tokens="${instrument.getId()}" value="${instrument.getId()}">${instrument.getName()}</option>
                         </c:forEach>
                     </select>
 
                     <label for="specialities">Спеціальності</label>
                     <select name="specialities" id="specialities" multiple>
                         <c:forEach var="speciality" items="${requestScope.selectedSpecialities}">
-                            <option value="${speciality}" selected>${speciality}</option>
+                            <option data-tokens="${speciality.getId()}" value="${speciality.getId()}" selected>${speciality.getName()}</option>
                         </c:forEach>
                         <c:forEach var="speciality" items="${requestScope.specialities}">
-                            <option value="${speciality}">${speciality}</option>
+                            <option data-tokens="${speciality.getId()}" value="${speciality.getId()}">${speciality.getName()}</option>
                         </c:forEach>
                     </select><br>
 
