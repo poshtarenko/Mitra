@@ -4,6 +4,7 @@ import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.dto.ProfileDto;
+import com.mitra.exception.NothingFoundException;
 import com.mitra.service.ProfileService;
 import com.mitra.service.TrackService;
 
@@ -27,7 +28,7 @@ public class MyProfileProcessor extends AbstractRequestProcessor {
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
         ProfileDto profile = profileService.find(myId)
-                .orElseThrow(() -> new ServletException("User without profile must be impossible, but it does not"));
+                .orElseThrow(() -> new NothingFoundException("Profile not found"));
         request.setAttribute("profile", profile);
         request.setAttribute("tracks", trackService.getProfileMusic(myId));
         forward(request, response, AppUrl.MY_PROFILE.getJspFileName());

@@ -1,14 +1,15 @@
 package com.mitra.controller.request_processor.impl;
 
-import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.AppUrl;
+import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
-import com.mitra.controller.request_processor.util.LocationHelper;
 import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.dto.InstrumentDto;
+import com.mitra.dto.LocationDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.SpecialityDto;
 import com.mitra.entity.Gender;
+import com.mitra.exception.NothingFoundException;
 import com.mitra.exception.ValidationException;
 import com.mitra.service.InstrumentService;
 import com.mitra.service.LocationService;
@@ -21,10 +22,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UpdateProfileProcessor extends AbstractRequestProcessor {
@@ -45,49 +46,26 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
-        Optional<ProfileDto> profileOptional = profileService.find(myId);
 
-        if (!profileOptional.isPresent()) {
-            throw new RuntimeException("Profile not found");
-        }
-        ProfileDto profile = profileOptional.get();
-        String profileLocation = LocationHelper.locationDtoToString(profile.getLocation());
-        String profileGender = profile.getGender().name();
-        List<String> profileInstruments = profile.getInstruments().stream()
-                .map(InstrumentDto::getName)
-                .collect(Collectors.toList());
-        List<String> profileSpecialities = profile.getSpecialities().stream()
-                .map(SpecialityDto::getName)
-                .collect(Collectors.toList());
-
+        ProfileDto profile = profileService.find(myId)
+                .orElseThrow(() -> new NothingFoundException("Profile with this id not found"));
         request.setAttribute("profile", profile);
-        request.setAttribute("profileGender", profileGender);
-        request.setAttribute("profileLocation", profileLocation);
-        request.setAttribute("profileInstruments", profileInstruments);
-        request.setAttribute("profileSpecialities", profileSpecialities);
 
-        List<String> otherGenders = Arrays.stream(Gender.values())
-                .map(Enum::name)
-                .collect(Collectors.toList());
-        otherGenders.remove(profileGender);
+        List<Gender> otherGenders = new ArrayList<>();
+        Collections.addAll(otherGenders, Gender.values());
+        otherGenders.remove(profile.getGender());
         request.setAttribute("otherGenders", otherGenders);
 
-        List<String> otherLocations = locationService.getAll().stream()
-                .map(LocationHelper::locationDtoToString)
-                .collect(Collectors.toList());
-        otherLocations.remove(profileLocation);
+        List<LocationDto> otherLocations = locationService.getAll();
+        otherLocations.remove(profile.getLocation());
         request.setAttribute("otherLocations", otherLocations);
 
-        List<String> otherInstruments = instrumentService.getAll().stream()
-                .map(InstrumentDto::getName)
-                .collect(Collectors.toList());
-        otherInstruments.removeAll(profileInstruments);
+        List<InstrumentDto> otherInstruments = instrumentService.getAll();
+        otherInstruments.removeAll(profile.getInstruments());
         request.setAttribute("otherInstruments", otherInstruments);
 
-        List<String> otherSpecialities = specialityService.getAll().stream()
-                .map(SpecialityDto::getName)
-                .collect(Collectors.toList());
-        otherSpecialities.removeAll(profileSpecialities);
+        List<SpecialityDto> otherSpecialities = specialityService.getAll();
+        otherSpecialities.removeAll(profile.getSpecialities());
         request.setAttribute("otherSpecialities", otherSpecialities);
 
         forward(request, response, AppUrl.UPDATE_PROFILE.getJspFileName());
@@ -116,14 +94,15 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
         if (photoPart != null && photoPart.getSize() > 0)
             photoInputStream = photoPart.getInputStream();
 
-
         ProfileDto profileDto = ProfileDto.builder()
                 .id(myId)
                 .name(request.getParameter("name"))
                 .age(Integer.valueOf(request.getParameter("age")))
                 .gender(Gender.valueOf(request.getParameter("gender")))
                 .text(request.getParameter("text"))
-                .location(LocationHelper.stringToLocationDto(request.getParameter("location")))
+                .location(LocationDto.builder()
+                        .id(Integer.parseInt(request.getParameter("location")))
+                        .build())
                 .instruments(instruments)
                 .specialities(specialities)
                 .photoPath(request.getParameter("photoPath"))

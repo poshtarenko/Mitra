@@ -1,9 +1,9 @@
 package com.mitra.controller.request_processor.impl;
 
-import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.AppUrl;
+import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
-import com.mitra.controller.request_processor.util.LocationHelper;
+import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.dto.LocationDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.entity.Gender;
@@ -15,8 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CreateProfileProcessor extends AbstractRequestProcessor {
 
@@ -30,10 +28,7 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<String> locations = locationService.getAll().stream()
-                .map(LocationHelper::locationDtoToString)
-                .collect(Collectors.toList());
-        request.setAttribute("cities", locations);
+        request.setAttribute("cities", locationService.getAll());
         request.setAttribute("genders", Gender.values());
 
         forward(request, response, AppUrl.CREATE_PROFILE.getJspFileName());
@@ -43,17 +38,17 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
-        System.out.println(request.getParameter("name"));
-
-        LocationDto locationDto = LocationHelper.stringToLocationDto(request.getParameter("city"));
+        LocationDto location = LocationDto.builder()
+                .id(Integer.parseInt(ParameterHelper.getNecessaryParameter(request, "location")))
+                .build();
 
         ProfileDto profile = ProfileDto.builder()
                 .id(myId)
-                .name(request.getParameter("name"))
-                .age(Integer.valueOf(request.getParameter("age")))
-                .gender(Gender.valueOf(request.getParameter("gender")))
-                .text(request.getParameter("text"))
-                .location(locationDto)
+                .name(ParameterHelper.getNecessaryParameter(request, "name"))
+                .age(Integer.valueOf(ParameterHelper.getNecessaryParameter(request, "age")))
+                .gender(Gender.valueOf(ParameterHelper.getNecessaryParameter(request, "gender")))
+                .text(ParameterHelper.getNecessaryParameter(request, "text"))
+                .location(location)
                 .build();
 
         try {

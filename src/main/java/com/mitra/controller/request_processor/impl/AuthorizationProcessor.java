@@ -28,15 +28,8 @@ public class AuthorizationProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession().getAttribute(SessionAttributes.USER_ID.name()) != null) {
-            redirect(response, AppUrl.MY_PROFILE.getUrl());
-            return;
-        }
-
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        ParameterHelper.getNecessaryParameter(response, email, AppUrl.AUTHORIZATION.getUrl());
-        ParameterHelper.getNecessaryParameter(response, password, AppUrl.AUTHORIZATION.getUrl());
+        String email = ParameterHelper.getNecessaryParameter(request, "email");
+        String password = ParameterHelper.getNecessaryParameter(request, "password");
 
         try {
             LoginHelper.loginAndUpdateSessionAttrs(email, password, userService, request);

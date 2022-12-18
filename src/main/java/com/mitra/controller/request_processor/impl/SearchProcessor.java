@@ -7,7 +7,10 @@ import com.mitra.db.filter.ProfileFilter;
 import com.mitra.dto.InstrumentDto;
 import com.mitra.dto.LocationDto;
 import com.mitra.dto.SpecialityDto;
+import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Gender;
+import com.mitra.entity.Instrument;
+import com.mitra.entity.Speciality;
 import com.mitra.entity.impl.InstrumentImpl;
 import com.mitra.entity.impl.SpecialityImpl;
 import com.mitra.service.InstrumentService;
@@ -20,9 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SearchProcessor extends AbstractRequestProcessor {
@@ -31,13 +33,19 @@ public class SearchProcessor extends AbstractRequestProcessor {
     private final InstrumentService instrumentService;
     private final SpecialityService specialityService;
     private final ProfileService profileService;
+    private final DtoMapper<InstrumentDto, Instrument> instrumentRowMapper;
+    private final DtoMapper<SpecialityDto, Speciality> specialityDtoMapper;
 
     public SearchProcessor(LocationService locationService, InstrumentService instrumentService,
-                           SpecialityService specialityService, ProfileService profileService) {
+                           SpecialityService specialityService, ProfileService profileService,
+                           DtoMapper<InstrumentDto, Instrument> instrumentRowMapper,
+                           DtoMapper<SpecialityDto, Speciality> specialityDtoMapper) {
         this.locationService = locationService;
         this.instrumentService = instrumentService;
         this.specialityService = specialityService;
         this.profileService = profileService;
+        this.instrumentRowMapper = instrumentRowMapper;
+        this.specialityDtoMapper = specialityDtoMapper;
     }
 
     private static final int PAGE_SIZE = 5;
@@ -56,10 +64,14 @@ public class SearchProcessor extends AbstractRequestProcessor {
         }
 
         Gender gender = null;
+        List<Gender> genders = new ArrayList<>();
+        Collections.addAll(genders, Gender.values());
         if (ParameterHelper.parameterNotEmpty(request.getParameter("gender"))) {
             gender = Gender.valueOf(request.getParameter("gender"));
             request.setAttribute("selectedGender", gender);
+            genders.remove(gender);
         }
+        request.setAttribute("genders", genders);
 
         Integer minAge = null;
         if (ParameterHelper.parameterNotEmpty(request.getParameter("minAge"))) {
@@ -73,35 +85,76 @@ public class SearchProcessor extends AbstractRequestProcessor {
             request.setAttribute("selectedMaxAge", maxAge);
         }
 
+        List<LocationDto> locations = locationService.getAll();
+
         String city = null;
         if (ParameterHelper.parameterNotEmpty(request.getParameter("city"))) {
             city = request.getParameter("city");
             request.setAttribute("selectedCity", city);
         }
+        List<String> cities = locations.stream()
+                .map(LocationDto::getCity)
+                .collect(Collectors.toList());
+        cities.remove(city);
+        request.setAttribute("cities", cities);
 
         String localArea = null;
         if (ParameterHelper.parameterNotEmpty(request.getParameter("localArea"))) {
             localArea = request.getParameter("localArea");
             request.setAttribute("selectedLocalArea", localArea);
         }
+        List<String> localAreas = locations.stream()
+                .map(LocationDto::getLocalArea)
+                .collect(Collectors.toList());
+        localAreas.remove(localArea);
+        request.setAttribute("localAreas", localAreas);
 
         String region = null;
         if (ParameterHelper.parameterNotEmpty(request.getParameter("region"))) {
             region = request.getParameter("region");
             request.setAttribute("selectedRegion", region);
         }
+        List<String> regions = locations.stream()
+                .map(LocationDto::getRegion)
+                .collect(Collectors.toList());
+        regions.remove(region);
+        request.setAttribute("regions", regions);
 
-        List<String> specialities = new ArrayList<>();
-        if (ParameterHelper.parameterNotEmpty(request.getParameter("specialities"))) {
-            specialities = Arrays.asList(request.getParameterValues("specialities"));
-            request.setAttribute("selectedSpecialities", specialities);
-        }
-
-        List<String> instruments = new ArrayList<>();
+        List<InstrumentDto> instruments = new ArrayList<>();
+        List<InstrumentDto> instrumentsToJSP = instrumentService.getAll();
+        List<InstrumentDto> instrumentsToRemove = new ArrayList<>();
         if (ParameterHelper.parameterNotEmpty(request.getParameter("instruments"))) {
-            instruments = Arrays.asList(request.getParameterValues("instruments"));
+            for (String instrumentId : request.getParameterValues("instruments")) {
+                int id = Integer.parseInt(instrumentId);
+                for (InstrumentDto instrumentDto : instrumentsToJSP) {
+                    if (instrumentDto.getId() == id) {
+                        instrumentsToRemove.add(instrumentDto);
+                    }
+                }
+            }
             request.setAttribute("selectedInstruments", instruments);
+            instrumentsToJSP.removeAll(instrumentsToRemove);
         }
+        request.setAttribute("instruments", instrumentsToJSP);
+
+
+        List<SpecialityDto> specialities = new ArrayList<>();
+        List<SpecialityDto> specialitiesToJSP = specialityService.getAll();
+        List<SpecialityDto> specialitiesToRemove = new ArrayList<>();
+        if (ParameterHelper.parameterNotEmpty(request.getParameter("specialities"))) {
+            for (String specialityId : request.getParameterValues("specialities")) {
+                int id = Integer.parseInt(specialityId);
+                for (SpecialityDto specialityDto : specialitiesToJSP) {
+                    if (specialityDto.getId() == id) {
+                        specialitiesToRemove.add(specialityDto);
+                    }
+                }
+            }
+            request.setAttribute("selectedSpecialities", specialities);
+            specialitiesToJSP.removeAll(instrumentsToRemove);
+        }
+        request.setAttribute("specialities", specialitiesToJSP);
+
 
         ProfileFilter profileFilter = ProfileFilter.builder()
                 .name(name)
@@ -112,10 +165,10 @@ public class SearchProcessor extends AbstractRequestProcessor {
                 .localArea(localArea)
                 .region(region)
                 .instruments(instruments.stream().
-                        map(val -> new InstrumentImpl(0, val))
+                        map(instrumentRowMapper::mapToEntity)
                         .collect(Collectors.toList()))
                 .specialities(specialities.stream().
-                        map(val -> new SpecialityImpl(0, val))
+                        map(specialityDtoMapper::mapToEntity)
                         .collect(Collectors.toList()))
                 .build();
 
@@ -132,42 +185,6 @@ public class SearchProcessor extends AbstractRequestProcessor {
             pages.add(pageNum);
         }
         request.setAttribute("pages", pages);
-
-        List<String> genders = Arrays.stream(Gender.values())
-                .map(Enum::name)
-                .collect(Collectors.toList());
-        genders.remove(gender);
-        request.setAttribute("genders", genders);
-
-        List<String> cities = locationService.getAll().stream()
-                .map(LocationDto::getCity)
-                .collect(Collectors.toList());
-        cities.remove(city);
-        request.setAttribute("cities", cities);
-
-        Set<String> localAreas = locationService.getAll().stream()
-                .map(LocationDto::getLocalArea)
-                .collect(Collectors.toSet());
-        localAreas.remove(localArea);
-        request.setAttribute("localAreas", localAreas);
-
-        Set<String> regions = locationService.getAll().stream()
-                .map(LocationDto::getRegion)
-                .collect(Collectors.toSet());
-        regions.remove(region);
-        request.setAttribute("regions", regions);
-
-        List<String> instrumentsToJSP = instrumentService.getAll().stream()
-                .map(InstrumentDto::getName)
-                .collect(Collectors.toList());
-        instrumentsToJSP.removeAll(instruments);
-        request.setAttribute("instruments", instrumentsToJSP);
-
-        List<String> specialitiesToJSP = specialityService.getAll().stream()
-                .map(SpecialityDto::getName)
-                .collect(Collectors.toList());
-        specialitiesToJSP.removeAll(specialities);
-        request.setAttribute("specialities", specialitiesToJSP);
 
         forward(request, response, AppUrl.SEARCH.getJspFileName());
     }

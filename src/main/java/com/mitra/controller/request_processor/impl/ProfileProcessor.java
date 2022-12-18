@@ -7,6 +7,7 @@ import com.mitra.dto.ChatDto;
 import com.mitra.dto.LikeDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.entity.Reaction;
+import com.mitra.exception.NothingFoundException;
 import com.mitra.service.ChatService;
 import com.mitra.service.ProfileLikeService;
 import com.mitra.service.ProfileService;
@@ -43,12 +44,6 @@ public class ProfileProcessor extends AbstractRequestProcessor {
         }
         int profileId = Integer.parseInt(idParam);
 
-        Optional<ProfileDto> profile = profileService.find(profileId);
-        if (!profile.isPresent()) {
-            redirect(response, AppUrl.MY_PROFILE.getUrl());
-            return;
-        }
-
         Optional<LikeDto> myPossibleLike = profileLikeService.getLike(myId, profileId);
         Optional<LikeDto> anotherPossibleLike = profileLikeService.getLike(profileId, myId);
 
@@ -77,8 +72,10 @@ public class ProfileProcessor extends AbstractRequestProcessor {
         } else {
             request.setAttribute("enableToLike", "+");
         }
-
-        request.setAttribute("profile", profile.get());
+        
+        ProfileDto profile = profileService.find(profileId)
+                .orElseThrow(() -> new NothingFoundException("Profile not found"));
+        request.setAttribute("profile", profile);
         request.setAttribute("tracks", trackService.getProfileMusic(profileId));
         forward(request, response, AppUrl.PROFILE.getJspFileName());
     }

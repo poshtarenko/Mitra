@@ -29,25 +29,19 @@ public class MyAccountProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if (ParameterHelper.getNecessaryParameter(response, action, AppUrl.MY_ACCOUNT.getUrl()))
-            return;
-
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
+        String action = ParameterHelper.getNecessaryParameter(request, "action");
+
         if (action.equals("UPD_PASSWORD")) {
-            String password = request.getParameter("password");
-            if (ParameterHelper.getNecessaryParameter(response, password, AppUrl.MY_ACCOUNT.getUrl()))
-                return;
+            String password = ParameterHelper.getNecessaryParameter(request, "password");
             try {
                 userService.changePassword(myId, password);
             } catch (ValidationException e) {
                 request.setAttribute("passwordErrors", e.getErrors());
             }
         } else if (action.equals("UPD_EMAIL")) {
-            String email = request.getParameter("email");
-            if (ParameterHelper.getNecessaryParameter(response, email, AppUrl.MY_ACCOUNT.getUrl()))
-                return;
+            String email = ParameterHelper.getNecessaryParameter(request, "email");
             try {
                 userService.changeEmail(myId, email);
             } catch (ValidationException e) {

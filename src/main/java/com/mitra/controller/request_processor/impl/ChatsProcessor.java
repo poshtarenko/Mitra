@@ -3,6 +3,7 @@ package com.mitra.controller.request_processor.impl;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
+import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.LikeDto;
 import com.mitra.entity.Reaction;
@@ -37,7 +38,7 @@ public class ChatsProcessor extends AbstractRequestProcessor {
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
-        int profileId = Integer.parseInt(request.getParameter("profileId"));
+        int profileId = Integer.parseInt(ParameterHelper.getNecessaryParameter(request, "profileId"));
 
         Optional<LikeDto> like = profileLikeService.getLike(myId, profileId);
         if (like.isPresent() && like.get().getReaction() == Reaction.LIKE) {

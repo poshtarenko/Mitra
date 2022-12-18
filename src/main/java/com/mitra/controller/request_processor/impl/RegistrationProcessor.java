@@ -3,6 +3,7 @@ package com.mitra.controller.request_processor.impl;
 import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.controller.request_processor.util.LoginHelper;
+import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.exception.ValidationException;
 import com.mitra.service.UserService;
 
@@ -26,8 +27,8 @@ public class RegistrationProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        String email = ParameterHelper.getNecessaryParameter(request, "email");
+        String password = ParameterHelper.getNecessaryParameter(request, "password");
 
         try {
             userService.register(email, password);

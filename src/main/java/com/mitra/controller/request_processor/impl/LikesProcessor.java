@@ -3,6 +3,7 @@ package com.mitra.controller.request_processor.impl;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
+import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.dto.LikeDto;
 import com.mitra.entity.Reaction;
 import com.mitra.service.ProfileLikeService;
@@ -36,27 +37,21 @@ public class LikesProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String type = request.getParameter("type");
+        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
 
-        String idParam = request.getParameter("id");
-        if (idParam == null || idParam.equals("")) {
-            redirect(response, AppUrl.MY_PROFILE.getUrl());
-            return;
-        }
-        int anotherUserId = Integer.parseInt(idParam);
-
-        int userId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+        String type = ParameterHelper.getNecessaryParameter(request, "type");
+        int anotherUserId = Integer.parseInt(ParameterHelper.getNecessaryParameter(request, "id"));
 
         if (type.equalsIgnoreCase("LIKE")) {
-            profileLikeService.like(userId, anotherUserId);
+            profileLikeService.like(myId, anotherUserId);
         } else if (type.equalsIgnoreCase("RESPONSE")) {
             String reaction = request.getParameter("reaction");
             if (reaction.equalsIgnoreCase("LIKE"))
-                profileLikeService.makeResponseOnLike(anotherUserId, userId, Reaction.LIKE);
+                profileLikeService.makeResponseOnLike(anotherUserId, myId, Reaction.LIKE);
             if (reaction.equalsIgnoreCase("DISLIKE"))
-                profileLikeService.makeResponseOnLike(anotherUserId, userId, Reaction.DISLIKE);
+                profileLikeService.makeResponseOnLike(anotherUserId, myId, Reaction.DISLIKE);
             if (reaction.equalsIgnoreCase("IGNORE"))
-                profileLikeService.makeResponseOnLike(anotherUserId, userId, Reaction.IGNORE);
+                profileLikeService.makeResponseOnLike(anotherUserId, myId, Reaction.IGNORE);
         }
 
         String referer = request.getHeader("referer");
