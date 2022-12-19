@@ -5,6 +5,7 @@ import com.mitra.db.dao.MessageDao;
 import com.mitra.dto.MessageDto;
 import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Message;
+import com.mitra.exception.DaoException;
 import com.mitra.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,7 +30,7 @@ public class MessageServiceImpl implements MessageService {
     public void sendMessage(MessageDto message) {
         try (Connection connection = ConnectionManager.get()) {
             messageDao.save(connection, messageDtoMapper.mapToEntity(message));
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Sending message failed");
         }
     }
@@ -40,7 +41,7 @@ public class MessageServiceImpl implements MessageService {
             return messageDao.getChatMessages(connection, chatId).stream()
                     .map(messageDtoMapper::mapToDto)
                     .collect(Collectors.toList());
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Getting chat messages failed");
             return Collections.emptyList();
         }

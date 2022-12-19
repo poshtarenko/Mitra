@@ -7,6 +7,7 @@ import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Chat;
 import com.mitra.entity.dummy.DummyProfile;
 import com.mitra.entity.impl.ChatImpl;
+import com.mitra.exception.DaoException;
 import com.mitra.service.ChatService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +35,7 @@ public class ChatServiceImpl implements ChatService {
             Chat chat = new ChatImpl(0, new DummyProfile(firstProfileId), new DummyProfile(secondProfileId),
                     Collections.emptyList());
             return chatDao.save(connection, chat);
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Starting of chat failed");
             return 0;
         }
@@ -46,7 +47,7 @@ public class ChatServiceImpl implements ChatService {
             return chatDao.getProfileChats(connection, profileId).stream()
                     .map(chatDtoMapper::mapToDto)
                     .collect(Collectors.toList());
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Getting profile chats failed");
             return Collections.emptyList();
         }
@@ -57,7 +58,7 @@ public class ChatServiceImpl implements ChatService {
         try (Connection connection = ConnectionManager.get()) {
             Optional<Chat> chat = chatDao.find(connection, firstProfileId, secondProfileId);
             return chat.map(chatDtoMapper::mapToDto);
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Chat not found by profile ids");
             return Optional.empty();
         }
@@ -68,7 +69,7 @@ public class ChatServiceImpl implements ChatService {
         try (Connection connection = ConnectionManager.get()) {
             Optional<Chat> chat = chatDao.find(connection, chatId);
             return chat.map(chatDtoMapper::mapToDto);
-        } catch (SQLException e) {
+        } catch (DaoException | SQLException e) {
             log.error("Chat not found by id");
             return Optional.empty();
         }

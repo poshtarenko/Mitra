@@ -37,7 +37,7 @@ public interface ProfileDao extends Dao<Integer, Profile> {
      * @param connection connection to db
      * @return list of all profile IDs
      */
-    List<Integer> getAllIds(Connection connection) throws DaoException;
+    List<Integer> getIdsForSwipeSearch(Connection connection) throws DaoException;
 
     /**
      * Get list of all profile IDs

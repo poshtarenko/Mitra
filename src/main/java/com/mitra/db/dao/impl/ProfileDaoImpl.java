@@ -81,7 +81,7 @@ public class ProfileDaoImpl implements ProfileDao {
             "DELETE FROM %s WHERE %s = ?",
             Table.PROFILE, Column.PROFILE.ID);
 
-    public static final String GET_ALL_IDS = String.format(
+    public static final String GET_IDS_FOR_SWIPE_SEARCH = String.format(
             "SELECT %s FROM %s",
             Column.USER.ID, Table.USER);
 
@@ -134,8 +134,8 @@ public class ProfileDaoImpl implements ProfileDao {
     }
 
     @Override
-    public List<Integer> getAllIds(Connection connection) throws DaoException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_IDS)) {
+    public List<Integer> getIdsForSwipeSearch(Connection connection) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_IDS_FOR_SWIPE_SEARCH)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Integer> ids = new ArrayList<>();
             while (resultSet.next())
