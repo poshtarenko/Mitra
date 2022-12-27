@@ -7,6 +7,17 @@ import java.sql.Connection;
 import java.util.Optional;
 
 public interface UserDao extends Dao<Integer, User> {
+
+    /**
+     * Execute select of 1 row of db entity table
+     *
+     * @param connection Connection to db
+     * @param email      email
+     * @return found entity, mapped from db row to object
+     * @throws DaoException if something bad
+     */
+    Optional<User> findByEmail(Connection connection, String email) throws DaoException;
+
     /**
      * Execute select of 1 row of db entity table
      *
@@ -16,6 +27,6 @@ public interface UserDao extends Dao<Integer, User> {
      * @return found entity, mapped from db row to object
      * @throws DaoException if something bad
      */
-    Optional<User> find(Connection connection, String email, String password) throws DaoException;
+    Optional<User> findByEmail(Connection connection, String email, String password) throws DaoException;
 
 }

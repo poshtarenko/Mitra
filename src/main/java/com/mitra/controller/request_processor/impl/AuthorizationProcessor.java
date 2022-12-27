@@ -1,9 +1,8 @@
 package com.mitra.controller.request_processor.impl;
 
-import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
-import com.mitra.controller.request_processor.util.LoginHelper;
+import com.mitra.controller.request_processor.util.AuthHelper;
 import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.exception.ValidationException;
 import com.mitra.service.UserService;
@@ -32,7 +31,7 @@ public class AuthorizationProcessor extends AbstractRequestProcessor {
         String password = ParameterHelper.getNecessaryParameter(request, "password");
 
         try {
-            LoginHelper.loginAndUpdateSessionAttrs(email, password, userService, request);
+            AuthHelper.loginAndUpdateSessionAttrs(email, password, userService, request);
             redirect(response, AppUrl.MY_PROFILE.getUrl());
         } catch (ValidationException e) {
             request.setAttribute("errors", e.getErrors());

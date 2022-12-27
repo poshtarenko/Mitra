@@ -4,6 +4,7 @@ import com.mitra.controller.AppUrl;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.controller.request_processor.util.ParameterHelper;
+import com.mitra.controller.request_processor.util.SessionAttrAccessor;
 import com.mitra.dto.InstrumentDto;
 import com.mitra.dto.LocationDto;
 import com.mitra.dto.ProfileDto;
@@ -45,7 +46,7 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+        int myId = SessionAttrAccessor.getProfileId(request);
 
         ProfileDto profile = profileService.find(myId)
                 .orElseThrow(() -> new NothingFoundException("Profile with this id not found"));
@@ -73,7 +74,7 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+        int myId = SessionAttrAccessor.getProfileId(request);
 
         List<InstrumentDto> instruments;
         if (ParameterHelper.parameterNotEmpty(request.getParameter("instruments")))
@@ -110,6 +111,7 @@ public class UpdateProfileProcessor extends AbstractRequestProcessor {
 
         try {
             profileService.updateProfile(myId, profileDto, photoInputStream);
+            SessionAttrAccessor.updateProfile(request, profileDto);
         } catch (ValidationException e) {
             request.setAttribute("errors", e.getErrors());
             processGet(request, response);

@@ -1,6 +1,5 @@
 package com.mitra.controller.request_processor;
 
-import com.mitra.controller.request_processor.RequestProcessor;
 import com.mitra.util.PropertiesUtil;
 
 import javax.servlet.ServletException;
@@ -29,7 +28,7 @@ public abstract class AbstractRequestProcessor implements RequestProcessor {
 
     private void methodNotAllowed(HttpServletResponse response, String method) throws IOException {
         String msg = "Method" + method + "is not supported";
-        response.sendError(400, msg);
+        response.sendError(405, msg);
     }
 
     protected void forward(HttpServletRequest request, HttpServletResponse response, String jspPath) throws ServletException, IOException {

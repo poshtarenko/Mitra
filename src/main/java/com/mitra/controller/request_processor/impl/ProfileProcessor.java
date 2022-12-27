@@ -1,15 +1,16 @@
 package com.mitra.controller.request_processor.impl;
 
-import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.AppUrl;
+import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
+import com.mitra.controller.request_processor.util.SessionAttrAccessor;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.LikeDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.entity.Reaction;
 import com.mitra.exception.NothingFoundException;
 import com.mitra.service.ChatService;
-import com.mitra.service.ProfileLikeService;
+import com.mitra.service.LikeService;
 import com.mitra.service.ProfileService;
 import com.mitra.service.TrackService;
 
@@ -17,25 +18,27 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ProfileProcessor extends AbstractRequestProcessor {
 
     private final ProfileService profileService;
-    private final ProfileLikeService profileLikeService;
+    private final LikeService likeService;
     private final TrackService trackService;
     private final ChatService chatService;
 
-    public ProfileProcessor(ProfileService profileService, ProfileLikeService profileLikeService, TrackService trackService, ChatService chatService) {
+    public ProfileProcessor(ProfileService profileService, LikeService likeService, TrackService trackService, ChatService chatService) {
         this.profileService = profileService;
-        this.profileLikeService = profileLikeService;
+        this.likeService = likeService;
         this.trackService = trackService;
         this.chatService = chatService;
     }
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+        int myId = SessionAttrAccessor.getProfileId(request);
 
         String idParam = request.getParameter("id");
         if (idParam == null || idParam.equals("")) {
@@ -44,8 +47,18 @@ public class ProfileProcessor extends AbstractRequestProcessor {
         }
         int profileId = Integer.parseInt(idParam);
 
-        Optional<LikeDto> myPossibleLike = profileLikeService.getLike(myId, profileId);
-        Optional<LikeDto> anotherPossibleLike = profileLikeService.getLike(profileId, myId);
+        if (profileId == myId)
+            redirect(response, AppUrl.MY_PROFILE.getUrl());
+
+        List<LikeDto> likes = likeService.getProfileLikes(profileId);
+
+        Optional<LikeDto> myPossibleLike = likes.stream()
+                .filter(like -> like.getSender().getId() == myId && like.getReceiver().getId() == profileId)
+                .findFirst();
+
+        Optional<LikeDto> anotherPossibleLike = likes.stream()
+                .filter(like -> like.getSender().getId() == profileId && like.getReceiver().getId() == myId)
+                .findFirst();
 
         if (myPossibleLike.isPresent()) {
             LikeDto myLike = myPossibleLike.get();
@@ -72,11 +85,27 @@ public class ProfileProcessor extends AbstractRequestProcessor {
         } else {
             request.setAttribute("enableToLike", "+");
         }
-        
+
         ProfileDto profile = profileService.find(profileId)
                 .orElseThrow(() -> new NothingFoundException("Profile not found"));
         request.setAttribute("profile", profile);
         request.setAttribute("tracks", trackService.getProfileMusic(profileId));
+
+        List<ProfileDto> friends = new ArrayList<>();
+        for (LikeDto like : likeService.extractMutual(profileId, likes)) {
+            ProfileDto friend = null;
+
+            if (like.getReceiver().getId() == profileId)
+                friend = like.getSender();
+            else if (like.getSender().getId() == profileId)
+                friend = like.getReceiver();
+
+            friends.add(friend);
+
+        }
+
+        request.setAttribute("friends", friends);
+
         forward(request, response, AppUrl.PROFILE.getJspFileName());
     }
 }

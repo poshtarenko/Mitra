@@ -4,6 +4,7 @@ import com.mitra.controller.AppUrl;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.controller.request_processor.util.ParameterHelper;
+import com.mitra.controller.request_processor.util.SessionAttrAccessor;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.MessageDto;
 import com.mitra.dto.ProfileDto;
@@ -42,7 +43,7 @@ public class ChatProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+        int myId = SessionAttrAccessor.getProfileId(request);
 
         int chatId = Integer.parseInt(request.getParameter("chatId"));
         ChatDto chat = chatService.getChat(chatId)

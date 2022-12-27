@@ -24,14 +24,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     public static final String FIND_ALL_SQL = String.format(
-            "SELECT %s, %s, %s, %s FROM %s JOIN %s ON %s = %s",
+            "SELECT %s, %s, %s, %s FROM %s JOIN %s ON %s = %s ",
             Column.USER.ID, Column.USER.EMAIL, Column.USER.PASSWORD, Column.ROLE.ROLE,
             Table.USER, Table.ROLE, Column.USER.ROLE_ID, Column.ROLE.ID);
 
     public static final String FIND_SQL = FIND_ALL_SQL + String.format(" WHERE %s = ?", Column.USER.ID);
 
-    public static final String FIND_BY_EMAIL_AND_PASSWORD = FIND_ALL_SQL + String.format(" WHERE %s = ? AND %s = ?",
+    public static final String FIND_BY_EMAIL_AND_PASSWORD = FIND_ALL_SQL + String.format("WHERE %s = ? AND %s = ?",
             Column.USER.EMAIL, Column.USER.PASSWORD);
+
+    public static final String FIND_BY_EMAIL = FIND_ALL_SQL + String.format("WHERE %s = ?", Column.USER.EMAIL);
 
     public static final String SAVE_SQL = String.format(
             "INSERT INTO %s (%s, %s, %s) VALUES (?, ?, (SELECT %s FROM %s WHERE %s = ?))",
@@ -51,15 +53,20 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> find(Connection connection, Integer id) throws DaoException {
         Optional<User> user = queryExecutor.selectOne(connection, FIND_SQL, id);
         user.ifPresent(value -> profileDao.find(connection, value.getId()).ifPresent(value::setProfile));
-
         return user;
     }
 
     @Override
-    public Optional<User> find(Connection connection, String email, String password) throws DaoException {
+    public Optional<User> findByEmail(Connection connection, String email) throws DaoException {
+        Optional<User> user = queryExecutor.selectOne(connection, FIND_BY_EMAIL, email);
+        user.ifPresent(value -> profileDao.find(connection, value.getId()).ifPresent(value::setProfile));
+        return user;
+    }
+
+    @Override
+    public Optional<User> findByEmail(Connection connection, String email, String password) throws DaoException {
         Optional<User> user = queryExecutor.selectOne(connection, FIND_BY_EMAIL_AND_PASSWORD, email, password);
         user.ifPresent(value -> profileDao.find(connection, value.getId()).ifPresent(value::setProfile));
-
         return user;
     }
 

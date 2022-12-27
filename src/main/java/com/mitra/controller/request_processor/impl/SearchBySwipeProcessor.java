@@ -1,11 +1,11 @@
 package com.mitra.controller.request_processor.impl;
 
-import com.mitra.controller.Cookies;
-import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.AppUrl;
+import com.mitra.controller.Cookies;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
+import com.mitra.controller.request_processor.util.SessionAttrAccessor;
 import com.mitra.dto.ProfileDto;
-import com.mitra.service.ProfileLikeService;
+import com.mitra.service.LikeService;
 import com.mitra.service.ProfileService;
 import com.mitra.util.CookieHelper;
 
@@ -22,16 +22,16 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
     private static final char DELIMITER = 'x';
 
     private final ProfileService profileService;
-    private final ProfileLikeService profileLikeService;
+    private final LikeService likeService;
 
-    public SearchBySwipeProcessor(ProfileService profileService, ProfileLikeService profileLikeService) {
+    public SearchBySwipeProcessor(ProfileService profileService, LikeService likeService) {
         this.profileService = profileService;
-        this.profileLikeService = profileLikeService;
+        this.likeService = likeService;
     }
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+        int myId = SessionAttrAccessor.getProfileId(request);
 
         Cookie profileIdsCookie = CookieHelper.getCookie(request, Cookies.PROFILE_IDS.name());
         // update cookie if not exists
@@ -66,8 +66,8 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
         updateProfileIdsCookie(response, profileIdsCookieValue);
 
         // skip profile if we already liked it or this user liked us
-        if (profileLikeService.getLike(myId, id).isPresent()
-                || profileLikeService.getLike(id, myId).isPresent()) {
+        if (likeService.getLike(myId, id).isPresent()
+                || likeService.getLike(id, myId).isPresent()) {
             redirect(response, AppUrl.SWIPE_SEARCH.getUrl());
             return;
         }

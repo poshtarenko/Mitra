@@ -41,7 +41,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public int create(ProfileDto profileDto) throws ValidationException {
+    public int create(ProfileDto profileDto) {
         try (Connection connection = ConnectionManager.get()) {
             checkProfileOrThrowException(profileDto);
             Profile profile = profileDtoMapper.mapToEntity(profileDto);
@@ -96,7 +96,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void updateProfile(int userId, ProfileDto profileDto, InputStream newPhoto) throws ValidationException {
+    public void updateProfile(int userId, ProfileDto profileDto, InputStream newPhoto) {
         try (Connection connection = ConnectionManager.get()) {
             checkProfileOrThrowException(profileDto);
 
@@ -121,7 +121,7 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
-    private void checkProfileOrThrowException(ProfileDto profile) throws ValidationException {
+    private void checkProfileOrThrowException(ProfileDto profile) {
         List<Error> errors = new ArrayList<>();
         profileValidator.checkName(profile.getName()).ifPresent(errors::add);
         profileValidator.checkAge(profile.getAge()).ifPresent(errors::add);

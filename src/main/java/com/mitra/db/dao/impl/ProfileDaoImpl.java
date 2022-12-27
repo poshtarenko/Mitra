@@ -2,10 +2,7 @@ package com.mitra.db.dao.impl;
 
 import com.mitra.db.Column;
 import com.mitra.db.Table;
-import com.mitra.db.dao.InstrumentDao;
-import com.mitra.db.dao.ProfileDao;
-import com.mitra.db.dao.SpecialityDao;
-import com.mitra.db.dao.TrackDao;
+import com.mitra.db.dao.*;
 import com.mitra.db.dao.impl.util.ProfileDaoQueryConstructor;
 import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.filter.ProfileFilter;
@@ -27,15 +24,17 @@ public class ProfileDaoImpl implements ProfileDao {
     private final QueryExecutor<Integer, Profile> queryExecutor;
     private final InstrumentDao instrumentDao;
     private final SpecialityDao specialityDao;
+    private final LikeDao likeDao;
     private final TrackDao trackDao;
 
     public ProfileDaoImpl(RowMapper<Profile> profileRowMapper, InstrumentDao instrumentDao,
-                          SpecialityDao specialityDao, TrackDao trackDao) {
+                          SpecialityDao specialityDao, TrackDao trackDao, LikeDao likeDao) {
         this.profileRowMapper = profileRowMapper;
         this.instrumentDao = instrumentDao;
         this.specialityDao = specialityDao;
         this.queryExecutor = new QueryExecutor<>(profileRowMapper);
         this.trackDao = trackDao;
+        this.likeDao = likeDao;
     }
 
     public static final String FIND_ALL_SQL = String.format(

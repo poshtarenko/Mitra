@@ -3,6 +3,7 @@ package com.mitra.controller.request_processor.impl;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
+import com.mitra.controller.request_processor.util.SessionAttrAccessor;
 import com.mitra.dto.TrackDto;
 import com.mitra.service.TrackService;
 
@@ -23,7 +24,7 @@ public class MusicProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+        int myId = SessionAttrAccessor.getProfileId(request);
         List<TrackDto> profileMusic = trackService.getProfileMusic(myId);
         request.setAttribute("tracks", profileMusic);
         forward(request, response, AppUrl.MUSIC.getJspFileName());
@@ -38,7 +39,7 @@ public class MusicProcessor extends AbstractRequestProcessor {
             String author = request.getParameter("author");
             Part audio = request.getPart("audio");
 
-            int profileId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+            int profileId = SessionAttrAccessor.getProfileId(request);
 
             TrackDto trackDto = TrackDto.builder()
                     .name(name)
@@ -52,7 +53,7 @@ public class MusicProcessor extends AbstractRequestProcessor {
             trackService.remove(trackId);
         } else if (action.equals("SET_PREVIEW")) {
             int trackId = Integer.parseInt(request.getParameter("trackId"));
-            int profileId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+            int profileId = SessionAttrAccessor.getProfileId(request);
             trackService.setProfilePreviewTrack(profileId, trackId);
         }
 

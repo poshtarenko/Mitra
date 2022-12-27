@@ -3,6 +3,7 @@ package com.mitra.controller.request_processor.impl;
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
+import com.mitra.controller.request_processor.util.SessionAttrAccessor;
 import com.mitra.dto.ProfileDto;
 import com.mitra.exception.NothingFoundException;
 import com.mitra.service.ProfileService;
@@ -25,7 +26,7 @@ public class MyProfileProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+        int myId = SessionAttrAccessor.getProfileId(request);
 
         ProfileDto profile = profileService.find(myId)
                 .orElseThrow(() -> new NothingFoundException("Profile not found"));

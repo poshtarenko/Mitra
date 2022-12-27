@@ -1,7 +1,6 @@
 package com.mitra.filter;
 
 import com.mitra.controller.AppUrl;
-import com.mitra.controller.RestUrl;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -21,7 +20,6 @@ public class WrongUrlFilter implements Filter {
         enabledUrlStarts.add("/WEB-INF");
         enabledUrlStarts.add("/resources");
         enabledUrlStarts.add(AppUrl.APP_PATH_PREFIX);
-        enabledUrlStarts.add(RestUrl.REST_PATH_PREFIX);
     }
 
     @Override

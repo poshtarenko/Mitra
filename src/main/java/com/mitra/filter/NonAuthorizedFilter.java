@@ -3,6 +3,9 @@ package com.mitra.filter;
 
 import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.AppUrl;
+import com.mitra.controller.request_processor.util.SessionAttrAccessor;
+import com.mitra.dto.ProfileDto;
+import com.mitra.dto.UserDto;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -28,15 +31,16 @@ public class NonAuthorizedFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
-        Integer userId = (Integer) req.getSession().getAttribute(SessionAttributes.USER_ID.name());
-        String userName = (String) req.getSession().getAttribute(SessionAttributes.USER_NAME.name());
+
+        UserDto user = SessionAttrAccessor.getUser(req);
+        ProfileDto profile = SessionAttrAccessor.getProfile(req);
 
         if (enabledUrlsForNonAuthorized.contains(req.getRequestURI())) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            if (userId == null) {
+            if (user == null) {
                 resp.sendRedirect(AppUrl.AUTHORIZATION.getUrl());
-            } else if (userName == null && !req.getRequestURI().equals(AppUrl.CREATE_PROFILE.getUrl())) {
+            } else if (profile == null && !req.getRequestURI().equals(AppUrl.CREATE_PROFILE.getUrl())) {
                 resp.sendRedirect(AppUrl.CREATE_PROFILE.getUrl());
             } else {
                 filterChain.doFilter(servletRequest, servletResponse);

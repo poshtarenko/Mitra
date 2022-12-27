@@ -50,7 +50,7 @@ public class RequestProcessorFactory {
         requestProcessorsMap.put(AppUrl.SWIPE_SEARCH,
                 new SearchBySwipeProcessor(serviceFactory.getProfileService(), serviceFactory.getProfileLikeService()));
         requestProcessorsMap.put(AppUrl.MY_ACCOUNT,
-                new MyAccountProcessor(serviceFactory.getUserService()));
+                new AccountProcessor(serviceFactory.getUserService()));
         requestProcessorsMap.put(AppUrl.IMAGES,
                 new ImageProcessor(cloudStorageProvider));
         requestProcessorsMap.put(AppUrl.LIKES,

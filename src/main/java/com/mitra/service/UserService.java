@@ -1,5 +1,6 @@
 package com.mitra.service;
 
+import com.mitra.dto.CredentialsDto;
 import com.mitra.dto.UserDto;
 import com.mitra.entity.Role;
 import com.mitra.exception.ValidationException;
@@ -19,20 +20,18 @@ public interface UserService {
     /**
      * Try login
      *
-     * @param email    email
-     * @param password password
+     * @param credentials email and password
      * @return optional of userDto
      */
-    Optional<UserDto> find(String email, String password) throws ValidationException;
+    Optional<UserDto> find(CredentialsDto credentials) throws ValidationException;
 
     /**
      * Try register
      *
-     * @param email    email
-     * @param password password
+     * @param credentials email and password
      * @return true if registered, false if not
      */
-    boolean register(String email, String password) throws ValidationException;
+    boolean register(CredentialsDto credentials) throws ValidationException;
 
     /**
      * Change user email

@@ -1,0 +1,148 @@
+#profile-content {
+    position: absolute;
+    width: 95%;
+    height: 97%;
+    margin: auto auto 0 0;
+}
+
+#profile-main {
+    display: inline-flex;
+}
+
+#profile-photo {
+    width: 220px;
+    height: 220px;
+    border-radius: 1%;
+}
+
+#profile-info {
+    margin-left: 30px;
+}
+
+.profile-text {
+    margin-top: 10px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.white-background {
+    line-height: 1.8;
+    padding: 5px 10px 5px 10px;
+    background: white;
+    border-radius: 10px;
+    display: block;
+}
+
+#profile-name {
+    padding: 10px;
+    margin-top: 0px;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.relationship-info-text {
+    font-weight: 500;
+    font-size: 17px;
+    color: #4C4D4D;
+    text-align: center;
+}
+
+.like-button {
+    font-family: 'Ubuntu', sans-serif;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: #2A77C5;
+    height: 40px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    font-weight: 700;
+    font-size: 15px;
+    color: #FFFFFF;
+    border: none;
+    letter-spacing: 0.1px;
+}
+
+.like-button:hover {
+    cursor: pointer;
+    background: #EB4C42;
+    color: #FFFFFF;
+}
+
+.center-word {
+    margin: 20px 0 5px 0;
+    font-weight: 500;
+    font-size: 19px;
+    color: #4C4D4D;
+    text-align: center;
+}
+
+#music {
+    text-align: center;
+}
+
+.audio-item {
+    width: 40%;
+    display: inline-block;
+    padding: 10px;
+    text-align: center;
+}
+
+.audio-item p {
+    font-size: 15px;
+    color: #004242;
+    margin: 0;
+    padding: 0;
+}
+
+.audio-item audio {
+    margin-top: 10px;
+    width: 100%;
+    height: 50px;
+}
+
+#friends {
+    margin-left: 6%;
+}
+
+.friend-wrapper {
+    display: inline-block;
+    width: 30%;
+    background-color: white;
+    border-radius: 20px;
+    padding: 6px 0px;
+    margin: 8px 2px;
+}
+
+.friend {
+    display: flex;
+    align-items: center;
+}
+
+.friend img {
+    margin-left: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 45%;
+}
+
+.friend a {
+    color: #0073A4;
+    text-decoration: none;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.friend a:hover {
+    text-decoration: underline;
+}
+
+.friend a:visited {
+    color: #0073A4;
+    text-decoration: none;
+}

@@ -1,9 +1,9 @@
 package com.mitra.controller.request_processor.impl;
 
 import com.mitra.controller.AppUrl;
-import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.controller.request_processor.util.ParameterHelper;
+import com.mitra.controller.request_processor.util.SessionAttrAccessor;
 import com.mitra.dto.LocationDto;
 import com.mitra.dto.ProfileDto;
 import com.mitra.entity.Gender;
@@ -36,7 +36,7 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+        int myId = SessionAttrAccessor.getProfileId(request);
 
         LocationDto location = LocationDto.builder()
                 .id(Integer.parseInt(ParameterHelper.getNecessaryParameter(request, "location")))
@@ -53,7 +53,7 @@ public class CreateProfileProcessor extends AbstractRequestProcessor {
 
         try {
             profileService.create(profile);
-            request.getSession().setAttribute(SessionAttributes.USER_NAME.name(), profile.getName());
+            SessionAttrAccessor.updateProfile(request, profile);
         } catch (ValidationException e) {
             request.setAttribute("errors", e.getErrors());
             processGet(request, response);

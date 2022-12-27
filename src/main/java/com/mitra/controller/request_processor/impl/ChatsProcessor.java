@@ -4,6 +4,7 @@ import com.mitra.controller.SessionAttributes;
 import com.mitra.controller.AppUrl;
 import com.mitra.controller.request_processor.AbstractRequestProcessor;
 import com.mitra.controller.request_processor.util.ParameterHelper;
+import com.mitra.controller.request_processor.util.SessionAttrAccessor;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.LikeDto;
 import com.mitra.entity.Reaction;
@@ -29,7 +30,7 @@ public class ChatsProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+        int myId = SessionAttrAccessor.getProfileId(request);
         List<ChatDto> chats = chatService.getProfileChats(myId);
         request.setAttribute("chats", chats);
         forward(request, response, AppUrl.CHATS.getJspFileName());
@@ -37,7 +38,7 @@ public class ChatsProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = (int) request.getSession().getAttribute(SessionAttributes.USER_ID.name());
+        int myId = SessionAttrAccessor.getProfileId(request);
         int profileId = Integer.parseInt(ParameterHelper.getNecessaryParameter(request, "profileId"));
 
         LikeDto like = likeService.getLike(myId, profileId).orElseThrow(BadRequestException::new);

@@ -2,6 +2,7 @@ package com.mitra.service.impl;
 
 import com.mitra.db.connection.ConnectionManager;
 import com.mitra.db.dao.UserDao;
+import com.mitra.dto.CredentialsDto;
 import com.mitra.dto.UserDto;
 import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Role;
@@ -42,54 +43,58 @@ public class UserServiceImpl implements UserService {
         try (Connection connection = ConnectionManager.get()) {
             Optional<User> user = userDao.find(connection, id);
             return user.map(userDtoMapper::mapToDto);
-        } catch (DaoException | SQLException e) {
+        } catch (SQLException | DaoException e) {
             log.error("Find user by id is failed", e);
             return Optional.empty();
         }
     }
 
     @Override
-    public Optional<UserDto> find(String email, String password) throws ValidationException {
+    public Optional<UserDto> find(CredentialsDto credentials) {
         try (Connection connection = ConnectionManager.get()) {
-            checkCredentialsOrThrowException(email, password);
+            checkCredentialsOrThrowException(credentials.getEmail(), credentials.getPassword());
 
-            String encryptedPassword = passwordEncryptor.encrypt(password);
-            Optional<User> user = userDao.find(connection, email, encryptedPassword);
+            String encryptedPassword = passwordEncryptor.encrypt(credentials.getPassword());
+            Optional<User> user = userDao.findByEmail(connection, credentials.getEmail(), encryptedPassword);
 
-            log.info("User logged in : {}", email);
+            log.info("User logged in : {}", credentials.getEmail());
             return user.map(userDtoMapper::mapToDto);
-        } catch (DaoException | SQLException e) {
+        } catch (SQLException e) {
             log.error("Login failed", e);
             return Optional.empty();
         }
     }
 
     @Override
-    public boolean register(String email, String password) throws ValidationException {
+    public boolean register(CredentialsDto credentials) {
         try (Connection connection = ConnectionManager.get()) {
-            checkCredentialsOrThrowException(email, password);
+            checkCredentialsOrThrowException(credentials.getEmail(), credentials.getPassword());
 
-            String encryptedPassword = passwordEncryptor.encrypt(password);
+            if (userDao.findByEmail(connection, credentials.getEmail()).isPresent())
+                throw new ValidationException(Collections.singletonList(
+                        Error.of("Email already registered", "Trying to register with used email")));
+
+            String encryptedPassword = passwordEncryptor.encrypt(credentials.getPassword());
 
             User user = new UserImpl(
                     0,
-                    email,
+                    credentials.getEmail(),
                     encryptedPassword,
                     Role.USER
             );
 
             int createdUserId = userDao.save(connection, user);
 
-            log.info("User registered : email={}, id={}", email, createdUserId);
+            log.info("User registered : email={}, id={}", credentials.getEmail(), createdUserId);
             return true;
-        } catch (DaoException | SQLException e) {
+        } catch (SQLException | DaoException e) {
             log.error("Registration failed", e);
             return false;
         }
     }
 
     @Override
-    public void changeEmail(int userId, String newEmail) throws ValidationException {
+    public void changeEmail(int userId, String newEmail) {
         try (Connection connection = ConnectionManager.get()) {
             Optional<Error> emailNotValidError = userValidator.checkEmail(newEmail);
             if (emailNotValidError.isPresent())
@@ -105,7 +110,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(int userId, String newPassword) throws ValidationException {
+    public void changePassword(int userId, String newPassword) {
         try (Connection connection = ConnectionManager.get()) {
             Optional<Error> passwordNotValidError = userValidator.checkPassword(newPassword);
             if (passwordNotValidError.isPresent())
@@ -158,7 +163,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private void checkCredentialsOrThrowException(String email, String password) throws ValidationException {
+    private void checkCredentialsOrThrowException(String email, String password) {
         List<Error> errors = new ArrayList<>();
         userValidator.checkEmail(email).ifPresent(errors::add);
         userValidator.checkPassword(password).ifPresent(errors::add);

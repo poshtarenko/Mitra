@@ -4,7 +4,7 @@ import com.mitra.validator.Error;
 
 import java.util.List;
 
-public class ValidationException extends Exception {
+public class ValidationException extends RuntimeException {
 
     List<Error> errors;
 
