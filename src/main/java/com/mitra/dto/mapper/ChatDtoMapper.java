@@ -44,4 +44,17 @@ public class ChatDtoMapper implements DtoMapper<ChatDto, Chat> {
                         .collect(toList())
         );
     }
+
+    public static ChatDto suit(ChatDto chat, int myId) {
+        if (chat.getMyProfile().getId() == myId) {
+            return chat;
+        } else {
+            return new ChatDto(
+                    chat.getId(),
+                    chat.getFriendProfile(),
+                    chat.getMyProfile(),
+                    chat.getMessages()
+            );
+        }
+    }
 }

@@ -82,7 +82,7 @@ public class ProfileDaoImpl implements ProfileDao {
 
     public static final String GET_IDS_FOR_SWIPE_SEARCH = String.format(
             "SELECT %s FROM %s",
-            Column.USER.ID, Table.USER);
+            Column.PROFILE.ID, Table.PROFILE);
 
     @Override
     public Optional<Profile> find(Connection connection, Integer id) throws DaoException {

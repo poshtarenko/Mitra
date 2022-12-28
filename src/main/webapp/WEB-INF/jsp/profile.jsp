@@ -194,7 +194,7 @@
                         </div>
                     </c:if>
 
-                    <c:if test="${not empty requestScope.tracks}">
+                    <c:if test="${not empty requestScope.friends}">
                         <div class="center-word">Друзі</div>
                         <div id="friends">
                             <c:forEach var="friend" items="${requestScope.friends}">

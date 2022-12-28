@@ -19,14 +19,14 @@ body {
     height: 100%;
     width: 100%;
     position: fixed;
-    background-image: url("../img/back.png");
+    background-image: url("/resources/back.png");
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 #app {
-    height: 95%;
-    width: 65%;
+    height: 97%;
+    max-width: 980px;
     margin: auto auto;
     padding: 0;
     position: fixed;
@@ -37,12 +37,13 @@ body {
 
     background-color: #FAFCFC;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.20);
-    border-radius: 50px;
+    border-radius: 30px;
 
     overflow: hidden;
 }
 
 #sidebar {
+    min-width: 200px;
     position: absolute;
     height: 100%;
     width: 23%;
@@ -112,10 +113,6 @@ body {
     margin: auto;
     overflow-y: scroll;
     overflow-x: hidden;
-
-    display: flex;
-    align-items: center;
-    justify-content: center
 }
 
 ::-webkit-scrollbar {
@@ -153,5 +150,45 @@ audio::-webkit-media-controls-volume-slider {
 }
 
 a {
+    text-decoration: none;
+}
+
+.like-button {
+    font-family: 'Ubuntu', sans-serif;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: #2A77C5;
+    height: 40px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    font-weight: 700;
+    font-size: 15px;
+    color: #FFFFFF;
+    border: none;
+    letter-spacing: 0.1px;
+}
+
+.like-button:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.7);
+}
+
+a:link {
+    color: #2A77C5;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #2A77C5;
     text-decoration: none;
 }

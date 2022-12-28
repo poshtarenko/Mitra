@@ -7,6 +7,7 @@ import com.mitra.controller.request_processor.util.ParameterHelper;
 import com.mitra.controller.request_processor.util.SessionAttrAccessor;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.LikeDto;
+import com.mitra.dto.mapper.ChatDtoMapper;
 import com.mitra.entity.Reaction;
 import com.mitra.exception.BadRequestException;
 import com.mitra.service.ChatService;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ChatsProcessor extends AbstractRequestProcessor {
 
@@ -31,7 +33,9 @@ public class ChatsProcessor extends AbstractRequestProcessor {
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int myId = SessionAttrAccessor.getProfileId(request);
-        List<ChatDto> chats = chatService.getProfileChats(myId);
+        List<ChatDto> chats = chatService.getProfileChats(myId).stream()
+                .map(chatDto -> ChatDtoMapper.suit(chatDto, myId))
+                .collect(Collectors.toList());
         request.setAttribute("chats", chats);
         forward(request, response, AppUrl.CHATS.getJspFileName());
     }

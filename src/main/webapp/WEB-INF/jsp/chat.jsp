@@ -7,6 +7,7 @@
 
 <head>
     <title>Mitra</title>
+    <link rel="shortcut icon" href="../../resources/img/icon.png">
 
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/chat.css">
@@ -29,54 +30,59 @@
 <div id="background">
     <div id="app">
         <div id="sidebar">
-            <a href="/">
+            <a href="${pageContext.request.contextPath}/app/account">
                 <div class="sidebar-item" id="user-item">
-                    <img src="/resources/ava1.png" id="user-img">
-                    <span class="sidebar-text">Користувач</span>
+                    <c:if test="${not empty sessionScope.USER.getProfile().getPhotoPath()}">
+                        <img id="user-img" src="${pageContext.request.contextPath}/app/images?path=${sessionScope.USER.getProfile().getPhotoPath()}"/>
+                    </c:if>
+                    <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                        <img id="user-img" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
+                    </c:if>
+                    <span class="sidebar-text">${sessionScope.USER.getProfile().getName()}</span>
                 </div>
             </a>
-            <a href="/">
-                <div class="sidebar-item selected-sidebar-item" style="margin-top: 20px">
-                    <img src="/resources/icon/profile.png" class="sidebar-img">
+            <a href="${pageContext.request.contextPath}/app/me">
+                <div class="sidebar-item" style="margin-top: 20px">
+                    <img src="../../resources/img/icon/profile.png" class="sidebar-img">
                     <span class="sidebar-text">Профіль</span>
                 </div>
             </a>
-            <a href="/">
+            <a href="${pageContext.request.contextPath}/app/music">
                 <div class="sidebar-item">
-                    <img src="/resources/icon/music.png" class="sidebar-img">
+                    <img src="../../resources/img/icon/music.png" class="sidebar-img">
                     <span class="sidebar-text">Музика</span>
                 </div>
             </a>
-            <a href="/">
+            <a href="${pageContext.request.contextPath}/app/go">
                 <div class="sidebar-item" style="margin-top: 50px">
-                    <img src="/resources/icon/go.png" class="sidebar-img">
+                    <img src="../../resources/img/icon/go.png" class="sidebar-img">
                     <span class="sidebar-text">Погнали!</span>
                 </div>
             </a>
-            <a href="/">
+            <a href="${pageContext.request.contextPath}/app/search">
                 <div class="sidebar-item">
-                    <img src="/resources/icon/search.png" class="sidebar-img">
+                    <img src="../../resources/img/icon/search.png" class="sidebar-img">
                     <span class="sidebar-text">Пошук</span>
                 </div>
             </a>
-            <a href="/">
-                <div class="sidebar-item">
-                    <img src="/resources/icon/likes.png" class="sidebar-img">
+            <a href="${pageContext.request.contextPath}/app/likes">
+                <div class="sidebar-item selected-sidebar-item">
+                    <img src="../../resources/img/icon/likes.png" class="sidebar-img">
                     <span class="sidebar-text">Лайки</span>
                 </div>
             </a>
-            <a href="/">
+            <a href="${pageContext.request.contextPath}/app/chats">
                 <div class="sidebar-item">
-                    <img src="/resources/icon/chats.png" class="sidebar-img">
+                    <img src="../../resources/img/icon/chats.png" class="sidebar-img">
                     <span class="sidebar-text">Чати</span>
                 </div>
             </a>
-            <a href="/">
+            <a href="${pageContext.request.contextPath}/app/me">
                 <div class="sidebar-item" style="margin-top: 50%">
                     <span class="sidebar-text">Підтримка</span>
                 </div>
             </a>
-            <a href="/">
+            <a href="${pageContext.request.contextPath}/app/me">
                 <div class="sidebar-item">
                     <span class="sidebar-text">Контакти</span>
                 </div>
@@ -100,7 +106,7 @@
                     <div id="messages">
                         <c:if test="${not empty requestScope.chat.getMessages()}">
                             <c:forEach var="msg" items="${requestScope.chat.getMessages()}">
-                                <c:if test="${msg.getSender().getId() == sessionScope.USER_ID}">
+                                <c:if test="${msg.getSender().getId() == sessionScope.USER.getId()}">
                                     <div class="my-message">
                                         <div class="message">
                                             <p class="message-text">${msg.getMessage()}</p>
@@ -108,7 +114,7 @@
                                         </div>
                                     </div>
                                 </c:if>
-                                <c:if test="${msg.getSender().getId() != sessionScope.USER_ID}">
+                                <c:if test="${msg.getSender().getId() != sessionScope.USER.getId()}">
                                     <div class="friend-message">
                                         <div class="message">
                                             <p class="message-text">${msg.getMessage()}</p>

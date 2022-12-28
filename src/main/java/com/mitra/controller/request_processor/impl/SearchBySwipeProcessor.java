@@ -53,6 +53,11 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
         int id = getProfileIdFromString(profileIdsCookieValue);
 
         Optional<ProfileDto> profileOptional = profileService.find(id);
+
+        // update cookie with new value
+        profileIdsCookieValue = cutProfileIds(profileIdsCookieValue, id);
+        updateProfileIdsCookie(response, profileIdsCookieValue);
+
         if (!profileOptional.isPresent()) {
             redirect(response, AppUrl.SWIPE_SEARCH.getUrl());
             return;
@@ -60,10 +65,6 @@ public class SearchBySwipeProcessor extends AbstractRequestProcessor {
 
         request.setAttribute("profile", profileOptional.get());
         request.setAttribute("nextProfileId", id);
-
-        // update cookie with new value
-        profileIdsCookieValue = cutProfileIds(profileIdsCookieValue, id);
-        updateProfileIdsCookie(response, profileIdsCookieValue);
 
         // skip profile if we already liked it or this user liked us
         if (likeService.getLike(myId, id).isPresent()

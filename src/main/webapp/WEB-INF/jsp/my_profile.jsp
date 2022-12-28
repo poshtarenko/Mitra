@@ -3,95 +3,166 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="../../resources/img/icon.png">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/changeInfoStyle.css">
-
-    <!-- FONT AWESOME  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <!-- BOOTSTRAP-SELECT -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet"/>
-
     <title>Mitra</title>
+    <link rel="shortcut icon" href="../../resources/img/icon.png">
+
+    <link rel="stylesheet" href="../../resources/css/main.css">
+    <link rel="stylesheet" href="../../resources/css/profile.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+            rel="stylesheet">
 </head>
+
 <body>
+<div id="background">
+    <div id="app">
+        <div id="sidebar">
+            <a href="${pageContext.request.contextPath}/app/account">
+                <div class="sidebar-item" id="user-item">
+                    <c:if test="${not empty sessionScope.USER.getProfile().getPhotoPath()}">
+                        <img id="user-img" src="${pageContext.request.contextPath}/app/images?path=${sessionScope.USER.getProfile().getPhotoPath()}"/>
+                    </c:if>
+                    <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                        <img id="user-img" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
+                    </c:if>
+                    <span class="sidebar-text">${sessionScope.USER.getProfile().getName()}</span>
+                </div>
+            </a>
+            <a href="${pageContext.request.contextPath}/app/me">
+                <div class="sidebar-item" style="margin-top: 20px">
+                    <img src="../../resources/img/icon/profile.png" class="sidebar-img">
+                    <span class="sidebar-text">Профіль</span>
+                </div>
+            </a>
+            <a href="${pageContext.request.contextPath}/app/music">
+                <div class="sidebar-item">
+                    <img src="../../resources/img/icon/music.png" class="sidebar-img">
+                    <span class="sidebar-text">Музика</span>
+                </div>
+            </a>
+            <a href="${pageContext.request.contextPath}/app/go">
+                <div class="sidebar-item" style="margin-top: 50px">
+                    <img src="../../resources/img/icon/go.png" class="sidebar-img">
+                    <span class="sidebar-text">Погнали!</span>
+                </div>
+            </a>
+            <a href="${pageContext.request.contextPath}/app/search">
+                <div class="sidebar-item">
+                    <img src="../../resources/img/icon/search.png" class="sidebar-img">
+                    <span class="sidebar-text">Пошук</span>
+                </div>
+            </a>
+            <a href="${pageContext.request.contextPath}/app/likes">
+                <div class="sidebar-item selected-sidebar-item">
+                    <img src="../../resources/img/icon/likes.png" class="sidebar-img">
+                    <span class="sidebar-text">Лайки</span>
+                </div>
+            </a>
+            <a href="${pageContext.request.contextPath}/app/chats">
+                <div class="sidebar-item">
+                    <img src="../../resources/img/icon/chats.png" class="sidebar-img">
+                    <span class="sidebar-text">Чати</span>
+                </div>
+            </a>
+            <a href="${pageContext.request.contextPath}/app/me">
+                <div class="sidebar-item" style="margin-top: 50%">
+                    <span class="sidebar-text">Підтримка</span>
+                </div>
+            </a>
+            <a href="${pageContext.request.contextPath}/app/me">
+                <div class="sidebar-item">
+                    <span class="sidebar-text">Контакти</span>
+                </div>
+            </a>
+        </div>
+        <div id="content-wrapper">
+            <div id="content">
+                <div id="profile-content">
+                    <div id="profile-main">
+                        <div id="photo-and-button">
+                            <c:if test="${not empty requestScope.profile.getPhotoPath()}">
+                                <img id="profile-photo"  src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
+                            </c:if>
+                            <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                                <img id="profile-photo"  src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
+                            </c:if>
+                                <a type="submit" class="like-button" href="${pageContext.request.contextPath}/app/upd_profile" style="color: #FFFFFF;">Редагувати профіль</a>
+                        </div>
+                        <div id="profile-info">
+                            <div class="profile-text" id="profile-name">${requestScope.profile.getName()}</div>
+                            <div class="profile-text white-background">${requestScope.profile.getGender().name()}.
+                                ${requestScope.profile.getAge()} років.
+                                Місто ${requestScope.profile.getLocation().getCity()}</div>
+                            <c:if test="${not empty requestScope.profile.getSpecialities()}">
+                                <div class="profile-text">
+                                    <div class="white-background">Інструменти :</div>
+                                    <div>
+                                        <c:forEach var="instrument" items="${requestScope.profile.getInstruments()}">
+                                            <span>${instrument.getName()} </span>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                            </c:if>
+                            <c:if test="${not empty requestScope.profile.getSpecialities()}">
+                                <div class="profile-text">
+                                    <div class="white-background">Спеціальність :</div>
+                                    <div>
+                                        <c:forEach var="speciality" items="${requestScope.profile.getSpecialities()}">
+                                            <span>${speciality.getName()} </span>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                            </c:if>
+                            <div class="profile-text white-background">
+                                ${requestScope.profile.getText()}
+                            </div>
+                        </div>
+                    </div>
+                    <c:if test="${not empty requestScope.tracks}">
+                        <div class="center-word">Музика</div>
+                        <div id="music">
+                            <c:forEach var="track" items="${requestScope.tracks}">
+                                <div class="audio-item">
+                                    <p>${track.getName()} — ${track.getAuthor()}</p>
+                                    <audio controls>
+                                        <source src="${pageContext.request.contextPath}/app/audio?path=${track.getFilePath()}"
+                                                type="audio/mpeg">
+                                    </audio>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </c:if>
 
-<!-- <div class="transition-2 isActive"></div> -->
-<div class="asideAndContent">
-
-    <div class="asideAndContentInner">
-
-        <%@ include file="sidebar.jsp" %>
-
-        <main class="main">
-            <div class="main-content">
-                <h2>Моя анкета</h2>
-                <a href="${pageContext.request.contextPath}/app/account">НАЛАШТУВАТИ АКАУНТ</a>
-                <a href="${pageContext.request.contextPath}/app/upd_profile">ОНОВИТИ АНКЕТУ</a>
-                <a href="${pageContext.request.contextPath}/app/music">МОЯ МУЗИКА</a>
-                <br>
-                <c:if test="${not empty requestScope.profile.getPhotoPath()}">
-                    <img class="rounded img-rounded" width="250" height="250" src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
-                </c:if>
-                <c:if test="${empty requestScope.profile.getPhotoPath()}">
-                    <img class="rounded img-rounded" width="250" height="250" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
-                </c:if>
-                <h3>${requestScope.profile.getName()}</h3>
-                <p><b>${requestScope.profile.getLocation().getCity()}, ${requestScope.profile.getAge()} років, ${requestScope.profile.getGender().name()}</b></p>
-                <p><b>Інструменти :</b>
-                    <c:forEach var="instrument" items="${requestScope.profile.getInstruments()}">
-                        <span>${instrument.getName()}   </span>
-                    </c:forEach>
-                </p>
-                <p><b>Спеціальність :</b>
-                    <c:forEach var="speciality" items="${requestScope.profile.getSpecialities()}">
-                        <span>${speciality.getName()}   </span>
-                    </c:forEach>
-                </p>
-                <p>${requestScope.profile.getText()}</p>
-
-                <p><b>Моя музика :</b>
-                <c:if test="${not empty requestScope.tracks}">
-                    <c:forEach var="track" items="${requestScope.tracks}">
-                        <p>${track.getName()} - ${track.getAuthor()}</p>
-                        <audio controls>
-                            <source src="${pageContext.request.contextPath}/app/audio?path=${track.getFilePath()}"
-                                    type="audio/mpeg">
-                        </audio>
-                        <hr>
-                    </c:forEach><br>
-                </c:if><br>
-                <c:if test="${empty requestScope.tracks}">
-                    <p>Ваш список музики пустий, <a href="${pageContext.request.contextPath}/app/music">додайте свою</a></p><br>
-                </c:if><br>
+                    <c:if test="${not empty requestScope.friends}">
+                        <div class="center-word">Друзі</div>
+                        <div id="friends">
+                            <c:forEach var="friend" items="${requestScope.friends}">
+                                <div class="friend-wrapper">
+                                    <div class="friend">
+                                        <c:if test="${not empty requestScope.profile.getPhotoPath()}">
+                                            <img src="${pageContext.request.contextPath}/app/images?path=${friend.getPhotoPath()}"
+                                        </c:if>
+                                        <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                                            <img src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
+                                        </c:if>
+                                        <a href="${pageContext.request.contextPath}/app/profile?id=${friend.getId()}">
+                                                ${friend.getName()}
+                                        </a>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </c:if>
+                </div>
             </div>
-        </main>
+        </div>
     </div>
-    <!-- </div> -->
 </div>
-
-
-<!-- BOOTSTRAP SELECT -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
-
-<script src="${pageContext.request.contextPath}/resources/js/changeInfoScript.js"></script>
-
-<!-- BOOTSTRAP SELECT -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
-
-<script src="${pageContext.request.contextPath}/resources/js/styleSelect.js"></script>
 </body>
+
 </html>

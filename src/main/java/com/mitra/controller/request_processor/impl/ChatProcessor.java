@@ -8,6 +8,7 @@ import com.mitra.controller.request_processor.util.SessionAttrAccessor;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.MessageDto;
 import com.mitra.dto.ProfileDto;
+import com.mitra.dto.mapper.ChatDtoMapper;
 import com.mitra.exception.NothingFoundException;
 import com.mitra.service.ChatService;
 import com.mitra.service.MessageService;
@@ -33,10 +34,13 @@ public class ChatProcessor extends AbstractRequestProcessor {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int myId = SessionAttrAccessor.getProfileId(request);
         int chatId = Integer.parseInt(ParameterHelper.getNecessaryParameter(request, "c"));
 
         ChatDto chat = chatService.getChat(chatId)
                 .orElseThrow(() -> new NothingFoundException("Chat do not found"));
+        chat = ChatDtoMapper.suit(chat, myId);
+
         request.setAttribute("chat", chat);
         forward(request, response, AppUrl.CHAT.getJspFileName());
     }
