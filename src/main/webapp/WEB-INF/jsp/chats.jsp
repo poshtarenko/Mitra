@@ -35,7 +35,7 @@
                     <c:if test="${not empty sessionScope.USER.getProfile().getPhotoPath()}">
                         <img id="user-img" src="${pageContext.request.contextPath}/app/images?path=${sessionScope.USER.getProfile().getPhotoPath()}"/>
                     </c:if>
-                    <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                    <c:if test="${empty sessionScope.USER.getProfile().getPhotoPath()}">
                         <img id="user-img" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                     </c:if>
                     <span class="sidebar-text">${sessionScope.USER.getProfile().getName()}</span>

@@ -36,7 +36,7 @@
                     <c:if test="${not empty sessionScope.USER.getProfile().getPhotoPath()}">
                         <img id="user-img" src="${pageContext.request.contextPath}/app/images?path=${sessionScope.USER.getProfile().getPhotoPath()}"/>
                     </c:if>
-                    <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                    <c:if test="${empty sessionScope.USER.getProfile().getPhotoPath()}">
                         <img id="user-img" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                     </c:if>
                     <span class="sidebar-text">${sessionScope.USER.getProfile().getName()}</span>
@@ -102,10 +102,11 @@
                                 <img id="profile-photo"
                                      src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                             </c:if><br>
-                            <form action="/">
+                            <form action="${pageContext.request.contextPath}/app/upd_photo" method="post"
+                                  enctype="multipart/form-data">
                                 <label class="like-button" for="photo">Завантажити нове фото</label>
                                 <input style="display: none;" onchange="showPreview(event)" name="photo" type="file"
-                                       id="photo" value="19">
+                                       id="photo">
                                 <input type="submit" id="update-photo-button" style="display: none" name="">
                             </form>
                         </div>

@@ -28,7 +28,7 @@
                     <c:if test="${not empty sessionScope.USER.getProfile().getPhotoPath()}">
                         <img id="user-img" src="${pageContext.request.contextPath}/app/images?path=${sessionScope.USER.getProfile().getPhotoPath()}"/>
                     </c:if>
-                    <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                    <c:if test="${empty sessionScope.USER.getProfile().getPhotoPath()}">
                         <img id="user-img" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                     </c:if>
                     <span class="sidebar-text">${sessionScope.USER.getProfile().getName()}</span>
@@ -141,7 +141,7 @@
                             <input type="hidden" name="id" value="${requestScope.profile.getId()}">
                             <button type="submit" class="like-button">Давай знайомитись!</button>
                         </form>
-                        <a href="${pageContext.request.contextPath}/app/go" class="like-button">Наступна анкета</a>
+                        <a href="${pageContext.request.contextPath}/app/go" class="like-button" style="color: #ffffff">Наступна анкета</a>
                     </div>
                 </div>
             </div>

@@ -34,7 +34,7 @@ class LikeServiceTest {
     static void setUp() throws SQLException {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         profileService = serviceFactory.getProfileService();
-        likeService = serviceFactory.getProfileLikeService();
+        likeService = serviceFactory.getLikeService();
 
         profile1 = profileService.find(profile1Id).get();
         profile2 = profileService.find(profile2Id).get();

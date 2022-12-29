@@ -25,7 +25,7 @@
                     <c:if test="${not empty sessionScope.USER.getProfile().getPhotoPath()}">
                         <img id="user-img" src="${pageContext.request.contextPath}/app/images?path=${sessionScope.USER.getProfile().getPhotoPath()}"/>
                     </c:if>
-                    <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                    <c:if test="${empty sessionScope.USER.getProfile().getPhotoPath()}">
                         <img id="user-img" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                     </c:if>
                     <span class="sidebar-text">${sessionScope.USER.getProfile().getName()}</span>
@@ -91,9 +91,8 @@
                             </c:if>
 
                             <c:if test="${not empty requestScope.enableToLike}">
-                                <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/likes"
+                                <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/put_like"
                                       method="post">
-                                    <input type="hidden" name="type" value="LIKE">
                                     <input type="hidden" name="id" value="${requestScope.profile.getId()}">
                                     <button type="submit" class="like-button">Давай знайомитись!</button>
                                 </form>
@@ -112,7 +111,7 @@
                                 </c:if>
                                 <c:if test="${empty requestScope.chatId}">
                                     <form class="swipe_search_button"
-                                          action="${pageContext.request.contextPath}/app/chats" method="post">
+                                          action="${pageContext.request.contextPath}/app/open_chat" method="post">
                                         <input type="hidden" name="profileId" value="${requestScope.profile.getId()}">
                                         <button type="submit" class="like-button">Почати чат</button>
                                     </form>
@@ -123,23 +122,20 @@
                                 <p class="relationship-info-text">Цей користувач відмовив нам</p>
                             </c:if>
                             <c:if test="${not empty requestScope.enableToResponse}">
-                                <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/likes"
+                                <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/send_response"
                                       method="post">
-                                    <input type="hidden" name="type" value="RESPONSE">
                                     <input type="hidden" name="reaction" value="LIKE">
                                     <input type="hidden" name="id" value="${requestScope.profile.getId()}">
                                     <button type="submit" class="like-button">Давай знайомитись!</button>
                                 </form>
-                                <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/likes"
+                                <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/send_response"
                                       method="post">
-                                    <input type="hidden" name="type" value="RESPONSE">
                                     <input type="hidden" name="reaction" value="DISLIKE">
                                     <input type="hidden" name="id" value="${requestScope.profile.getId()}">
                                     <button type="submit" class="like-button">Відмовити</button>
                                 </form>
-                                <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/likes"
+                                <form class="swipe_search_button" action="${pageContext.request.contextPath}/app/send_response"
                                       method="post">
-                                    <input type="hidden" name="type" value="RESPONSE">
                                     <input type="hidden" name="reaction" value="IGNORE">
                                     <input type="hidden" name="id" value="${requestScope.profile.getId()}">
                                     <button type="submit" class="like-button">Ігнорувати</button>

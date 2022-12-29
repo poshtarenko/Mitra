@@ -39,11 +39,11 @@ public interface ProfileService {
     int getCount(ProfileFilter profileFilter) throws DaoException;
 
     /**
-     * Get all user IDs from DB
+     * Get user IDs from DB for swipe search
      *
      * @return list of IDs
      */
-    List<Integer> getAllIDs();
+    List<Integer> getIdsForSwipeSearch(int id);
 
     /**
      * Find profile by ID
@@ -55,12 +55,18 @@ public interface ProfileService {
 
     /**
      * Update profile in DB with values from Profile Dto
+     *
+     * @param profileId     id of entity
+     * @param profileDto profileDTO
+     */
+    void updateProfile(int profileId, ProfileDto profileDto) throws ValidationException;
+
+    /**
      * Update profile photo, if newPhoto param is not null
      *
-     * @param userId     id of entity
-     * @param profileDto profileDTO
+     * @param profileId     id of entity
      * @param newPhoto   InputStream with photo
      */
-    void updateProfile(int userId, ProfileDto profileDto, InputStream newPhoto) throws ValidationException;
+    void updatePhoto(int profileId, InputStream newPhoto);
 
 }

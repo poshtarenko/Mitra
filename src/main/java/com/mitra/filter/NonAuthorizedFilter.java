@@ -1,9 +1,8 @@
 package com.mitra.filter;
 
 
-import com.mitra.controller.SessionAttributes;
-import com.mitra.controller.AppUrl;
-import com.mitra.controller.request_processor.util.SessionAttrAccessor;
+import com.mitra.controller.GetUrl;
+import com.mitra.controller.impl.util.SessionAttrAccessor;
 import com.mitra.dto.ProfileDto;
 import com.mitra.dto.UserDto;
 
@@ -15,16 +14,16 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-@WebFilter(AppUrl.APP_PATH_PREFIX + "/*")
+@WebFilter(GetUrl.APP_PATH_PREFIX + "/*")
 public class NonAuthorizedFilter implements Filter {
 
     private static final Set<String> enabledUrlsForNonAuthorized;
 
     static {
         enabledUrlsForNonAuthorized = new HashSet<>();
-        enabledUrlsForNonAuthorized.add(AppUrl.LANDING_PAGE.getUrl());
-        enabledUrlsForNonAuthorized.add(AppUrl.AUTHORIZATION.getUrl());
-        enabledUrlsForNonAuthorized.add(AppUrl.REGISTRATION.getUrl());
+        enabledUrlsForNonAuthorized.add(GetUrl.LANDING_PAGE.getUrl());
+        enabledUrlsForNonAuthorized.add(GetUrl.AUTHORIZATION.getUrl());
+        enabledUrlsForNonAuthorized.add(GetUrl.REGISTRATION.getUrl());
     }
 
     @Override
@@ -39,9 +38,9 @@ public class NonAuthorizedFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             if (user == null) {
-                resp.sendRedirect(AppUrl.AUTHORIZATION.getUrl());
-            } else if (profile == null && !req.getRequestURI().equals(AppUrl.CREATE_PROFILE.getUrl())) {
-                resp.sendRedirect(AppUrl.CREATE_PROFILE.getUrl());
+                resp.sendRedirect(GetUrl.AUTHORIZATION.getUrl());
+            } else if (profile == null && !req.getRequestURI().equals(GetUrl.CREATE_PROFILE.getUrl())) {
+                resp.sendRedirect(GetUrl.CREATE_PROFILE.getUrl());
             } else {
                 filterChain.doFilter(servletRequest, servletResponse);
             }

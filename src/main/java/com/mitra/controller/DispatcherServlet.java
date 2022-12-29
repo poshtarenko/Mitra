@@ -1,7 +1,8 @@
 package com.mitra.controller;
 
-import com.mitra.controller.request_processor.RequestProcessor;
-import com.mitra.controller.request_processor.RequestProcessorFactory;
+import com.mitra.controller.impl.GetController;
+import com.mitra.controller.impl.ControllerFactory;
+import com.mitra.controller.impl.PostController;
 import com.mitra.exception.PageDontExistException;
 
 import javax.servlet.ServletException;
@@ -13,37 +14,31 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet(AppUrl.APP_PATH_PREFIX + "/*")
+@WebServlet(GetUrl.APP_PATH_PREFIX + "/*")
 @MultipartConfig()
 public class DispatcherServlet extends HttpServlet {
 
-    private static final RequestProcessorFactory requestProcessorFactory = new RequestProcessorFactory();
+    private static final ControllerFactory controllerFactory = new ControllerFactory();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getProcessor(String.valueOf(request.getRequestURI()))
-                .processGet(request, response);
+        String url = String.valueOf(request.getRequestURI());
+        GetController controller = controllerFactory.findGetController(url);
+        if (controller != null) {
+            controller.processGet(request, response);
+        } else {
+            super.doGet(request, response);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getProcessor(String.valueOf(request.getRequestURI()))
-                .processPost(request, response);
+        String url = String.valueOf(request.getRequestURI());
+        PostController controller = controllerFactory.findPostController(url);
+        if (controller != null) {
+            controller.processPost(request, response);
+        } else {
+            super.doPost(request, response);
+        }
     }
-
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getProcessor(String.valueOf(request.getRequestURI()))
-                .processDelete(request, response);
-    }
-
-    public RequestProcessor getProcessor(String requestUrl) {
-        Optional<AppUrl> urlPath = AppUrl.getByPath(requestUrl);
-
-        if (!urlPath.isPresent())
-            throw new PageDontExistException("Path " + requestUrl + " is not represented");
-
-        return requestProcessorFactory.getProcessor(urlPath.get());
-    }
-
 }

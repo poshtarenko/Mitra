@@ -37,14 +37,23 @@ public interface ProfileDao extends Dao<Integer, Profile> {
      * @param connection connection to db
      * @return list of all profile IDs
      */
-    List<Integer> getIdsForSwipeSearch(Connection connection) throws DaoException;
+    List<Integer> getIdsForSwipeSearch(Connection connection, int id) throws DaoException;
 
     /**
-     * Get list of all profile IDs
+     * Set preview track to profile
      *
      * @param connection connection to db
      * @param profileId  profile id
      * @param trackId    track id
      */
     void setPreviewTrack(Connection connection, int profileId, int trackId) throws DaoException;
+
+    /**
+     * Get list of all profile IDs
+     *
+     * @param connection connection to db
+     * @param profileId  profile id
+     * @param photoPath  new photo path
+     */
+    void setPhotoPath(Connection connection, int profileId, String photoPath) throws DaoException;
 }

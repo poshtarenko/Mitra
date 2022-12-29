@@ -8,6 +8,7 @@ import com.mitra.dto.ProfileDto;
 import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Profile;
 import com.mitra.exception.DaoException;
+import com.mitra.exception.ServiceException;
 import com.mitra.exception.ValidationException;
 import com.mitra.service.ProfileService;
 import com.mitra.validator.Error;
@@ -86,9 +87,9 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public List<Integer> getAllIDs() {
+    public List<Integer> getIdsForSwipeSearch(int id) {
         try (Connection connection = ConnectionManager.get()) {
-            return profileDao.getIdsForSwipeSearch(connection);
+            return profileDao.getIdsForSwipeSearch(connection, id);
         } catch (DaoException | SQLException e) {
             log.error("Getting all profile ids failed");
             return Collections.emptyList();
@@ -96,28 +97,37 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void updateProfile(int userId, ProfileDto profileDto, InputStream newPhoto) {
+    public void updateProfile(int profileId, ProfileDto profileDto) {
         try (Connection connection = ConnectionManager.get()) {
             checkProfileOrThrowException(profileDto);
 
             Profile profile = profileDtoMapper.mapToEntity(profileDto);
 
-            // update profile photoPath in DB, upload new photo on cloud
-            String photoPath = profile.getPhotoPath();
-            try {
-                if (newPhoto != null && newPhoto.available() > 0) {
-                    if (photoPath != null && !photoPath.equals(""))
-                        cloudStorageProvider.deleteFile(photoPath);
-                    String fileID = cloudStorageProvider.setProfilePhoto(profile.getId(), newPhoto);
-                    profile.setPhotoPath(fileID);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            profileDao.update(connection, userId, profile);
+            profileDao.update(connection, profileId, profile);
         } catch (DaoException | SQLException e) {
             log.error("Profile update failed");
+        }
+    }
+
+    @Override
+    public void updatePhoto(int profileId, InputStream newPhoto) {
+        try (Connection connection = ConnectionManager.get()) {
+            Optional<Profile> profileOptional = profileDao.find(connection, profileId);
+            if (!profileOptional.isPresent()) {
+                log.warn("Trying to find profile with wrong id {}", profileId);
+                throw new ServiceException("Wrong profileId" + profileId);
+            }
+
+            String photoPath = profileOptional.get().getPhotoPath();
+            if (newPhoto != null && newPhoto.available() > 0) {
+                if (photoPath != null && !photoPath.equals(""))
+                    cloudStorageProvider.deleteFile(photoPath);
+                String fileID = cloudStorageProvider.setProfilePhoto(profileId, newPhoto);
+                profileDao.setPhotoPath(connection, profileId, fileID);
+            }
+
+        } catch (DaoException | SQLException | IOException e) {
+            log.error("Profile photo update failed");
         }
     }
 

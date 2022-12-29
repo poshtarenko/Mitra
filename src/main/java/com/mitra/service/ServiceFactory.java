@@ -66,7 +66,7 @@ public class ServiceFactory {
         return specialityService;
     }
 
-    public LikeService getProfileLikeService() {
+    public LikeService getLikeService() {
         return likeService;
     }
 

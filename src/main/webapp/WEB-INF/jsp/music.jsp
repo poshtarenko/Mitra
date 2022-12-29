@@ -35,7 +35,7 @@
                     <c:if test="${not empty sessionScope.USER.getProfile().getPhotoPath()}">
                         <img id="user-img" src="${pageContext.request.contextPath}/app/images?path=${sessionScope.USER.getProfile().getPhotoPath()}"/>
                     </c:if>
-                    <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                    <c:if test="${empty sessionScope.USER.getProfile().getPhotoPath()}">
                         <img id="user-img" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                     </c:if>
                     <span class="sidebar-text">${sessionScope.USER.getProfile().getName()}</span>
@@ -93,8 +93,7 @@
                 <div id="music-content">
                     <p class="center-word">Додати пісню</p>
                     <form action="">
-                        <form id="music-form" action="${pageContext.request.contextPath}/app/music" method="post" enctype='multipart/form-data'>
-                            <input type="hidden" name="action" value="ADD"/>
+                        <form id="music-form" action="${pageContext.request.contextPath}/app/add_track" method="post" enctype='multipart/form-data'>
                             <div class="music-form-item">
                                 <label for="name">Автор</label>
                                 <input type="text" name="name" id="name">
@@ -123,9 +122,8 @@
                                     <audio controls
                                            src="${pageContext.request.contextPath}/app/audio?path=${track.getFilePath()}"></audio>
                                     <div class="audio-item-buttons">
-                                        <form style="margin: 0" class="music-button-form" action="${pageContext.request.contextPath}/app/music" method="post"
+                                        <form style="margin: 0" class="music-button-form" action="${pageContext.request.contextPath}/app/delete_track" method="post"
                                               enctype='multipart/form-data'>
-                                            <input type="hidden" name="action" value="SET_PREVIEW"/>
                                             <input type="hidden" name="trackId" value="${track.getId()}"/>
                                             <button type="submit" class="music-button music-button-left">На прев'ю</button>
                                         </form>

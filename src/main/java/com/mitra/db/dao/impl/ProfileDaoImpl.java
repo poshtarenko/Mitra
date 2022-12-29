@@ -72,17 +72,27 @@ public class ProfileDaoImpl implements ProfileDao {
             Column.PROFILE.TEXT.shortName(), Column.PROFILE.PHOTO_PATH.shortName(), Column.PROFILE.CITY_ID.shortName(),
             Column.PROFILE.ID.shortName());
 
-    public static final String UPDATE_PROFILE_PREVIEW_TRACK = String.format(
+    public static final String UPDATE_PREVIEW_TRACK = String.format(
             "UPDATE %s SET %s = ? WHERE %s = ?",
             Table.PROFILE, Column.PROFILE.PREVIEW_MUSIC_ID.shortName(), Column.PROFILE.ID.shortName());
+
+    public static final String UPDATE_PHOTO_PATH = String.format(
+            "UPDATE %s SET %s = ? WHERE %s = ?",
+            Table.PROFILE, Column.PROFILE.PHOTO_PATH.shortName(), Column.PROFILE.ID.shortName());
 
     public static final String DELETE_SQL = String.format(
             "DELETE FROM %s WHERE %s = ?",
             Table.PROFILE, Column.PROFILE.ID);
 
     public static final String GET_IDS_FOR_SWIPE_SEARCH = String.format(
-            "SELECT %s FROM %s",
-            Column.PROFILE.ID, Table.PROFILE);
+            "SELECT %s FROM %s " +
+                    "EXCEPT " +
+                    "SELECT DISTINCT %s FROM %s " +
+                    "INNER JOIN %s ON (%s = %s OR %s = %s) " +
+                    "WHERE %s = ? OR %s = ?;",
+            Column.PROFILE.ID, Table.PROFILE, Column.PROFILE.ID, Table.PROFILE,
+            Table.LIKE, Column.PROFILE.ID, Column.LIKE.SENDER_ID, Column.PROFILE.ID, Column.LIKE.RECEIVER_ID,
+            Column.LIKE.SENDER_ID, Column.LIKE.RECEIVER_ID);
 
     @Override
     public Optional<Profile> find(Connection connection, Integer id) throws DaoException {
@@ -133,8 +143,10 @@ public class ProfileDaoImpl implements ProfileDao {
     }
 
     @Override
-    public List<Integer> getIdsForSwipeSearch(Connection connection) throws DaoException {
+    public List<Integer> getIdsForSwipeSearch(Connection connection, int id) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(GET_IDS_FOR_SWIPE_SEARCH)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Integer> ids = new ArrayList<>();
             while (resultSet.next())
@@ -147,7 +159,12 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public void setPreviewTrack(Connection connection, int profileId, int trackId) throws DaoException {
-        queryExecutor.update(connection, UPDATE_PROFILE_PREVIEW_TRACK, trackId, profileId);
+        queryExecutor.update(connection, UPDATE_PREVIEW_TRACK, trackId, profileId);
+    }
+
+    @Override
+    public void setPhotoPath(Connection connection, int profileId, String photoPath) throws DaoException {
+        queryExecutor.update(connection, UPDATE_PHOTO_PATH, photoPath, profileId);
     }
 
     @Override

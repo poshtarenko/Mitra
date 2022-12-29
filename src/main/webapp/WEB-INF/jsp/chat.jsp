@@ -35,7 +35,7 @@
                     <c:if test="${not empty sessionScope.USER.getProfile().getPhotoPath()}">
                         <img id="user-img" src="${pageContext.request.contextPath}/app/images?path=${sessionScope.USER.getProfile().getPhotoPath()}"/>
                     </c:if>
-                    <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                    <c:if test="${empty sessionScope.USER.getProfile().getPhotoPath()}">
                         <img id="user-img" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                     </c:if>
                     <span class="sidebar-text">${sessionScope.USER.getProfile().getName()}</span>
@@ -128,7 +128,7 @@
                             <p>Повідомлень поки немає</p>
                         </c:if>
                     </div>
-                    <form id="message-input" action="${pageContext.request.contextPath}/app/chat" method="post">
+                    <form id="message-input" action="${pageContext.request.contextPath}/app/send_message" method="post">
                         <input type="hidden" name="chatId" value="${requestScope.chat.getId()}">
                         <input type="text" name="msg">
                         <button type="submit" class="like-button">OK</button>
