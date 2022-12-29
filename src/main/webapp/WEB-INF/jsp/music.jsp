@@ -48,7 +48,7 @@
                 </div>
             </a>
             <a href="${pageContext.request.contextPath}/app/music">
-                <div class="sidebar-item">
+                <div class="sidebar-item selected-sidebar-item">
                     <img src="../../resources/img/icon/music.png" class="sidebar-img">
                     <span class="sidebar-text">Музика</span>
                 </div>
@@ -66,7 +66,7 @@
                 </div>
             </a>
             <a href="${pageContext.request.contextPath}/app/likes">
-                <div class="sidebar-item selected-sidebar-item">
+                <div class="sidebar-item">
                     <img src="../../resources/img/icon/likes.png" class="sidebar-img">
                     <span class="sidebar-text">Лайки</span>
                 </div>
@@ -92,7 +92,7 @@
             <div id="content">
                 <div id="music-content">
                     <p class="center-word">Додати пісню</p>
-                    <form action="">
+                    <div>
                         <form id="music-form" action="${pageContext.request.contextPath}/app/add_track" method="post" enctype='multipart/form-data'>
                             <div class="music-form-item">
                                 <label for="name">Автор</label>
@@ -112,7 +112,7 @@
                                 <button type="submit" class="like-button">Додати</button>
                             </div>
                         </form>
-                    </form>
+                    </div>
                     <p class="center-word" style="margin-top: 50px">Моя музика</p>
                     <div id="music">
                         <c:if test="${not empty requestScope.tracks}">

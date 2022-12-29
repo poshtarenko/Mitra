@@ -55,6 +55,11 @@ body {
     margin-bottom: 30px;
 }
 
+#user-item span{
+    height: 1em;
+    overflow-y: hidden;
+}
+
 #user-img {
     height: 40px;
     width: 40px;
@@ -178,10 +183,15 @@ a {
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.7);
 }
 
+a {
+    line-height: 1.0 !important;
+}
+
 a:link {
     color: #2A77C5;
     text-decoration: none;
     font-size: 16px;
+    line-height: 1.0 !important;
 }
 
 a:hover {

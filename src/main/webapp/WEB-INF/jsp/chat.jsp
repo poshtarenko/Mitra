@@ -66,13 +66,13 @@
                 </div>
             </a>
             <a href="${pageContext.request.contextPath}/app/likes">
-                <div class="sidebar-item selected-sidebar-item">
+                <div class="sidebar-item">
                     <img src="../../resources/img/icon/likes.png" class="sidebar-img">
                     <span class="sidebar-text">Лайки</span>
                 </div>
             </a>
             <a href="${pageContext.request.contextPath}/app/chats">
-                <div class="sidebar-item">
+                <div class="sidebar-item selected-sidebar-item">
                     <img src="../../resources/img/icon/chats.png" class="sidebar-img">
                     <span class="sidebar-text">Чати</span>
                 </div>

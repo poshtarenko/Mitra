@@ -102,10 +102,10 @@
                         <c:forEach var="like" items="${requestScope.ownLikes}">
                             <div class="likes-elements">
                                 <div class="like-element">
-                                    <c:if test="${not empty sessionScope.USER.getProfile().getPhotoPath()}">
+                                    <c:if test="${not empty like.getReceiver().getPhotoPath()}">
                                         <img src="${pageContext.request.contextPath}/app/images?path=${like.getReceiver().getProfile().getPhotoPath()}"/>
                                     </c:if>
-                                    <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                                    <c:if test="${empty like.getReceiver().getPhotoPath()}">
                                         <img src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                                     </c:if>
                                     <a href="${pageContext.request.contextPath}/app/profile?id=${like.getReceiver().getId()}">${like.getReceiver().getName()}</a>
@@ -118,10 +118,10 @@
                         <c:forEach var="like" items="${requestScope.waitingResponseLikes}">
                             <div class="likes-elements">
                                 <div class="like-element">
-                                    <c:if test="${not empty sessionScope.USER.getProfile().getPhotoPath()}">
+                                    <c:if test="${not empty like.getReceiver().getPhotoPath()}">
                                         <img src="${pageContext.request.contextPath}/app/images?path=${like.getReceiver().getProfile().getPhotoPath()}"/>
                                     </c:if>
-                                    <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                                    <c:if test="${empty like.getReceiver().getPhotoPath()}">
                                         <img src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                                     </c:if>
                                     <a href="${pageContext.request.contextPath}/app/profile?id=${like.getReceiver().getId()}">${like.getReceiver().getName()}</a>
@@ -134,10 +134,10 @@
                         <c:forEach var="like" items="${requestScope.mutualLikes}">
                             <div class="likes-elements">
                                 <div class="like-element">
-                                    <c:if test="${not empty sessionScope.USER.getProfile().getPhotoPath()}">
+                                    <c:if test="${not empty like.getReceiver().getPhotoPath()}">
                                         <img src="${pageContext.request.contextPath}/app/images?path=${like.getReceiver().getProfile().getPhotoPath()}"/>
                                     </c:if>
-                                    <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                                    <c:if test="${empty like.getReceiver().getPhotoPath()}">
                                         <img src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                                     </c:if>
                                     <a href="${pageContext.request.contextPath}/app/profile?id=${like.getReceiver().getId()}">${like.getReceiver().getName()}</a>

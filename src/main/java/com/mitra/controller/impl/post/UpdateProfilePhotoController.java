@@ -2,6 +2,7 @@ package com.mitra.controller.impl.post;
 
 import com.mitra.controller.GetUrl;
 import com.mitra.controller.impl.PostController;
+import com.mitra.controller.impl.util.ParameterHelper;
 import com.mitra.controller.impl.util.SessionAttrAccessor;
 import com.mitra.service.ProfileService;
 
@@ -23,12 +24,8 @@ public class UpdateProfilePhotoController implements PostController {
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int myId = SessionAttrAccessor.getProfileId(request);
-
-        Part photoPart = request.getPart("photo");
-        if (photoPart != null && photoPart.getSize() > 0) {
-            profileService.updatePhoto(myId, photoPart.getInputStream());
-        }
-
+        Part photoPart = ParameterHelper.getNecessaryPart(request, "photo");
+        profileService.updatePhoto(myId, photoPart.getInputStream());
         response.sendRedirect(GetUrl.MY_PROFILE.getUrl());
     }
 }

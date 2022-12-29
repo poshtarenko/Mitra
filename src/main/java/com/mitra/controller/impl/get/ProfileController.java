@@ -45,6 +45,7 @@ public class ProfileController implements GetController {
 
         if (profileId == myId) {
             response.sendRedirect(GetUrl.MY_PROFILE.getUrl());
+            return;
         }
 
         List<LikeDto> likes = likeService.getProfileLikes(profileId);

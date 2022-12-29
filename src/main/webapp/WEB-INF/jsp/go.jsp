@@ -47,7 +47,7 @@
                 </div>
             </a>
             <a href="${pageContext.request.contextPath}/app/go">
-                <div class="sidebar-item" style="margin-top: 50px">
+                <div class="sidebar-item selected-sidebar-item" style="margin-top: 50px">
                     <img src="../../resources/img/icon/go.png" class="sidebar-img">
                     <span class="sidebar-text">Погнали!</span>
                 </div>
@@ -59,7 +59,7 @@
                 </div>
             </a>
             <a href="${pageContext.request.contextPath}/app/likes">
-                <div class="sidebar-item selected-sidebar-item">
+                <div class="sidebar-item">
                     <img src="../../resources/img/icon/likes.png" class="sidebar-img">
                     <span class="sidebar-text">Лайки</span>
                 </div>
@@ -103,8 +103,8 @@
                         </audio>
                         <hr>
                     </c:if>
-                    <div class="profile-text white-background">${requestScope.profile.getLocation().getCity()}. ${requestScope.profile.getAge()}
-                        років. Місто ${requestScope.profile.getGender().name()}</div>
+                    <div class="profile-text white-background">${requestScope.profile.getGender().name()}. ${requestScope.profile.getAge()}
+                        років. Місто ${requestScope.profile.getLocation().getCity()}</div>
                     <c:if test="${not empty requestScope.profile.getInstruments()}">
                         <p><b>Інструменти :</b>
                             <c:forEach var="instrument" items="${requestScope.profile.getInstruments()}">

@@ -66,11 +66,10 @@ public class ProfileDaoImpl implements ProfileDao {
             Column.PROFILE.PHOTO_PATH.shortName(), Column.PROFILE.CITY_ID.shortName());
 
     public static final String UPDATE_SQL = String.format(
-            "UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ?,  %s = ? WHERE %s = ?",
+            "UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?,  %s = ? WHERE %s = ?",
             Table.PROFILE,
             Column.PROFILE.NAME.shortName(), Column.PROFILE.AGE.shortName(), Column.PROFILE.GENDER_ID.shortName(),
-            Column.PROFILE.TEXT.shortName(), Column.PROFILE.PHOTO_PATH.shortName(), Column.PROFILE.CITY_ID.shortName(),
-            Column.PROFILE.ID.shortName());
+            Column.PROFILE.TEXT.shortName(), Column.PROFILE.CITY_ID.shortName(), Column.PROFILE.ID.shortName());
 
     public static final String UPDATE_PREVIEW_TRACK = String.format(
             "UPDATE %s SET %s = ? WHERE %s = ?",
@@ -178,7 +177,7 @@ public class ProfileDaoImpl implements ProfileDao {
     public void update(Connection connection, Integer id, Profile entity) throws DaoException {
         queryExecutor.update(connection, UPDATE_SQL,
                 entity.getName(), entity.getAge(), entity.getGender().getId(), entity.getText(),
-                entity.getPhotoPath(), entity.getLocation().getId(), id);
+                entity.getLocation().getId(), id);
         instrumentDao.setProfileInstruments(connection, id, entity.getInstruments());
         specialityDao.setProfileSpecialities(connection, id, entity.getSpecialities());
     }

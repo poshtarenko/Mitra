@@ -43,7 +43,7 @@
                 </div>
             </a>
             <a href="${pageContext.request.contextPath}/app/me">
-                <div class="sidebar-item" style="margin-top: 20px">
+                <div class="sidebar-item selected-sidebar-item" style="margin-top: 20px">
                     <img src="../../resources/img/icon/profile.png" class="sidebar-img">
                     <span class="sidebar-text">Профіль</span>
                 </div>
@@ -67,7 +67,7 @@
                 </div>
             </a>
             <a href="${pageContext.request.contextPath}/app/likes">
-                <div class="sidebar-item selected-sidebar-item">
+                <div class="sidebar-item">
                     <img src="../../resources/img/icon/likes.png" class="sidebar-img">
                     <span class="sidebar-text">Лайки</span>
                 </div>

@@ -2,6 +2,7 @@ package com.mitra.controller.impl.post;
 
 import com.mitra.controller.GetUrl;
 import com.mitra.controller.impl.PostController;
+import com.mitra.controller.impl.util.ParameterHelper;
 import com.mitra.controller.impl.util.SessionAttrAccessor;
 import com.mitra.dto.TrackDto;
 import com.mitra.service.TrackService;
@@ -22,30 +23,20 @@ public class AddTrackController implements PostController {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+        String name = ParameterHelper.getNecessaryParameter(request, "name");
+        String author = ParameterHelper.getNecessaryParameter(request, "author");
+        Part audio = ParameterHelper.getNecessaryPart(request, "audio");
 
-        if (action.equals("ADD")) {
-            String name = request.getParameter("name");
-            String author = request.getParameter("author");
-            Part audio = request.getPart("audio");
+        int profileId = SessionAttrAccessor.getProfileId(request);
 
-            int profileId = SessionAttrAccessor.getProfileId(request);
+        TrackDto trackDto = TrackDto.builder()
+                .name(name)
+                .author(author)
+                .ownerId(profileId)
+                .build();
 
-            TrackDto trackDto = TrackDto.builder()
-                    .name(name)
-                    .author(author)
-                    .ownerId(profileId)
-                    .build();
+        trackService.save(trackDto, audio.getInputStream());
 
-            trackService.save(trackDto, audio.getInputStream());
-        } else if (action.equals("DELETE")) {
-            int trackId = Integer.parseInt(request.getParameter("trackId"));
-            trackService.remove(trackId);
-        } else if (action.equals("SET_PREVIEW")) {
-            int trackId = Integer.parseInt(request.getParameter("trackId"));
-            int profileId = SessionAttrAccessor.getProfileId(request);
-            trackService.setProfilePreviewTrack(profileId, trackId);
-        }
 
         response.sendRedirect(GetUrl.MUSIC.getUrl());
     }

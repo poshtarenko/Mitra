@@ -34,7 +34,7 @@
                 </div>
             </a>
             <a href="${pageContext.request.contextPath}/app/me">
-                <div class="sidebar-item" style="margin-top: 20px">
+                <div class="sidebar-item selected-sidebar-item" style="margin-top: 20px">
                     <img src="../../resources/img/icon/profile.png" class="sidebar-img">
                     <span class="sidebar-text">Профіль</span>
                 </div>
@@ -58,7 +58,7 @@
                 </div>
             </a>
             <a href="${pageContext.request.contextPath}/app/likes">
-                <div class="sidebar-item selected-sidebar-item">
+                <div class="sidebar-item">
                     <img src="../../resources/img/icon/likes.png" class="sidebar-img">
                     <span class="sidebar-text">Лайки</span>
                 </div>
@@ -144,10 +144,10 @@
                             <c:forEach var="friend" items="${requestScope.friends}">
                                 <div class="friend-wrapper">
                                     <div class="friend">
-                                        <c:if test="${not empty requestScope.profile.getPhotoPath()}">
+                                        <c:if test="${not empty friend.getPhotoPath()}">
                                             <img src="${pageContext.request.contextPath}/app/images?path=${friend.getPhotoPath()}"
                                         </c:if>
-                                        <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                                        <c:if test="${empty friend.getPhotoPath()}">
                                             <img src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                                         </c:if>
                                         <a href="${pageContext.request.contextPath}/app/profile?id=${friend.getId()}">

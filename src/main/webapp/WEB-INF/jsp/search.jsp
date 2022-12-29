@@ -59,13 +59,13 @@
                 </div>
             </a>
             <a href="${pageContext.request.contextPath}/app/search">
-                <div class="sidebar-item">
+                <div class="sidebar-item selected-sidebar-item">
                     <img src="../../resources/img/icon/search.png" class="sidebar-img">
                     <span class="sidebar-text">Пошук</span>
                 </div>
             </a>
             <a href="${pageContext.request.contextPath}/app/likes">
-                <div class="sidebar-item selected-sidebar-item">
+                <div class="sidebar-item">
                     <img src="../../resources/img/icon/likes.png" class="sidebar-img">
                     <span class="sidebar-text">Лайки</span>
                 </div>
@@ -185,7 +185,9 @@
                             <img id="profile-photo" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                         </c:if>
                         <div id="profile-info">
-                            <div class="profile-text" id="profile-name">${profile.getName()}</div>
+                            <a href="${pageContext.request.contextPath}/app/profile?id=${profile.getId()}">
+                                    ${profile.getName()}
+                            </a>
                             <div class="profile-text white-background">${profile.getGender().name()}. ${profile.getAge()} років. Місто ${profile.getLocation().getCity()}</div>
                             <div class="profile-text white-background profile-text-attr">
                                     ${profile.getText()}

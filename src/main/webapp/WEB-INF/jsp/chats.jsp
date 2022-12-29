@@ -66,13 +66,13 @@
                 </div>
             </a>
             <a href="${pageContext.request.contextPath}/app/likes">
-                <div class="sidebar-item selected-sidebar-item">
+                <div class="sidebar-item">
                     <img src="../../resources/img/icon/likes.png" class="sidebar-img">
                     <span class="sidebar-text">Лайки</span>
                 </div>
             </a>
             <a href="${pageContext.request.contextPath}/app/chats">
-                <div class="sidebar-item">
+                <div class="sidebar-item selected-sidebar-item">
                     <img src="../../resources/img/icon/chats.png" class="sidebar-img">
                     <span class="sidebar-text">Чати</span>
                 </div>
@@ -106,6 +106,7 @@
                                         </c:if>
                                         <a href="${pageContext.request.contextPath}/app/chat?c=${chat.getId()}">
                                                 ${chat.getFriendProfile().getName()}
+                                        </a>
                                     </div>
                                 </c:if>
                                 <c:if test="${chat.getFriendProfile().getId() == sessionScope.USER.getId()}">
@@ -118,6 +119,7 @@
                                         </c:if>
                                         <a href="${pageContext.request.contextPath}/app/chat?c=${chat.getId()}">
                                                 ${chat.getMyProfile().getName()}
+                                        </a>
                                     </div>
                                 </c:if>
                             </c:forEach>
@@ -132,12 +134,12 @@
     </div>
 </div>
 
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
+
 </body>
 
 </html>
