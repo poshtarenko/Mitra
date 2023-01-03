@@ -21,7 +21,7 @@ public class CreateProfileController implements GetController {
 
     @Override
     public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("cities", locationService.getAll());
+        request.setAttribute("locations", locationService.getAll());
         request.setAttribute("genders", Gender.values());
         ControllerUtils.forward(request, response, GetUrl.CREATE_PROFILE.getJspFileName());
     }

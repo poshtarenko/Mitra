@@ -25,7 +25,7 @@ public class EncryptorSHA512 implements PasswordEncryptor {
     }
 
     public String encrypt(String passwordToHash, String salt) {
-        String generatedPassword = null;
+        String generatedPassword;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             md.update(salt.getBytes(StandardCharsets.UTF_8));

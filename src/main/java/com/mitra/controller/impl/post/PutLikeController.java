@@ -4,7 +4,6 @@ import com.mitra.controller.impl.PostController;
 import com.mitra.controller.impl.util.ControllerUtils;
 import com.mitra.controller.impl.util.ParameterHelper;
 import com.mitra.controller.impl.util.SessionAttrAccessor;
-import com.mitra.entity.Reaction;
 import com.mitra.service.LikeService;
 
 import javax.servlet.ServletException;

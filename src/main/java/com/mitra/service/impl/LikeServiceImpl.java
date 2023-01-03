@@ -50,8 +50,7 @@ public class LikeServiceImpl implements LikeService {
                 log.warn("Trying to make response where there are no like" + "sender:{}, receiver:{}",
                         senderId, receiverId);
                 return;
-            }
-            else if (!maybeLike.get().getReaction().equals(Reaction.NO)) {
+            } else if (!maybeLike.get().getReaction().equals(Reaction.NO)) {
                 log.warn("Trying to make response on like which already has response" + "sender:{}, receiver:{}",
                         senderId, receiverId);
                 return;

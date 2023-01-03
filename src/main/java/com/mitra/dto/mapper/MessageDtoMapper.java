@@ -3,12 +3,10 @@ package com.mitra.dto.mapper;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.MessageDto;
 import com.mitra.dto.ProfileDto;
-import com.mitra.entity.Chat;
 import com.mitra.entity.Message;
 import com.mitra.entity.Profile;
 import com.mitra.entity.impl.ChatImpl;
 import com.mitra.entity.impl.MessageImpl;
-import com.mitra.entity.impl.ProfileImpl;
 
 public class MessageDtoMapper implements DtoMapper<MessageDto, Message> {
 

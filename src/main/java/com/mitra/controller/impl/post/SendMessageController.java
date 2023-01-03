@@ -6,6 +6,7 @@ import com.mitra.controller.impl.util.SessionAttrAccessor;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.MessageDto;
 import com.mitra.dto.ProfileDto;
+import com.mitra.exception.AccessDeniedException;
 import com.mitra.exception.NothingFoundException;
 import com.mitra.service.ChatService;
 import com.mitra.service.MessageService;
@@ -15,7 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 
 @Slf4j
@@ -37,11 +37,7 @@ public class SendMessageController implements PostController {
         ChatDto chat = chatService.getChat(chatId)
                 .orElseThrow(() -> new NothingFoundException("Chat do not found"));
 
-        if (chat.getMyProfile().getId() != myId && chat.getFriendProfile().getId() != myId) {
-            log.warn("Trying to write message in chat where user do not participate, userId={}, chat={}",
-                    myId, chat);
-            throw new AccessDeniedException("Trying to write message in chat where user do not participate");
-        }
+        checkAccess(chat, myId);
 
         String msg = request.getParameter("msg");
         MessageDto message = new MessageDto(
@@ -52,8 +48,17 @@ public class SendMessageController implements PostController {
                 LocalDateTime.now(),
                 false
         );
+
         messageService.sendMessage(message);
 
         response.sendRedirect(GetUrl.CHAT.getUrl() + "?c=" + chatId);
+    }
+
+    private void checkAccess(ChatDto chat, int myId) {
+        if (chat.getMyProfile().getId() != myId && chat.getFriendProfile().getId() != myId) {
+            log.warn("Trying to write message in chat where user do not participate, userId={}, chat={}",
+                    myId, chat);
+            throw new AccessDeniedException("Trying to write message in chat where user do not participate");
+        }
     }
 }

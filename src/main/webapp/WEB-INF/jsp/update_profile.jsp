@@ -172,9 +172,7 @@
                             </div>
                             <div class="form-item white-background">
                                 <label for="text">Текст</label>
-                                <textarea spellcheck="false" class="form-input" id="text" name="text">
-                                    ${requestScope.profile.getText()}
-                                </textarea>
+                                <textarea spellcheck="false" class="form-input" id="text" name="text">${requestScope.profile.getText()}</textarea>
                             </div>
 
                             <button type="submit" class="like-button">Оновити анкету</button>

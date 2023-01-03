@@ -12,11 +12,11 @@ public class ChatDto implements Dto {
     Integer id;
 
     @JsonIgnoreProperties({"age", "gender", "location", "text", "previewTrack",
-            "instruments", "gender", "specialities", "likes" })
+            "instruments", "gender", "specialities", "likes"})
     ProfileDto myProfile;
 
     @JsonIgnoreProperties({"age", "gender", "location", "text", "previewTrack",
-            "instruments", "gender", "specialities", "likes" })
+            "instruments", "gender", "specialities", "likes"})
     ProfileDto friendProfile;
 
     List<MessageDto> messages;

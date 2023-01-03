@@ -4,9 +4,9 @@ import com.mitra.cloud.CloudStorageProviderImpl;
 import com.mitra.cloud.GoogleDriveInitializer;
 import com.mitra.controller.GetUrl;
 import com.mitra.controller.PostUrl;
-import com.mitra.controller.impl.get.*;
 import com.mitra.controller.impl.get.CreateProfileController;
 import com.mitra.controller.impl.get.UpdateProfileProcessor;
+import com.mitra.controller.impl.get.*;
 import com.mitra.controller.impl.post.*;
 import com.mitra.dto.mapper.DtoMapperFactory;
 import com.mitra.service.ServiceFactory;
@@ -47,21 +47,21 @@ public class ControllerFactory {
                 new LandingController());
         getControllers.put(GetUrl.UPDATE_PROFILE.getUrl(),
                 new UpdateProfileProcessor(serviceFactory.getProfileService(),
-                serviceFactory.getLocationService(), serviceFactory.getInstrumentService(),
-                serviceFactory.getSpecialityService()));
+                        serviceFactory.getLocationService(), serviceFactory.getInstrumentService(),
+                        serviceFactory.getSpecialityService()));
         getControllers.put(GetUrl.SEARCH.getUrl(),
                 new SearchController(serviceFactory.getLocationService(),
-                serviceFactory.getInstrumentService(), serviceFactory.getSpecialityService(),
-                serviceFactory.getProfileService(), dtoMapperFactory.getInstrumentDtoMapper(),
-                dtoMapperFactory.getSpecialityDtoMapper()));
+                        serviceFactory.getInstrumentService(), serviceFactory.getSpecialityService(),
+                        serviceFactory.getProfileService(), dtoMapperFactory.getInstrumentDtoMapper(),
+                        dtoMapperFactory.getSpecialityDtoMapper()));
         getControllers.put(GetUrl.REGISTRATION.getUrl(),
-                new RegistrationController(serviceFactory.getUserService()));
+                new RegistrationController());
         getControllers.put(GetUrl.PROFILE.getUrl(),
                 new ProfileController(serviceFactory.getProfileService(),
-                serviceFactory.getLikeService(), serviceFactory.getTrackService(), serviceFactory.getChatService()));
+                        serviceFactory.getLikeService(), serviceFactory.getTrackService(), serviceFactory.getChatService()));
         getControllers.put(GetUrl.MY_PROFILE.getUrl(),
                 new MyProfileController(serviceFactory.getProfileService(),
-                serviceFactory.getTrackService(), serviceFactory.getLikeService()));
+                        serviceFactory.getTrackService(), serviceFactory.getLikeService()));
         getControllers.put(GetUrl.MUSIC.getUrl(),
                 new MusicController(serviceFactory.getTrackService()));
         getControllers.put(GetUrl.LIKES.getUrl(),
@@ -85,12 +85,13 @@ public class ControllerFactory {
                 new com.mitra.controller.impl.post.CreateProfileController(serviceFactory.getProfileService()));
         postControllers.put(PostUrl.DELETE_TRACK.getUrl(),
                 new DeleteTrackController(serviceFactory.getTrackService()));
+        postControllers.put(PostUrl.SET_PREVIEW_TRACK.getUrl(),
+                new SetPreviewTrackController(serviceFactory.getProfileService()));
         postControllers.put(PostUrl.LOGOUT.getUrl(),
                 new LogoutController());
         postControllers.put(PostUrl.UPDATE_PROFILE.getUrl(),
-                new com.mitra.controller.impl.post.UpdateProfileProcessor(serviceFactory.getProfileService(),
-                        serviceFactory.getLocationService(), serviceFactory.getInstrumentService(),
-                        serviceFactory.getSpecialityService()));
+                new com.mitra.controller.impl.post.UpdateProfileProcessor(serviceFactory.getProfileService()
+                ));
         postControllers.put(PostUrl.UPDATE_PROFILE_PHOTO.getUrl(),
                 new UpdateProfilePhotoController(serviceFactory.getProfileService()));
         postControllers.put(PostUrl.SEND_MESSAGE.getUrl(),
@@ -102,7 +103,7 @@ public class ControllerFactory {
         postControllers.put(PostUrl.RESPONSE_ON_LIKE.getUrl(),
                 new ResponseOnLikeController(serviceFactory.getLikeService()));
         postControllers.put(PostUrl.OPEN_CHAT.getUrl(),
-                new OpenChatController(serviceFactory.getChatService(), serviceFactory.getLikeService()));
+                new OpenChatController(serviceFactory.getChatService()));
     }
 
     public GetController findGetController(String url) {

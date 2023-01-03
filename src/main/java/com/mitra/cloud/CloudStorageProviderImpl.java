@@ -4,6 +4,7 @@ import com.google.api.client.http.InputStreamContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 
+@Slf4j
 public class CloudStorageProviderImpl implements CloudStorageProvider {
 
     private static final String PROFILE_PHOTOS_FOLDER_ID = "1LFvuo2nIQibFxSV9n2JqmeKPmdjJNc6W";
@@ -36,7 +38,7 @@ public class CloudStorageProviderImpl implements CloudStorageProvider {
         try {
             cloudService.files().delete(fileID).execute();
         } catch (IOException e) {
-            // TODO : log warning
+            log.warn("File deleting failed, fileID={}", fileID);
         }
     }
 

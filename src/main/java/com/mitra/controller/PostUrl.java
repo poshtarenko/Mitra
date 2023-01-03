@@ -1,8 +1,5 @@
 package com.mitra.controller;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 public enum PostUrl {
 
     AUTH("/auth"),
@@ -18,6 +15,7 @@ public enum PostUrl {
     UPDATE_PROFILE_PHOTO("/upd_photo"),
     ADD_TRACK("/add_track"),
     DELETE_TRACK("/delete_track"),
+    SET_PREVIEW_TRACK("/set_preview_track"),
     SEND_MESSAGE("/send_message");
 
     private final String url;

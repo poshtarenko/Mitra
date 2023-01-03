@@ -122,14 +122,13 @@
                                     <audio controls
                                            src="${pageContext.request.contextPath}/app/audio?path=${track.getFilePath()}"></audio>
                                     <div class="audio-item-buttons">
-                                        <form style="margin: 0" class="music-button-form" action="${pageContext.request.contextPath}/app/delete_track" method="post"
+                                        <form style="margin: 0" class="music-button-form" action="${pageContext.request.contextPath}/app/set_preview_track" method="post"
                                               enctype='multipart/form-data'>
                                             <input type="hidden" name="trackId" value="${track.getId()}"/>
                                             <button type="submit" class="music-button music-button-left">На прев'ю</button>
                                         </form>
-                                        <form style="margin: 0" class="music-button-form" action="${pageContext.request.contextPath}/app/music" method="post"
+                                        <form style="margin: 0" class="music-button-form" action="${pageContext.request.contextPath}/app/delete_track" method="post"
                                               enctype='multipart/form-data'>
-                                            <input type="hidden" name="action" value="DELETE"/>
                                             <input type="hidden" name="trackId" value="${track.getId()}"/>
                                             <button type="submit" class="music-button music-button-right">Видалити</button>
                                         </form>

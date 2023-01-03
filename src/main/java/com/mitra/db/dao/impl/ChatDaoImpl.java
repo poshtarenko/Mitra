@@ -15,12 +15,10 @@ import java.util.Optional;
 
 public class ChatDaoImpl implements ChatDao {
 
-    private final RowMapper<Chat> chatRowMapper;
     private final QueryExecutor<Integer, Chat> queryExecutor;
     private final MessageDao messageDao;
 
     public ChatDaoImpl(RowMapper<Chat> chatRowMapper, MessageDao messageDao) {
-        this.chatRowMapper = chatRowMapper;
         this.queryExecutor = new QueryExecutor<>(chatRowMapper);
         this.messageDao = messageDao;
     }

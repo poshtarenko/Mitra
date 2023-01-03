@@ -14,12 +14,10 @@ import java.util.Optional;
 
 public class TrackDaoImpl implements TrackDao {
 
-    private final RowMapper<Track> musicRowMapper;
     private final QueryExecutor<Integer, Track> queryExecutor;
 
-    public TrackDaoImpl(RowMapper<Track> musicRowMapper) {
-        this.musicRowMapper = musicRowMapper;
-        this.queryExecutor = new QueryExecutor<>(musicRowMapper);
+    public TrackDaoImpl(RowMapper<Track> trackRowMapper) {
+        this.queryExecutor = new QueryExecutor<>(trackRowMapper);
     }
 
     public static final String FIND_ALL_SQL = String.format(

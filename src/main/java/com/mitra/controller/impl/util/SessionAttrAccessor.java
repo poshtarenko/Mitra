@@ -32,6 +32,10 @@ public final class SessionAttrAccessor {
         return profile;
     }
 
+    public static int getUserId(HttpServletRequest request) {
+        return getUser(request).getId();
+    }
+
     public static int getProfileId(HttpServletRequest request) {
         return getProfile(request).getId();
     }

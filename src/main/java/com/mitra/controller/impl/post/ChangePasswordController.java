@@ -1,7 +1,7 @@
 package com.mitra.controller.impl.post;
 
+import com.mitra.controller.GetUrl;
 import com.mitra.controller.impl.PostController;
-import com.mitra.controller.impl.util.ControllerUtils;
 import com.mitra.controller.impl.util.ParameterHelper;
 import com.mitra.controller.impl.util.SessionAttrAccessor;
 import com.mitra.exception.ValidationException;
@@ -34,6 +34,6 @@ public class ChangePasswordController implements PostController {
             throw e;
         }
 
-        ControllerUtils.redirectOnReferer(request, response);
+        response.sendRedirect(GetUrl.MY_ACCOUNT.getUrl());
     }
 }

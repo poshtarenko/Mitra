@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -41,7 +42,7 @@ public class TrackServiceImpl implements TrackService {
                     .map(trackDtoMapper::mapToDto)
                     .collect(Collectors.toList());
         } catch (DaoException | SQLException e) {
-            log.error("Getting profile music failed");
+            log.error("Getting profile music failed", e);
             return Collections.emptyList();
         }
     }
@@ -51,7 +52,7 @@ public class TrackServiceImpl implements TrackService {
         try (Connection connection = ConnectionManager.get()) {
             profileDao.setPreviewTrack(connection, profileId, trackId);
         } catch (DaoException | SQLException e) {
-            log.error("Setting profile preview track failed");
+            log.error("Setting profile preview track failed", e);
         }
     }
 
@@ -63,16 +64,21 @@ public class TrackServiceImpl implements TrackService {
             trackToSave.setFilePath(fileId);
             trackDao.save(connection, trackToSave);
         } catch (DaoException | SQLException e) {
-            log.error("Track saving failed");
+            log.error("Track saving failed", e);
         }
     }
 
     @Override
     public void remove(int trackId) {
         try (Connection connection = ConnectionManager.get()) {
-            trackDao.delete(connection, trackId);
+            Optional<Track> track = trackDao.find(connection, trackId);
+            if (track.isPresent()) {
+                String filePath = track.get().getFilePath();
+                cloudStorageProvider.deleteFile(filePath);
+                trackDao.delete(connection, trackId);
+            }
         } catch (DaoException | SQLException e) {
-            log.error("Track removing failed");
+            log.error("Track removing failed", e);
         }
     }
 }

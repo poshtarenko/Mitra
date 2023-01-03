@@ -8,7 +8,7 @@ import com.mitra.entity.Message;
 import com.mitra.entity.Profile;
 import com.mitra.entity.impl.ChatImpl;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 public class ChatDtoMapper implements DtoMapper<ChatDto, Chat> {
 

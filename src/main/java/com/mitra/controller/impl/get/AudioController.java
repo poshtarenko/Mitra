@@ -24,7 +24,6 @@ public class AudioController implements GetController {
         InputStream image = cloudStorageProvider.getFile(audioPath);
 
         resp.setContentType("application/octet-stream");
-        resp.setHeader("Content-Disposition", "attachment; filename=\"song.mp3\"");
         outputAudio(image, resp);
         image.close();
     }

@@ -74,7 +74,7 @@
 
 
                             <div id="location-input-box" class="inpt display-none">
-                                <select name="city" class="selectpicker w-100" data-live-search="true"
+                                <select name="location" class="selectpicker w-100" data-live-search="true"
                                         title="Виберіть місто">
                                     <c:forEach var="location" items="${requestScope.locations}">
                                         <option data-tokens="${location.getId()}" value="${location.getId()}">${location.getCity()}</option>

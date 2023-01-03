@@ -26,6 +26,10 @@ public final class ParameterHelper {
         throw new EmptyParameterException(errorMsg);
     }
 
+    public static int getNecessaryIntParameter(HttpServletRequest request, String parameterName) throws IOException {
+        return Integer.parseInt(getNecessaryParameter(request, parameterName));
+    }
+
     public static Part getNecessaryPart(HttpServletRequest request, String partName) throws IOException, ServletException {
         Part part = request.getPart(partName);
         if (part != null && part.getSize() > 0) {

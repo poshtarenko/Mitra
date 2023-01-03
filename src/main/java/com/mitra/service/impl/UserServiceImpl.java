@@ -12,15 +12,13 @@ import com.mitra.exception.DaoException;
 import com.mitra.exception.ValidationException;
 import com.mitra.security.PasswordEncryptor;
 import com.mitra.service.UserService;
+import com.mitra.validator.CredentialsValidator;
 import com.mitra.validator.Error;
-import com.mitra.validator.UserValidator;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -28,13 +26,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private final DtoMapper<UserDto, User> userDtoMapper;
-    private final UserValidator userValidator;
+    private final CredentialsValidator credentialsValidator;
     private final PasswordEncryptor passwordEncryptor;
 
-    public UserServiceImpl(UserDao userDao, DtoMapper<UserDto, User> userDtoMapper, UserValidator userValidator, PasswordEncryptor passwordEncryptor) {
+    public UserServiceImpl(UserDao userDao, DtoMapper<UserDto, User> userDtoMapper, CredentialsValidator credentialsValidator, PasswordEncryptor passwordEncryptor) {
         this.userDao = userDao;
         this.userDtoMapper = userDtoMapper;
-        this.userValidator = userValidator;
+        this.credentialsValidator = credentialsValidator;
         this.passwordEncryptor = passwordEncryptor;
     }
 
@@ -52,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserDto> find(CredentialsDto credentials) {
         try (Connection connection = ConnectionManager.get()) {
-            checkCredentialsOrThrowException(credentials.getEmail(), credentials.getPassword());
+            credentialsValidator.checkCredentials(credentials);
 
             String encryptedPassword = passwordEncryptor.encrypt(credentials.getPassword());
             Optional<User> user = userDao.findByEmail(connection, credentials.getEmail(), encryptedPassword);
@@ -68,7 +66,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean register(CredentialsDto credentials) {
         try (Connection connection = ConnectionManager.get()) {
-            checkCredentialsOrThrowException(credentials.getEmail(), credentials.getPassword());
+            credentialsValidator.checkCredentials(credentials);
 
             if (userDao.findByEmail(connection, credentials.getEmail()).isPresent())
                 throw new ValidationException(Collections.singletonList(
@@ -96,7 +94,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changeEmail(int userId, String newEmail) {
         try (Connection connection = ConnectionManager.get()) {
-            Optional<Error> emailNotValidError = userValidator.checkEmail(newEmail);
+            Optional<Error> emailNotValidError = credentialsValidator.checkEmail(newEmail);
             if (emailNotValidError.isPresent())
                 throw new ValidationException(Collections.singletonList(emailNotValidError.get()));
 
@@ -112,7 +110,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changePassword(int userId, String newPassword) {
         try (Connection connection = ConnectionManager.get()) {
-            Optional<Error> passwordNotValidError = userValidator.checkPassword(newPassword);
+            Optional<Error> passwordNotValidError = credentialsValidator.checkPassword(newPassword);
             if (passwordNotValidError.isPresent())
                 throw new ValidationException(Collections.singletonList(passwordNotValidError.get()));
 
@@ -160,15 +158,5 @@ public class UserServiceImpl implements UserService {
         } catch (SQLException | DaoException e) {
             log.error("Ban failed", e);
         }
-    }
-
-
-    private void checkCredentialsOrThrowException(String email, String password) {
-        List<Error> errors = new ArrayList<>();
-        userValidator.checkEmail(email).ifPresent(errors::add);
-        userValidator.checkPassword(password).ifPresent(errors::add);
-
-        if (!errors.isEmpty())
-            throw new ValidationException(errors);
     }
 }

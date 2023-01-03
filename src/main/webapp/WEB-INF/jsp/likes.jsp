@@ -99,48 +99,48 @@
                     </c:if>
                     <div class="like-column">
                         <p>Мої лайки</p>
-                        <c:forEach var="like" items="${requestScope.ownLikes}">
+                        <c:forEach var="profile" items="${requestScope.ownLikes}">
                             <div class="likes-elements">
                                 <div class="like-element">
-                                    <c:if test="${not empty like.getReceiver().getPhotoPath()}">
-                                        <img src="${pageContext.request.contextPath}/app/images?path=${like.getReceiver().getProfile().getPhotoPath()}"/>
+                                    <c:if test="${not empty profile.getPhotoPath()}">
+                                        <img src="${pageContext.request.contextPath}/app/images?path=${profile.getPhotoPath()}"/>
                                     </c:if>
-                                    <c:if test="${empty like.getReceiver().getPhotoPath()}">
+                                    <c:if test="${empty profile.getPhotoPath()}">
                                         <img src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                                     </c:if>
-                                    <a href="${pageContext.request.contextPath}/app/profile?id=${like.getReceiver().getId()}">${like.getReceiver().getName()}</a>
+                                    <a href="${pageContext.request.contextPath}/app/profile?id=${profile.getId()}">${profile.getName()}</a>
                                 </div>
                             </div>
                         </c:forEach>
                     </div>
                     <div class="like-column">
                         <p>Чекають на відповідь</p>
-                        <c:forEach var="like" items="${requestScope.waitingResponseLikes}">
+                        <c:forEach var="profile" items="${requestScope.waitingResponseLikes}">
                             <div class="likes-elements">
                                 <div class="like-element">
-                                    <c:if test="${not empty like.getReceiver().getPhotoPath()}">
-                                        <img src="${pageContext.request.contextPath}/app/images?path=${like.getReceiver().getProfile().getPhotoPath()}"/>
+                                    <c:if test="${not empty profile.getPhotoPath()}">
+                                        <img src="${pageContext.request.contextPath}/app/images?path=${profile.getPhotoPath()}"/>
                                     </c:if>
-                                    <c:if test="${empty like.getReceiver().getPhotoPath()}">
+                                    <c:if test="${empty profile.getPhotoPath()}">
                                         <img src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                                     </c:if>
-                                    <a href="${pageContext.request.contextPath}/app/profile?id=${like.getReceiver().getId()}">${like.getReceiver().getName()}</a>
+                                    <a href="${pageContext.request.contextPath}/app/profile?id=${profile.getId()}">${profile.getName()}</a>
                                 </div>
                             </div>
                         </c:forEach>
                     </div>
                     <div class="like-column">
                         <p>Мої друзі</p>
-                        <c:forEach var="like" items="${requestScope.mutualLikes}">
+                        <c:forEach var="profile" items="${requestScope.mutualLikes}">
                             <div class="likes-elements">
                                 <div class="like-element">
-                                    <c:if test="${not empty like.getReceiver().getPhotoPath()}">
-                                        <img src="${pageContext.request.contextPath}/app/images?path=${like.getReceiver().getProfile().getPhotoPath()}"/>
+                                    <c:if test="${not empty profile.getPhotoPath()}">
+                                        <img src="${pageContext.request.contextPath}/app/images?path=${profile.getPhotoPath()}"/>
                                     </c:if>
-                                    <c:if test="${empty like.getReceiver().getPhotoPath()}">
+                                    <c:if test="${empty profile.getPhotoPath()}">
                                         <img src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
                                     </c:if>
-                                    <a href="${pageContext.request.contextPath}/app/profile?id=${like.getReceiver().getId()}">${like.getReceiver().getName()}</a>
+                                    <a href="${pageContext.request.contextPath}/app/profile?id=${profile.getId()}">${profile.getName()}</a>
                                 </div>
                             </div>
                         </c:forEach>

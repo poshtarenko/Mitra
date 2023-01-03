@@ -15,11 +15,9 @@ import java.util.stream.Collectors;
 
 public class InstrumentDaoImpl implements InstrumentDao {
 
-    private final RowMapper<Instrument> instrumentRowMapper;
     private final QueryExecutor<Integer, Instrument> queryExecutor;
 
     public InstrumentDaoImpl(RowMapper<Instrument> locationRowMapper) {
-        this.instrumentRowMapper = locationRowMapper;
         this.queryExecutor = new QueryExecutor<>(locationRowMapper);
     }
 

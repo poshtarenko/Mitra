@@ -1,13 +1,13 @@
 package com.mitra.controller.impl.get;
 
-import com.mitra.controller.GetUrl;
 import com.mitra.controller.Cookies;
+import com.mitra.controller.GetUrl;
 import com.mitra.controller.impl.GetController;
 import com.mitra.controller.impl.util.ControllerUtils;
+import com.mitra.controller.impl.util.CookieHelper;
 import com.mitra.controller.impl.util.SessionAttrAccessor;
 import com.mitra.dto.ProfileDto;
 import com.mitra.service.ProfileService;
-import com.mitra.util.CookieHelper;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -40,6 +40,11 @@ public class FastSearchController implements GetController {
         if (cookieValue == null || cookieValue.equals("")) {
             int myId = SessionAttrAccessor.getProfileId(request);
             List<Integer> allIds = profileService.getIdsForSwipeSearch(myId);
+
+            if (allIds.isEmpty()) {
+                ControllerUtils.forward(request, response, GetUrl.FAST_SEARCH.getJspFileName());
+            }
+
             cookieValue = profileIdsToString(allIds);
             CookieHelper.updateCookie(response, Cookies.PROFILE_IDS.name(), cookieValue);
         }

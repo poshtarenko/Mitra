@@ -14,7 +14,6 @@ import java.util.Optional;
 
 public class LikeDaoImpl implements LikeDao {
 
-    private final RowMapper<Like> likeRowMapper;
     private final QueryExecutor<Integer, Like> queryExecutor;
 
     public static final String GET_ALL_LIKES = String.format(
@@ -33,6 +32,10 @@ public class LikeDaoImpl implements LikeDao {
             "WHERE %s = ? AND %s = ?",
             Column.LIKE.SENDER_ID, Column.LIKE.RECEIVER_ID);
 
+    public static final String GET_BY_PROFILES = GET_ALL_LIKES + String.format(
+            "WHERE (%s = ? AND %s = ?) OR (%s = ? AND %s = ?)",
+            Column.LIKE.SENDER_ID, Column.LIKE.RECEIVER_ID, Column.LIKE.RECEIVER_ID, Column.LIKE.SENDER_ID);
+
     public static final String LIKE = String.format(
             "INSERT INTO %s (%s, %s, %s) VALUES (?, ?, 0)",
             Table.LIKE, Column.LIKE.SENDER_ID.shortName(), Column.LIKE.RECEIVER_ID.shortName(), Column.LIKE.REACTION.shortName());
@@ -43,7 +46,6 @@ public class LikeDaoImpl implements LikeDao {
 
 
     public LikeDaoImpl(RowMapper<Like> likeRowMapper) {
-        this.likeRowMapper = likeRowMapper;
         this.queryExecutor = new QueryExecutor<>(likeRowMapper);
     }
 
@@ -55,6 +57,12 @@ public class LikeDaoImpl implements LikeDao {
     @Override
     public Optional<Like> findBySenderAndReceiver(Connection connection, int senderId, int receiverId) {
         return queryExecutor.selectOne(connection, GET_BY_SENDER_AND_RECEIVER, senderId, receiverId);
+    }
+
+    @Override
+    public Optional<Like> findByProfiles(Connection connection, int firstProfileId, int secondProfileId) {
+        return queryExecutor.selectOne(connection, GET_BY_PROFILES
+                , firstProfileId, secondProfileId, firstProfileId, secondProfileId);
     }
 
     @Override

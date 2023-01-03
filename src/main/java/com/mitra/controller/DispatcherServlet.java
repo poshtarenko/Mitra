@@ -1,9 +1,8 @@
 package com.mitra.controller;
 
-import com.mitra.controller.impl.GetController;
 import com.mitra.controller.impl.ControllerFactory;
+import com.mitra.controller.impl.GetController;
 import com.mitra.controller.impl.PostController;
-import com.mitra.exception.PageDontExistException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 @WebServlet(GetUrl.APP_PATH_PREFIX + "/*")
 @MultipartConfig()

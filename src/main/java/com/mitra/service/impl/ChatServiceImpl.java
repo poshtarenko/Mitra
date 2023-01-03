@@ -2,12 +2,16 @@ package com.mitra.service.impl;
 
 import com.mitra.db.connection.ConnectionManager;
 import com.mitra.db.dao.ChatDao;
+import com.mitra.db.dao.LikeDao;
 import com.mitra.dto.ChatDto;
 import com.mitra.dto.mapper.DtoMapper;
 import com.mitra.entity.Chat;
+import com.mitra.entity.Like;
+import com.mitra.entity.Reaction;
 import com.mitra.entity.dummy.DummyProfile;
 import com.mitra.entity.impl.ChatImpl;
 import com.mitra.exception.DaoException;
+import com.mitra.exception.ServiceException;
 import com.mitra.service.ChatService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,16 +26,26 @@ import java.util.stream.Collectors;
 public class ChatServiceImpl implements ChatService {
 
     private final ChatDao chatDao;
+    private final LikeDao likeDao;
     private final DtoMapper<ChatDto, Chat> chatDtoMapper;
 
-    public ChatServiceImpl(ChatDao chatDao, DtoMapper<ChatDto, Chat> chatDtoMapper) {
+    public ChatServiceImpl(ChatDao chatDao, LikeDao likeDao, DtoMapper<ChatDto, Chat> chatDtoMapper) {
         this.chatDao = chatDao;
+        this.likeDao = likeDao;
         this.chatDtoMapper = chatDtoMapper;
     }
 
     @Override
     public int startChat(int firstProfileId, int secondProfileId) {
         try (Connection connection = ConnectionManager.get()) {
+            Optional<Like> like = likeDao.findByProfiles(connection, firstProfileId, secondProfileId);
+
+            if (!like.isPresent() || like.get().getReaction() != Reaction.LIKE) {
+                log.warn("Can not open chat because mutual like is not provided, ids : {}, {}",
+                        firstProfileId, secondProfileId);
+                throw new ServiceException("Can not open the chat, because mutual like is not provided");
+            }
+
             Chat chat = new ChatImpl(0, new DummyProfile(firstProfileId), new DummyProfile(secondProfileId),
                     Collections.emptyList());
             return chatDao.save(connection, chat);

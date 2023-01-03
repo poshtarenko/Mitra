@@ -1,8 +1,5 @@
 package com.mitra.controller;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 public enum GetUrl {
 
     LANDING_PAGE("", "landing"),

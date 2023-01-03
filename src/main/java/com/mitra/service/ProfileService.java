@@ -56,17 +56,25 @@ public interface ProfileService {
     /**
      * Update profile in DB with values from Profile Dto
      *
-     * @param profileId     id of entity
+     * @param profileId  id of entity
      * @param profileDto profileDTO
      */
     void updateProfile(int profileId, ProfileDto profileDto) throws ValidationException;
 
     /**
-     * Update profile photo, if newPhoto param is not null
+     * Update profile photo
      *
-     * @param profileId     id of entity
-     * @param newPhoto   InputStream with photo
+     * @param profileId id of entity
+     * @param newPhoto  InputStream with photo
      */
     void updatePhoto(int profileId, InputStream newPhoto);
+
+    /**
+     * Set new preview track
+     *
+     * @param profileId id of entity
+     * @param trackId   track id
+     */
+    void setPreviewTrack(int profileId, int trackId);
 
 }

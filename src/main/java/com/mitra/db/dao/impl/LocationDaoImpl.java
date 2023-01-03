@@ -14,11 +14,9 @@ import java.util.Optional;
 
 public class LocationDaoImpl implements LocationDao {
 
-    private final RowMapper<Location> locationRowMapper;
     private final QueryExecutor<Integer, Location> queryExecutor;
 
     public LocationDaoImpl(RowMapper<Location> locationRowMapper) {
-        this.locationRowMapper = locationRowMapper;
         this.queryExecutor = new QueryExecutor<>(locationRowMapper);
     }
 

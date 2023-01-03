@@ -26,7 +26,8 @@
             <a href="${pageContext.request.contextPath}/app/account">
                 <div class="sidebar-item" id="user-item">
                     <c:if test="${not empty sessionScope.USER.getProfile().getPhotoPath()}">
-                        <img id="user-img" src="${pageContext.request.contextPath}/app/images?path=${sessionScope.USER.getProfile().getPhotoPath()}"/>
+                        <img id="user-img"
+                             src="${pageContext.request.contextPath}/app/images?path=${sessionScope.USER.getProfile().getPhotoPath()}"/>
                     </c:if>
                     <c:if test="${empty sessionScope.USER.getProfile().getPhotoPath()}">
                         <img id="user-img" src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
@@ -84,65 +85,71 @@
         <div id="content-wrapper">
             <div id="content">
                 <div id="go-content">
-                    <c:if test="${not empty requestScope.profile.getPhotoPath()}">
-                        <img id="profile-photo"
-                             src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
-                    </c:if>
-                    <c:if test="${empty requestScope.profile.getPhotoPath()}">
-                        <img id="profile-photo"
-                             src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
-                    </c:if>
-                    <a class="profile-text" id="profile-name"
-                       href="${pageContext.request.contextPath}/app/profile?id=${requestScope.profile.getId()}">
-                        ${requestScope.profile.getName()}
-                    </a>
-                    <c:if test="${not empty requestScope.profile.getPreviewTrack()}">
-                        <audio controls>
-                            <source src="${pageContext.request.contextPath}/app/audio?path=${requestScope.profile.getPreviewTrack().getFilePath()}"
-                                    type="audio/mpeg">
-                        </audio>
-                        <hr>
-                    </c:if>
-                    <div class="profile-text white-background">${requestScope.profile.getGender().name()}. ${requestScope.profile.getAge()}
-                        років. Місто ${requestScope.profile.getLocation().getCity()}</div>
-                    <c:if test="${not empty requestScope.profile.getInstruments()}">
-                        <p><b>Інструменти :</b>
-                            <c:forEach var="instrument" items="${requestScope.profile.getInstruments()}">
-                                <span>${instrument.getName()} </span>
-                            </c:forEach>
-                        </p>
-                    </c:if>
-                    <c:if test="${not empty requestScope.profile.getInstruments()}">
-                        <div class="profile-text">
-                            <div class="white-background">Інструменти :</div>
-                            <div>
+                    <c:if test="${not empty requestScope.profile}">
+                        <c:if test="${not empty requestScope.profile.getPhotoPath()}">
+                            <img id="profile-photo"
+                                 src="${pageContext.request.contextPath}/app/images?path=${requestScope.profile.getPhotoPath()}"/>
+                        </c:if>
+                        <c:if test="${empty requestScope.profile.getPhotoPath()}">
+                            <img id="profile-photo"
+                                 src="${pageContext.request.contextPath}/resources/img/profile_no_photo.png"/>
+                        </c:if>
+                        <a class="profile-text" id="profile-name"
+                           href="${pageContext.request.contextPath}/app/profile?id=${requestScope.profile.getId()}">
+                                ${requestScope.profile.getName()}
+                        </a>
+                        <c:if test="${not empty requestScope.profile.getPreviewTrack()}">
+                            <audio controls>
+                                <source src="${pageContext.request.contextPath}/app/audio?path=${requestScope.profile.getPreviewTrack().getFilePath()}"
+                                        type="audio/mpeg">
+                            </audio>
+                            <hr>
+                        </c:if>
+                        <div class="profile-text white-background">${requestScope.profile.getGender().name()}. ${requestScope.profile.getAge()}
+                            років. Місто ${requestScope.profile.getLocation().getCity()}</div>
+                        <c:if test="${not empty requestScope.profile.getInstruments()}">
+                            <p><b>Інструменти :</b>
                                 <c:forEach var="instrument" items="${requestScope.profile.getInstruments()}">
-                                    ${instrument.getName()}
+                                    <span>${instrument.getName()} </span>
                                 </c:forEach>
+                            </p>
+                        </c:if>
+                        <c:if test="${not empty requestScope.profile.getInstruments()}">
+                            <div class="profile-text">
+                                <div class="white-background">Інструменти :</div>
+                                <div>
+                                    <c:forEach var="instrument" items="${requestScope.profile.getInstruments()}">
+                                        ${instrument.getName()}
+                                    </c:forEach>
+                                </div>
                             </div>
+                        </c:if>
+                        <c:if test="${not empty requestScope.profile.getSpecialities()}">
+                            <div class="profile-text">
+                                <div class="white-background">Спеціальність :</div>
+                                <div>
+                                    <c:forEach var="speciality" items="${requestScope.profile.getSpecialities()}">
+                                        ${speciality.getName()}
+                                    </c:forEach>
+                                </div>
+                            </div>
+                        </c:if>
+                        <div class="profile-text white-background" id="profile-text-attr">
+                                ${requestScope.profile.getText()}
+                        </div>
+                        <div id="go-buttons">
+                            <form action="${pageContext.request.contextPath}/app/put_like" method="post"
+                                  id="like-button-form">
+                                <input type="hidden" name="id" value="${requestScope.profile.getId()}">
+                                <button type="submit" class="like-button">Давай знайомитись!</button>
+                            </form>
+                            <a href="${pageContext.request.contextPath}/app/go" class="like-button"
+                               style="color: #ffffff">Наступна анкета</a>
                         </div>
                     </c:if>
-                    <c:if test="${not empty requestScope.profile.getSpecialities()}">
-                        <div class="profile-text">
-                            <div class="white-background">Спеціальність :</div>
-                            <div>
-                                <c:forEach var="speciality" items="${requestScope.profile.getSpecialities()}">
-                                    ${speciality.getName()}
-                                </c:forEach>
-                            </div>
-                        </div>
+                    <c:if test="${empty requestScope.profile}">
+                        <div>Наразі анкети відсутні</div>
                     </c:if>
-                    <div class="profile-text white-background" id="profile-text-attr">
-                        ${requestScope.profile.getText()}
-                    </div>
-                    <div id="go-buttons">
-                        <form action="${pageContext.request.contextPath}/app/likes" method="post" id="like-button-form">
-                            <input type="hidden" name="type" value="LIKE">
-                            <input type="hidden" name="id" value="${requestScope.profile.getId()}">
-                            <button type="submit" class="like-button">Давай знайомитись!</button>
-                        </form>
-                        <a href="${pageContext.request.contextPath}/app/go" class="like-button" style="color: #ffffff">Наступна анкета</a>
-                    </div>
                 </div>
             </div>
         </div>

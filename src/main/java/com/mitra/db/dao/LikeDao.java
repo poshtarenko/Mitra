@@ -29,6 +29,16 @@ public interface LikeDao {
     Optional<Like> findBySenderAndReceiver(Connection connection, int senderId, int receiverId);
 
     /**
+     * Find like between two users
+     *
+     * @param connection      connection to db
+     * @param firstProfileId  first profile
+     * @param secondProfileId second profile
+     * @return Optional of Like
+     */
+    Optional<Like> findByProfiles(Connection connection, int firstProfileId, int secondProfileId);
+
+    /**
      * Insert new like
      *
      * @param connection connection to db

@@ -1,6 +1,4 @@
-package com.mitra.util;
-
-import com.mitra.controller.Cookies;
+package com.mitra.controller.impl.util;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,11 +21,10 @@ public final class CookieHelper {
         return null;
     }
 
-    public static Cookie updateCookie(HttpServletResponse response, String cookieName, String value) {
+    public static void updateCookie(HttpServletResponse response, String cookieName, String value) {
         Cookie cookie = new Cookie(cookieName, value);
         cookie.setMaxAge(8 * 60 * 60); // 8 hours
         response.addCookie(cookie);
-        return cookie;
     }
 
 }

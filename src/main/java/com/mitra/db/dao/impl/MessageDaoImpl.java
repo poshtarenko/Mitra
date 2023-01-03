@@ -14,11 +14,9 @@ import java.util.Optional;
 
 public class MessageDaoImpl implements MessageDao {
 
-    private final RowMapper<Message> messageRowMapper;
     private final QueryExecutor<Long, Message> queryExecutor;
 
     public MessageDaoImpl(RowMapper<Message> messageRowMapper) {
-        this.messageRowMapper = messageRowMapper;
         this.queryExecutor = new QueryExecutor<>(messageRowMapper);
     }
 

@@ -15,11 +15,9 @@ import java.util.stream.Collectors;
 
 public class SpecialityDaoImpl implements SpecialityDao {
 
-    private final RowMapper<Speciality> specialityRowMapper;
     private final QueryExecutor<Integer, Speciality> queryExecutor;
 
     public SpecialityDaoImpl(RowMapper<Speciality> specialityRowMapper) {
-        this.specialityRowMapper = specialityRowMapper;
         this.queryExecutor = new QueryExecutor<>(specialityRowMapper);
     }
 

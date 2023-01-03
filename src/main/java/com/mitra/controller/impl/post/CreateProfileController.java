@@ -27,21 +27,7 @@ public class CreateProfileController implements PostController {
 
     @Override
     public void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int myId = SessionAttrAccessor.getProfileId(request);
-
-        LocationDto location = LocationDto.builder()
-                .id(Integer.parseInt(ParameterHelper.getNecessaryParameter(request, "location")))
-                .build();
-
-        ProfileDto profile = ProfileDto.builder()
-                .id(myId)
-                .name(ParameterHelper.getNecessaryParameter(request, "name"))
-                .age(Integer.valueOf(ParameterHelper.getNecessaryParameter(request, "age")))
-                .gender(Gender.getById(Integer.parseInt(request.getParameter("gender"))))
-                .text(ParameterHelper.getNecessaryParameter(request, "text"))
-                .location(location)
-                .build();
-
+        ProfileDto profile = createProfile(request);
         try {
             profileService.create(profile);
             SessionAttrAccessor.updateProfile(request, profile);
@@ -51,6 +37,23 @@ public class CreateProfileController implements PostController {
         }
 
         response.sendRedirect(GetUrl.MY_PROFILE.getUrl());
+    }
+
+    private ProfileDto createProfile(HttpServletRequest request) throws IOException {
+        int myId = SessionAttrAccessor.getUserId(request);
+
+        LocationDto location = LocationDto.builder()
+                .id(Integer.parseInt(ParameterHelper.getNecessaryParameter(request, "location")))
+                .build();
+
+        return ProfileDto.builder()
+                .id(myId)
+                .name(ParameterHelper.getNecessaryParameter(request, "name"))
+                .age(Integer.valueOf(ParameterHelper.getNecessaryParameter(request, "age")))
+                .gender(Gender.getById(Integer.parseInt(request.getParameter("gender"))))
+                .text(ParameterHelper.getNecessaryParameter(request, "text"))
+                .location(location)
+                .build();
     }
 
 }

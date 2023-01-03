@@ -28,7 +28,7 @@ public class DaoFactory {
         instrumentDao = new InstrumentDaoImpl(rowMapperFactory.getInstrumentRowMapper());
         specialityDao = new SpecialityDaoImpl(rowMapperFactory.getSpecialityRowMapper());
         profileDao = new ProfileDaoImpl(rowMapperFactory.getProfileRowMapper(), instrumentDao,
-                specialityDao, trackDao, likeDao);
+                specialityDao, trackDao);
         userDao = new UserDaoImpl(profileDao, rowMapperFactory.getUserRowMapper());
     }
 

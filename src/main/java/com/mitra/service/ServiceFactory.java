@@ -28,17 +28,18 @@ public class ServiceFactory {
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
         CloudStorageProviderImpl cloudStorageProvider = new CloudStorageProviderImpl(GoogleDriveInitializer.getDriveService());
 
-        chatService = new ChatServiceImpl(daoFactory.getChatDao(), dtoMapperFactory.getChatDtoMapper());
-        messageService = new MessageServiceImpl(daoFactory.getMessageDao(), dtoMapperFactory.getMessageDtoMapper());
+        chatService = new ChatServiceImpl(daoFactory.getChatDao(), daoFactory.getLikeDao(), dtoMapperFactory.getChatDtoMapper());
+        messageService = new MessageServiceImpl(daoFactory.getMessageDao(), daoFactory.getChatDao(),
+                dtoMapperFactory.getMessageDtoMapper(), validatorFactory.getMessageValidator());
         locationService = new LocationServiceImpl(daoFactory.getLocationDao(), dtoMapperFactory.getLocationDtoMapper());
         instrumentService = new InstrumentServiceImpl(daoFactory.getInstrumentDao(), dtoMapperFactory.getInstrumentDtoMapper());
         specialityService = new SpecialityServiceImpl(daoFactory.getSpecialityDao(), dtoMapperFactory.getSpecialityDtoMapper());
         likeService = new LikeServiceImpl(daoFactory.getLikeDao(), dtoMapperFactory.getLikeDtoMapper());
         userService = new UserServiceImpl(daoFactory.getUserDao(), dtoMapperFactory.getUserDtoMapper(),
-                validatorFactory.getUserValidator(), EncryptorSHA512.getInstance());
+                validatorFactory.getCredentialsValidator(), EncryptorSHA512.getInstance());
         trackService = new TrackServiceImpl(dtoMapperFactory.getTrackDtoMapper(), daoFactory.getProfileDao(),
                 daoFactory.getTrackDao(), cloudStorageProvider);
-        profileService = new ProfileServiceImpl(daoFactory.getProfileDao(), dtoMapperFactory.getProfileDtoMapper(),
+        profileService = new ProfileServiceImpl(daoFactory.getProfileDao(), daoFactory.getTrackDao(), dtoMapperFactory.getProfileDtoMapper(),
                 cloudStorageProvider, validatorFactory.getProfileValidator());
     }
 

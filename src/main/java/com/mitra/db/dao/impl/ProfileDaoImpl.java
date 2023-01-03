@@ -2,7 +2,10 @@ package com.mitra.db.dao.impl;
 
 import com.mitra.db.Column;
 import com.mitra.db.Table;
-import com.mitra.db.dao.*;
+import com.mitra.db.dao.InstrumentDao;
+import com.mitra.db.dao.ProfileDao;
+import com.mitra.db.dao.SpecialityDao;
+import com.mitra.db.dao.TrackDao;
 import com.mitra.db.dao.impl.util.ProfileDaoQueryConstructor;
 import com.mitra.db.dao.impl.util.QueryExecutor;
 import com.mitra.db.filter.ProfileFilter;
@@ -20,21 +23,17 @@ import java.util.Optional;
 
 public class ProfileDaoImpl implements ProfileDao {
 
-    private final RowMapper<Profile> profileRowMapper;
     private final QueryExecutor<Integer, Profile> queryExecutor;
     private final InstrumentDao instrumentDao;
     private final SpecialityDao specialityDao;
-    private final LikeDao likeDao;
     private final TrackDao trackDao;
 
     public ProfileDaoImpl(RowMapper<Profile> profileRowMapper, InstrumentDao instrumentDao,
-                          SpecialityDao specialityDao, TrackDao trackDao, LikeDao likeDao) {
-        this.profileRowMapper = profileRowMapper;
+                          SpecialityDao specialityDao, TrackDao trackDao) {
         this.instrumentDao = instrumentDao;
         this.specialityDao = specialityDao;
         this.queryExecutor = new QueryExecutor<>(profileRowMapper);
         this.trackDao = trackDao;
-        this.likeDao = likeDao;
     }
 
     public static final String FIND_ALL_SQL = String.format(
@@ -85,11 +84,12 @@ public class ProfileDaoImpl implements ProfileDao {
 
     public static final String GET_IDS_FOR_SWIPE_SEARCH = String.format(
             "SELECT %s FROM %s " +
+                    "WHERE %s != ?" +
                     "EXCEPT " +
                     "SELECT DISTINCT %s FROM %s " +
                     "INNER JOIN %s ON (%s = %s OR %s = %s) " +
                     "WHERE %s = ? OR %s = ?;",
-            Column.PROFILE.ID, Table.PROFILE, Column.PROFILE.ID, Table.PROFILE,
+            Column.PROFILE.ID, Table.PROFILE, Column.PROFILE.ID, Column.PROFILE.ID, Table.PROFILE,
             Table.LIKE, Column.PROFILE.ID, Column.LIKE.SENDER_ID, Column.PROFILE.ID, Column.LIKE.RECEIVER_ID,
             Column.LIKE.SENDER_ID, Column.LIKE.RECEIVER_ID);
 
@@ -146,6 +146,7 @@ public class ProfileDaoImpl implements ProfileDao {
         try (PreparedStatement preparedStatement = connection.prepareStatement(GET_IDS_FOR_SWIPE_SEARCH)) {
             preparedStatement.setInt(1, id);
             preparedStatement.setInt(2, id);
+            preparedStatement.setInt(3, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Integer> ids = new ArrayList<>();
             while (resultSet.next())
